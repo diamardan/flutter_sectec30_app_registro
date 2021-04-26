@@ -81,6 +81,9 @@ class _PreregFormState extends State<PreregForm> {
       _loading = false;
     });
   }
+  avisarPago(BuildContext context){
+    showAlertPago(context, "Aviso", "Para comenzar el registro se verificará el pago, si ya lo realizó favor de mandar foto del voucher por whatsapp");
+  }
 
   void _cargarEspecialidades() async {
     var especialidades;
@@ -323,6 +326,8 @@ class _PreregFormState extends State<PreregForm> {
 
   @override
   Widget build(BuildContext context) {
+        avisarPago(context);
+
     return Scaffold(
         key: _scaffoldKey,
         appBar: AppBar(
