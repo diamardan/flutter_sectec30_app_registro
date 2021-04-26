@@ -37,6 +37,7 @@ dependencies:
   signature: ^3.2.0
   image_picker: '0.6.7+22'
   mime_type: ^0.3.2
+  permission_handler: '5.1.0+2'
   
   dio:
   

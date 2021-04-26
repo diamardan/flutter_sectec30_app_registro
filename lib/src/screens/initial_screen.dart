@@ -6,8 +6,10 @@ import 'package:ext_storage/ext_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lumen_app_registro/src/constants/constants.dart';
+import 'package:lumen_app_registro/src/customWidgets/Alert.dart';
 import 'package:lumen_app_registro/src/screens/preregistro/create_form.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 var dio = Dio();
@@ -106,7 +108,8 @@ Widget _botonRegistro(BuildContext context) {
   return MaterialButton(
     elevation: 10,
     onPressed: () {
-      goToForm(context);
+      showAlertPago(context, "Aviso", "Para comenzar el registro se verificará el pago, si ya lo realizó favor de mandar foto del voucher por whatsapp");
+     /*  goToForm(context); */
     },
     height: 45,
     color: Colors.green,
@@ -136,11 +139,12 @@ Widget _botonDescargaFormato(BuildContext context) {
   return MaterialButton(
     elevation: 10,
     onPressed: () async {
+      await Permission.storage.request();
       var tempDir = await ExtStorage.getExternalStoragePublicDirectory(ExtStorage.DIRECTORY_DOWNLOADS);
 
       String fullPath = tempDir +"/formato_pago.pdf";
       print('full path : $fullPath');
-      downloadPDF(dio, AppConstants.pdfPagoUrl, fullPath);
+      downloadPDF( dio, AppConstants.pdfPagoUrl, fullPath, context );
       },
     height: 45,
     color: Color.fromRGBO(221, 44, 0, 1),
@@ -195,7 +199,7 @@ class _ButonDescargaFormatoPdfState extends State<ButonDescargaFormatoPdf> {
   }
 }
 
-Future downloadPDF(Dio dio, String url, String savePath) async {
+Future downloadPDF(Dio dio, String url, String savePath, BuildContext context) async {
     try {
       (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
     (HttpClient client) {
@@ -216,10 +220,12 @@ Future downloadPDF(Dio dio, String url, String savePath) async {
       );
       print(response.headers);
       File file = File(savePath);
+    
       var raf = file.openSync(mode: FileMode.write);
       // response.data is List<int> type
       raf.writeFromSync(response.data);
       await raf.close();
+      showCompletedDownload(context,"Completado","El Formato de pago se ha descargado completamente, revise su carpeta de descargas");
     } catch (e) {
       print(e);
     }
