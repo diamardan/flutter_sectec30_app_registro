@@ -1,0 +1,15 @@
+enum AppSection {
+  COMMITMENTS,
+  PROPOSALS,
+  REPORTS,
+  COURSES,
+  DEPUTY,
+  ENTERTAINMENTS,
+  CITIZEN,
+  JOIN,
+  WEB
+}
+
+enum AppStreamming { COURSE, DEPUTY, ENTERTAINMENT }
+
+enum Status { LOADING, COMPLETED, EMPTY, ERROR }
