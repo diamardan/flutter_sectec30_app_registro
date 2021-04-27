@@ -165,7 +165,7 @@ class _PreregFormState extends State<PreregForm> {
   }
 
   cancel() {
-    if (_currentStep > 0) {
+    if (_currentStep > 1) {
       goTo(_currentStep - 1);
     } else {
       Navigator.popUntil(context, ModalRoute.withName('inicio'));
@@ -184,13 +184,12 @@ class _PreregFormState extends State<PreregForm> {
       print(error);
     }
 
-    if (result['message'] == null) {
+    if (result['message'] != "SUCCESS") {
       showAlertDialog(
           context, "Error", "Ocurrió un error al conectarse al servidor");
     }
 
-    var message = result['message'];
-    if (message == "SUCCESS") {
+    if (result['data'].length >= 1) {
       var alumno = result['data'];
       setState(() {
         id_registro = alumno[0]['ID_REGISTRO'];
@@ -234,7 +233,7 @@ class _PreregFormState extends State<PreregForm> {
           if (avanzar != true) {
             title = "No encontrado";
             message =
-                "La C.U.R.P. ingresada no está en nuestros registros de pago, si considera que ésto es un error puede usar la ayuda por whatsapp";
+                "El CURP ingresado no cuenta con registro de pago . Favor de descargar el formato de pago y una vez realizado el deposito enviar foto del voucher original con el nombre del y curp del alumno por WhatsApp al 5520779800";
           }
           print("puedo avanzar ? : $avanzar");
         }
@@ -323,7 +322,6 @@ class _PreregFormState extends State<PreregForm> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
         key: _scaffoldKey,
         appBar: AppBar(

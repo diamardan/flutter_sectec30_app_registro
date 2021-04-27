@@ -21,7 +21,13 @@ class DigitosLimite extends TextInputFormatter {
   @override
   TextEditingValue formatEditUpdate(
       TextEditingValue txtOld, TextEditingValue txtNew) {
-    return txtNew.copyWith(text: txtNew.text.toUpperCase().characters.take(18).toString());
+    if (txtOld.text.length <= 18) {
+      return txtNew.copyWith(
+          text: txtNew.text.toUpperCase().characters.take(18).toString());
+    }
+    return txtNew.copyWith(
+        text: txtNew.text
+            .toUpperCase()
+            .substring(0, 18)); //.characters. .take(18).toString());
   }
-
 }

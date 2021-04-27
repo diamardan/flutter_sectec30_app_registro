@@ -1,5 +1,5 @@
+import 'dart:io' show Platform;
 import 'dart:io';
-
 import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
 import 'package:ext_storage/ext_storage.dart';
@@ -13,8 +13,8 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 var dio = Dio();
-class InitialScreen extends StatelessWidget {
 
+class InitialScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,22 +42,29 @@ Widget _btnWhatsapp(context) {
         height: 38,
         width: size.width * .3,
         decoration: BoxDecoration(
-          color: AppColors.whatsappColor,
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: Colors.grey[200], style: BorderStyle.solid, width: 1)
-          ),
+            color: AppColors.whatsappColor,
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(
+                color: Colors.grey[200], style: BorderStyle.solid, width: 1)),
         child: MaterialButton(
           elevation: 20,
           onPressed: () {
             enviarWhatsapp();
           },
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-          height: 15, 
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          height: 15,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
-              Icon(FontAwesomeIcons.whatsapp, color: Colors.white,),
-              Text('Ayuda', style: TextStyle(color: AppColors.white),)
+              Icon(
+                FontAwesomeIcons.whatsapp,
+                color: Colors.white,
+              ),
+              Text(
+                'Ayuda',
+                style: TextStyle(color: AppColors.white),
+              )
             ],
           ),
         )),
@@ -108,13 +115,14 @@ Widget _botonRegistro(BuildContext context) {
   return MaterialButton(
     elevation: 10,
     onPressed: () {
-      showAlertPago(context, "Aviso", "Para comenzar el registro se verificará el pago, si ya lo realizó favor de mandar foto del voucher por whatsapp");
-     /*  goToForm(context); */
+      showAlertPago(context, "Aviso",
+          "Para comenzar el registro se verificará el pago, si ya lo realizó favor de mandar foto del voucher por whatsapp");
+      /*  goToForm(context); */
     },
     height: 45,
     color: Colors.green,
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
-    child:  Container(
+    child: Container(
       width: size.width * .75,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(40),
@@ -122,10 +130,10 @@ Widget _botonRegistro(BuildContext context) {
       child: Center(
         child: FittedBox(
           fit: BoxFit.fitHeight,
-                          child: Text(
+          child: Text(
             "Registrarse",
             textAlign: TextAlign.center,
-            style: TextStyle(color: Colors.white, fontSize: 18 ),
+            style: TextStyle(color: Colors.white, fontSize: 18),
           ),
         ),
       ),
@@ -134,18 +142,27 @@ Widget _botonRegistro(BuildContext context) {
 }
 
 Widget _botonDescargaFormato(BuildContext context) {
- // listenForPermissionStatus();
+  // listenForPermissionStatus();
   Size size = MediaQuery.of(context).size;
   return MaterialButton(
     elevation: 10,
     onPressed: () async {
+      var tempDir;
+      var appDir;
       await Permission.storage.request();
-      var tempDir = await ExtStorage.getExternalStoragePublicDirectory(ExtStorage.DIRECTORY_DOWNLOADS);
 
-      String fullPath = tempDir +"/formato_pago.pdf";
+      if (Platform.isAndroid) {
+        tempDir = await ExtStorage.getExternalStoragePublicDirectory(
+            ExtStorage.DIRECTORY_DOWNLOADS);
+      } else if (Platform.isIOS) {
+        appDir = await getApplicationDocumentsDirectory();
+        tempDir = appDir.path;
+      }
+
+      String fullPath = tempDir + "/formato_pago.pdf";
       print('full path : $fullPath');
-      downloadPDF( dio, AppConstants.pdfPagoUrl, fullPath, context );
-      },
+      downloadPDF(dio, AppConstants.pdfPagoUrl, fullPath, context);
+    },
     height: 45,
     color: Color.fromRGBO(221, 44, 0, 1),
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
@@ -158,10 +175,10 @@ Widget _botonDescargaFormato(BuildContext context) {
       child: Center(
         child: FittedBox(
           fit: BoxFit.fitHeight,
-                          child: Text(
+          child: Text(
             "Formato de pago",
             textAlign: TextAlign.center,
-            style: TextStyle(color: Colors.white, fontSize: 18 ),
+            style: TextStyle(color: Colors.white, fontSize: 18),
           ),
         ),
       ),
@@ -174,65 +191,69 @@ goToForm(BuildContext context) {
       context, MaterialPageRoute(builder: (context) => PreregForm()));
 }
 
-enviarWhatsapp() async{
-  await launch("${AppConstants.whatsappNumber}?text=${AppConstants.whatsappText}");
+enviarWhatsapp() async {
+  await launch(
+      "${AppConstants.whatsappNumber}?text=${AppConstants.whatsappText}");
 }
 
 class ButonDescargaFormatoPdf extends StatefulWidget {
   ButonDescargaFormatoPdf({Key key}) : super(key: key);
 
   @override
-  _ButonDescargaFormatoPdfState createState() => _ButonDescargaFormatoPdfState();
+  _ButonDescargaFormatoPdfState createState() =>
+      _ButonDescargaFormatoPdfState();
 }
 
 class _ButonDescargaFormatoPdfState extends State<ButonDescargaFormatoPdf> {
   @override
-  void initState() { 
+  void initState() {
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-       child: _botonDescargaFormato(context),
+      child: _botonDescargaFormato(context),
     );
   }
 }
 
-Future downloadPDF(Dio dio, String url, String savePath, BuildContext context) async {
-    try {
-      (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
-    (HttpClient client) {
-  client.badCertificateCallback =
-      (X509Certificate cert, String host, int port) => true;
-  return client;
-};
-      Response response = await dio.get(
-        url,
-        onReceiveProgress: showDownloadProgress,
-        //Received data with List<int>
-        options: Options(
-            responseType: ResponseType.bytes,
-            followRedirects: false,
-            validateStatus: (status) {
-              return status < 500;
-            }),
-      );
-      print(response.headers);
-      File file = File(savePath);
-    
-      var raf = file.openSync(mode: FileMode.write);
-      // response.data is List<int> type
-      raf.writeFromSync(response.data);
-      await raf.close();
-      showCompletedDownload(context,"Completado","El Formato de pago se ha descargado completamente, revise su carpeta de descargas");
-    } catch (e) {
-      print(e);
-    }
-  }
+Future downloadPDF(
+    Dio dio, String url, String savePath, BuildContext context) async {
+  try {
+    (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
+        (HttpClient client) {
+      client.badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
+      return client;
+    };
+    Response response = await dio.get(
+      url,
+      onReceiveProgress: showDownloadProgress,
+      //Received data with List<int>
+      options: Options(
+          responseType: ResponseType.bytes,
+          followRedirects: false,
+          validateStatus: (status) {
+            return status < 500;
+          }),
+    );
+    print(response.headers);
+    File file = File(savePath);
 
-  void showDownloadProgress(received, total) {
-    if (total != -1) {
-      print((received / total * 100).toStringAsFixed(0) + "%");
-    }
+    var raf = file.openSync(mode: FileMode.write);
+    // response.data is List<int> type
+    raf.writeFromSync(response.data);
+    await raf.close();
+    showCompletedDownload(context, "Completado",
+        "El Formato de pago se ha descargado completamente, revise su carpeta de descargas");
+  } catch (e) {
+    print(e);
   }
+}
+
+void showDownloadProgress(received, total) {
+  if (total != -1) {
+    print((received / total * 100).toStringAsFixed(0) + "%");
+  }
+}
