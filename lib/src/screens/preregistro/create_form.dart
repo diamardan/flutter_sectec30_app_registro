@@ -149,14 +149,19 @@ class _PreregFormState extends State<PreregForm> {
     }
   }
 
-  next() {
+  next() async {
     if (formKeys[_currentStep].currentState.validate()) {
       if (_currentStep < _mySteps().length - 1) {
         goTo(_currentStep + 1);
       } else {
         if (_currentStep == _mySteps().length - 1) {
-          //procesarFirma();
-          finishForm();
+          bool tieneFirma  = await procesarFirma();
+          if(!tieneFirma){
+            showAlertDialog(context, "Sin firma", "no se puede finalizar el registro si no se captura la firma del alumno");
+          }else{
+            finishForm();
+          }
+          
         }
         setState(() => completed = true);
       }
@@ -270,7 +275,13 @@ class _PreregFormState extends State<PreregForm> {
         break;
       case 5:
         {
-          avanzar = await procesarFirma();
+          bool hayFirma = await procesarFirma();
+          if(!hayFirma){
+            avanzar = false;
+            title = "Sin firma";
+            message =
+                "Su registro no puede continuar sin capturar la firma del alumno";
+          }
           //avanzar = true;
         }
         break;
