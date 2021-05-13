@@ -31,7 +31,7 @@ dependencies:
   font_awesome_flutter: ^8.0.0
   http: ^0.12.2
   http_parser: ^3.1.4
-  path_provider: ^0.4.1
+  path_provider: '1.6.28'
   url_launcher: '5.7.10'
   ext_storage: any
   signature: ^3.2.0

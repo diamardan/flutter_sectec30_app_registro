@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:lumen_app_registro/src/constants/constants.dart';
 import 'package:lumen_app_registro/src/customWidgets/Alert.dart';
 import 'package:lumen_app_registro/src/screens/preregistro/last_screen.dart';
 import 'package:lumen_app_registro/src/services/AlumnoService.dart';
@@ -70,7 +69,6 @@ class _PreregFormState extends State<PreregForm> {
   List _grupos = List();
   List _turnos = List();
   File foto;
-  String foto1 = "";
 
   @override
   void initState() {
@@ -167,7 +165,7 @@ class _PreregFormState extends State<PreregForm> {
   }
 
   cancel() {
-    if (_currentStep > 1) {
+    if (_currentStep > 0) {
       goTo(_currentStep - 1);
     } else {
       Navigator.popUntil(context, ModalRoute.withName('inicio'));
@@ -186,27 +184,24 @@ class _PreregFormState extends State<PreregForm> {
       print(error);
     }
 
-    
-    if (result['message'] != "SUCCESS") {
+    if (result['message'] == null) {
       showAlertDialog(
           context, "Error", "Ocurrió un error al conectarse al servidor");
-          return avanza;
     }
 
-    if (result['data'].length >= 1) {
+    var message = result['message'];
+    if (message == "SUCCESS") {
       var alumno = result['data'];
       setState(() {
         id_registro = alumno[0]['ID_REGISTRO'];
-        alumno[0]['FOTO_USUARIO'] != null ? foto1 = "${AppConstants.backendPublicUrl}/uploads/preregistro/fotos/${alumno[0]['FOTO_USUARIO']}"
-        : foto1 = "";
       });
       if (alumno.length >= 1) {
         avanza = true;
       }
-    } /* else {
+    } else {
       showAlertDialog(
           context, "Error", "Ocurrió un error al conectarse al servidor");
-    } */
+    }
     print('misVotos: $result');
     /*  setState(() {
       _currentStep = result['data'] == 'SUCCESS' ? step : step - 1;
@@ -239,7 +234,7 @@ class _PreregFormState extends State<PreregForm> {
           if (avanzar != true) {
             title = "No encontrado";
             message =
-                "El CURP ingresado no cuenta con registro de pago . Favor de descargar el formato de pago y una vez realizado el deposito enviar foto del voucher original con el nombre y curp del alumno por WhatsApp al 5520779800";
+                "La C.U.R.P. ingresada no está en nuestros registros de pago, si considera que ésto es un error puede usar la ayuda por whatsapp";
           }
           print("puedo avanzar ? : $avanzar");
         }
@@ -257,19 +252,12 @@ class _PreregFormState extends State<PreregForm> {
         break;
       case 4:
         {
-          if( foto1 ==""){
-            title = "Sin foto";
-            message =
-                "Su registro no puede continuar sin capturar la foto del alumno";
-            avanzar = false;
-          }else{
-            avanzar = true;
-          }
-          
+          avanzar = true;
         }
         break;
       case 5:
         {
+          print("cinco");
           avanzar = await procesarFirma();
           //avanzar = true;
         }
@@ -335,6 +323,7 @@ class _PreregFormState extends State<PreregForm> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
         key: _scaffoldKey,
         appBar: AppBar(
@@ -452,7 +441,7 @@ class _PreregFormState extends State<PreregForm> {
                 keyboardType: TextInputType.emailAddress,
               ),
               TextFormField(
-                validator: (value) => validators.validateCellphone(value),
+                validator: (value) => validators.notEmptyField(value),
                 keyboardType: TextInputType.phone,
                 maxLength: 10,
                 inputFormatters: [TextoMayusculas()],
@@ -623,7 +612,7 @@ class _PreregFormState extends State<PreregForm> {
                     BoxDecoration(border: Border.all(color: Colors.black)),
                 child: Signature(
                   controller: _signController,
-                  height: 180,
+                  height: 100,
                   backgroundColor: Colors.white,
                 ),
               ),
@@ -717,7 +706,7 @@ class _PreregFormState extends State<PreregForm> {
     return false;
   }
 
-   _tomarFoto() async {
+  _tomarFoto() async {
     final _picker = ImagePicker();
 
     final pickedFile = await _picker.getImage(source: ImageSource.camera);
@@ -730,7 +719,6 @@ class _PreregFormState extends State<PreregForm> {
     }
 
     setState(() {
-      foto1 = "confoto";
       //foto = File(pickedFile.path);
     });
   }
@@ -745,6 +733,6 @@ class _PreregFormState extends State<PreregForm> {
         ),
       );
     }
-    return foto1 == "" ? Image.asset('assets/img/no-image.png') : Image.network(foto1);
+    return Image.asset('assets/img/no-image.png');
   }
 }

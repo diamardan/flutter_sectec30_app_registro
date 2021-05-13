@@ -31,4 +31,15 @@ class ValidatorsLumen {
       return "El email es incorrecto";
     }
   }
+  validateCellphone(value) {
+    if (value.trim().length < 10) {
+      return "Deben ser 10 dígitos";
+    }
+  }
+
+  validateImage(value){
+    if(value == ""){
+      return "ésta imagen no puede ir vacía";
+    }
+  }
 }

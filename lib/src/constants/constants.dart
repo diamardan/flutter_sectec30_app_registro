@@ -8,8 +8,9 @@ class AppColors {
 }
 
 class AppConstants {
-  //static const backendUrl = 'http://192.168.0.10:5000/api/v1';
-  static const backendUrl = 'https://api.escuelas.infon.mx/api/v1';
+  static const backendUrl = 'http://192.168.0.10:5000/api/v1';
+  static const backendPublicUrl = 'http://192.168.0.10:5000/public';
+  //static const backendUrl = 'https://api.escuelas.infon.mx/api/v1';
   static const whatsappNumber = 'https://wa.me/5215520779800';
   static const whatsappText = 'hola, necesito ayuda con la app';
   static const pdfPagoUrl = "https://api.escuelas.infon.mx/public/pdfs/LUMEN%20FORMATO%20PAGO.pdf";
