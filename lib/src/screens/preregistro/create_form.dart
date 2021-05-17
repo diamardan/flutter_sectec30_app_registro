@@ -156,7 +156,7 @@ class _PreregFormState extends State<PreregForm> {
       } else {
         if (_currentStep == _mySteps().length - 1) {
           bool tieneFirma  = await procesarFirma();
-          if(!tieneFirma){
+          if( tieneFirma == false){
             showAlertDialog(context, "Sin firma", "no se puede finalizar el registro si no se captura la firma del alumno");
           }else{
             finishForm();
@@ -202,8 +202,8 @@ class _PreregFormState extends State<PreregForm> {
       var alumno = result['data'];
       setState(() {
         id_registro = alumno[0]['ID_REGISTRO'];
-        alumno[0]['FOTO_USUARIO'] != null ? foto1 = "${AppConstants.backendPublicUrl}/uploads/preregistro/fotos/${alumno[0]['FOTO_USUARIO']}"
-        : foto1 = "";
+        /* alumno[0]['FOTO_USUARIO'] != null ? foto1 = "${AppConstants.backendPublicUrl}/uploads/preregistro/fotos/${alumno[0]['FOTO_USUARIO']}"
+        : foto1 = ""; */
       });
       if (alumno.length >= 1) {
         avanza = true;
@@ -386,15 +386,6 @@ class _PreregFormState extends State<PreregForm> {
                     cancel();
                   },
                   steps: _mySteps()),
-          /* ProgressHUD(
-              inAsyncCall: _loading,
-              opacity: 0.4,
-              child: Center(
-                child: Container(
-                  width: 0,
-                  height: 0,
-                ),
-              ),) */
         ]));
   }
 
@@ -646,17 +637,7 @@ class _PreregFormState extends State<PreregForm> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   mainAxisSize: MainAxisSize.max,
                   children: <Widget>[
-                    //SHOW EXPORTED IMAGE IN NEW ROUTE
-                    /* IconButton(
-                      icon: const Icon(Icons.check),
-                      color: Colors.blue,
-                      onPressed: () async {
-                        if (_signController.isNotEmpty) {
-                          procesarFirma();
-                        }
-                      },
-                    ), */
-                    //CLEAR CANVAS
+                    
                     IconButton(
                       icon: const Icon(Icons.clear),
                       color: Colors.blue,
@@ -667,12 +648,6 @@ class _PreregFormState extends State<PreregForm> {
                   ],
                 ),
               ),
-              /* Container(
-                height: 300,
-                child: Center(
-                  child: Text('Big container to test scrolling issues'),
-                ),
-              ), */
             ],
           ),
         ));
@@ -710,19 +685,6 @@ class _PreregFormState extends State<PreregForm> {
 
   Future<bool> procesarFirma() async {
     if (_signController.isNotEmpty) {
-      var data = await _signController.toPngBytes();
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (BuildContext context) {
-            return Scaffold(
-              appBar: AppBar(),
-              body: Center(
-                  child: Container(
-                      color: Colors.grey[300], child: Image.memory(data))),
-            );
-          },
-        ),
-      );
       return true;
     }
     return false;
