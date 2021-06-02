@@ -6,6 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:lumen_app_registro/src/constants/constants.dart';
 import 'package:lumen_app_registro/src/customWidgets/Alert.dart';
+import 'package:lumen_app_registro/src/screens/pago/payment_wrapper.dart';
 import 'package:lumen_app_registro/src/screens/preregistro/last_screen.dart';
 import 'package:lumen_app_registro/src/services/AlumnoService.dart';
 import 'package:lumen_app_registro/src/services/EspecialidadesService.dart';
@@ -157,7 +158,7 @@ class _PreregFormState extends State<PreregForm> {
         if (_currentStep == _mySteps().length - 1) {
           bool tieneFirma  = await procesarFirma();
           if( tieneFirma == false){
-            showAlertDialog(context, "Sin firma", "no se puede finalizar el registro si no se captura la firma del alumno");
+            showAlertDialog(context, "Sin firma", "no se puede finalizar el registro si no se captura la firma del alumno", "error");
           }else{
             finishForm();
           }
@@ -194,7 +195,8 @@ class _PreregFormState extends State<PreregForm> {
     
     if (result['message'] != "SUCCESS") {
       showAlertDialog(
-          context, "Error", "Ocurrió un error al conectarse al servidor");
+          context, "Error", "Ocurrió un error al conectarse al servidor",
+          "error");
           return avanza;
     }
 
@@ -223,6 +225,7 @@ class _PreregFormState extends State<PreregForm> {
   goTo(int step) async {
     bool avanzar = false;
     String title = "", message = "";
+    bool mostrarFormPago = true;
 
     setState(() {
       _loading = true;
@@ -241,8 +244,12 @@ class _PreregFormState extends State<PreregForm> {
       case 1:
         {
           avanzar = await validateCurp(step);
+
           if (avanzar != true) {
             title = "No encontrado";
+            /* message =
+                "El CURP ingresado no cuenta con registro de pago . Favor de descargar el formato de pago y una vez realizado el deposito enviar foto del voucher original con el nombre y curp del alumno por WhatsApp al 5520779800";
+            */ 
             message =
                 "El CURP ingresado no cuenta con registro de pago . Favor de descargar el formato de pago y una vez realizado el deposito enviar foto del voucher original con el nombre y curp del alumno por WhatsApp al 5520779800";
           }
@@ -291,8 +298,11 @@ class _PreregFormState extends State<PreregForm> {
         }
         break;
     }
-    avanzar == false ? showAlertDialog(context, title, message) : null;
-
+    //avanzar == false ? showAlertDialog(context, title, message, "error", true) : null;
+    if(avanzar == false && mostrarFormPago == true){
+     Navigator.push(
+      context, MaterialPageRoute(builder: (context) => PaymentPage()));
+    }
     setState(() {
       _currentStep = avanzar == true ? step : step - 1;
       _loading = false;
@@ -332,7 +342,7 @@ class _PreregFormState extends State<PreregForm> {
       });
       final errorHttp = finishStep['data'];
       showAlertDialog(context, "Error",
-          "Ocurrió un error al conectarse al servidor, $errorHttp");
+          "Ocurrió un error al conectarse al servidor, $errorHttp", "error");
     }
   }
 

@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:lumen_app_registro/src/routes/routes.dart';
  
-void main() => runApp(MyApp());
+void main() {
+  Future.delayed(const Duration(seconds: 5), () {
+    print("15 segundos");
+    return runApp(MyApp());
+  });
+}
  
 class MyApp extends StatelessWidget {
   @override

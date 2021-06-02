@@ -35,7 +35,7 @@ class InitialScreen extends StatelessWidget {
 Widget _btnWhatsapp(context) {
   Size size = MediaQuery.of(context).size;
   return Positioned(
-    bottom: 5,
+    bottom: size.height * .15,
     left: size.width * .32,
     right: size.width * .32,
     child: Container(
@@ -102,7 +102,7 @@ Widget botonera(BuildContext context) {
               SizedBox(
                 height: 15,
               ),
-              ButonDescargaFormatoPdf()
+              //ButonDescargaFormatoPdf()
               /* _botonDescargaFormato(context), */
             ],
           ),
@@ -114,13 +114,17 @@ Widget _botonRegistro(BuildContext context) {
   Size size = MediaQuery.of(context).size;
   return MaterialButton(
     elevation: 10,
-    onPressed: () {
+    /* onPressed: () {
       showAlertPago(context, "Aviso",
           "Para comenzar el registro se verificará el pago, si ya lo realizó favor de mandar foto del voucher por whatsapp");
-      /*  goToForm(context); */
-    },
+    //goToForm(context);
+    }, */
+    onPressed: () {  
+     Navigator.push(
+      context, MaterialPageRoute(builder: (context) => PreregForm()));
+    },  
     height: 45,
-    color: Colors.green,
+    color: Colors.blue,
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
     child: Container(
       width: size.width * .75,

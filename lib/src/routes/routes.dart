@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:lumen_app_registro/src/screens/initial_screen.dart';
+import 'package:lumen_app_registro/src/screens/pago/payment_wrapper.dart';
 import 'package:lumen_app_registro/src/screens/preregistro/create_form.dart';
 
 Map<String, WidgetBuilder> getApplicationRoutes() {
   return <String, WidgetBuilder>{
     'inicio': (BuildContext context) => InitialScreen(),
-    'formPreregistro': (BuildContext context) => PreregForm()
+    'formPreregistro': (BuildContext context) => PreregForm(),
+    'pagar': (BuildContext context) => PaymentPage()
   };
 }

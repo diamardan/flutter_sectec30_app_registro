@@ -3,8 +3,23 @@ class AppColors {
   static const logoheader = Color.fromRGBO(255, 0, 0, 1);
   static const white = Color.fromRGBO(255, 255, 255, 1);
   static const whatsappColor = Color.fromRGBO(37,211,102, 1);
+  static const paymentInfoHeader = Color.fromRGBO( 103 ,218,255,.5);
+/*   static const br = Border.radius(12); */
 
   static const text = Color.fromRGBO(0, 0, 0, 1);
+  static const text2 = Color.fromRGBO(21, 21, 21, 1);
+
+ /*  static const paymentDecoration = BoxDecoration(
+                         borderRadius: 12,
+                         boxShadow: [
+                           BoxShadow(
+                            color: Colors.black26,
+                            blurRadius: 2.0,
+                            spreadRadius: 0.0,
+                            offset: Offset(2.0,4.0)
+                         )],
+                         color: Colors.white,);
+ */
 }
 
 class AppConstants {

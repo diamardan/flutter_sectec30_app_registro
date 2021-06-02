@@ -186,7 +186,7 @@ class _PreregFormState extends State<PreregForm> {
 
     if (result['message'] == null) {
       showAlertDialog(
-          context, "Error", "Ocurrió un error al conectarse al servidor");
+          context, "Error", "Ocurrió un error al conectarse al servidor", "error");
     }
 
     var message = result['message'];
@@ -200,7 +200,7 @@ class _PreregFormState extends State<PreregForm> {
       }
     } else {
       showAlertDialog(
-          context, "Error", "Ocurrió un error al conectarse al servidor");
+          context, "Error", "Ocurrió un error al conectarse al servidor", "error");
     }
     print('misVotos: $result');
     /*  setState(() {
@@ -268,7 +268,7 @@ class _PreregFormState extends State<PreregForm> {
         }
         break;
     }
-    avanzar == false ? showAlertDialog(context, title, message) : null;
+    avanzar == false ? showAlertDialog(context, title, message, "error") : null;
 
     setState(() {
       _currentStep = avanzar == true ? step : step - 1;
@@ -309,7 +309,7 @@ class _PreregFormState extends State<PreregForm> {
       });
       final errorHttp = finishStep['data'];
       showAlertDialog(context, "Error",
-          "Ocurrió un error al conectarse al servidor, $errorHttp");
+          "Ocurrió un error al conectarse al servidor, $errorHttp", "error");
     }
   }
 
