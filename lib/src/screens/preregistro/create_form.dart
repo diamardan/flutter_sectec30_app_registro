@@ -612,7 +612,7 @@ class _PreregFormState extends State<PreregForm> {
                         color: Colors.white,
                       )),
                     )),
-              ),
+              ), 
             ],
           ),
         ));
@@ -635,7 +635,7 @@ class _PreregFormState extends State<PreregForm> {
                     BoxDecoration(border: Border.all(color: Colors.black)),
                 child: Signature(
                   controller: _signController,
-                  height: 180,
+                  height: 90,
                   backgroundColor: Colors.white,
                 ),
               ),
@@ -648,13 +648,25 @@ class _PreregFormState extends State<PreregForm> {
                   mainAxisSize: MainAxisSize.max,
                   children: <Widget>[
                     
-                    IconButton(
+                    /* IconButton(
                       icon: const Icon(Icons.clear),
                       color: Colors.blue,
                       onPressed: () {
                         setState(() => _signController.clear());
                       },
+                    ), */
+
+                    FlatButton(
+                      color: Colors.transparent,
+                      onPressed: () {
+                        setState(() => _signController.clear());
+                      },
+                      child: const Text(
+                        'Borrar',
+                        style: TextStyle(color: Colors.black),
+                      ),
                     ),
+                    
                   ],
                 ),
               ),

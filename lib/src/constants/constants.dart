@@ -4,6 +4,8 @@ class AppColors {
   static const white = Color.fromRGBO(255, 255, 255, 1);
   static const whatsappColor = Color.fromRGBO(37,211,102, 1);
   static const paymentInfoHeader = Color.fromRGBO( 103 ,218,255,.5);
+  static const primaryText = const Color.fromRGBO(255, 255, 255, 1);
+  static const morenaColor = const Color.fromRGBO(94, 33, 41, 1);
 /*   static const br = Border.radius(12); */
 
   static const text = Color.fromRGBO(0, 0, 0, 1);

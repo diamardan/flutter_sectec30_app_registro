@@ -38,7 +38,7 @@ class _PaymentPageState extends State<PaymentPage> {
                         style: TextStyle(color: AppColors.text2, fontSize: 20),
                       ),
                       Text(
-                        "Concepto: Reinscripción del alumno",
+                        "Concepto: Inscripción del alumno",
                         style: TextStyle(color: AppColors.text2, fontSize: 20),
                       ),
                     ],

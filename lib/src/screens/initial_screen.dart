@@ -11,23 +11,101 @@ import 'package:lumen_app_registro/src/screens/preregistro/create_form.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:lottie/lottie.dart';
+import 'package:lumen_app_registro/src/widgets/whatsapp_help_btn.dart';
 
 var dio = Dio();
 
 class InitialScreen extends StatelessWidget {
+  const InitialScreen({Key key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-          child: Stack(fit: StackFit.expand, children: <Widget>[
-        Column(
-          children: <Widget>[
-            upWidget(context),
-            botonera(context),
-          ],
-        ),
-        _btnWhatsapp(context),
+      body: Stack(children: <Widget>[
+        _crearFondo(context),
+        _crearFondoLottie(context),
+        _registerButton(context)
+       // _btnWhatsapp(context),
+      ]),
+    );
+  }
+
+  Widget _crearFondo(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final fondo = Container(
+      height: size.height * .4,
+      width: double.infinity,
+      decoration: BoxDecoration(
+          gradient: LinearGradient(colors: <Color>[
+        /*  Color.fromRGBO(33, 147, 176, 1),
+        Color.fromRGBO(109, 213, 237, 1) */
+        Color.fromRGBO(255, 255, 255, 1),
+        Color.fromRGBO(244, 244, 244, 1)
       ])),
+    );
+
+    final logo = Positioned(
+        top: 120,
+        left: 60,
+        right: 60,
+        child: Image.asset('assets/img/logo.png'));
+
+    return Stack(
+      children: <Widget>[
+        fondo,
+        logo,
+      ],
+    );
+  }
+
+  Widget _registerButton(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    return Stack(
+      children: <Widget>[
+        Positioned(
+          bottom: 140,
+          left: 40,
+          right: 40,
+          child: Container(
+            width: size.width * .7,
+            child: MaterialButton(
+              height: 45,
+              color: AppColors.morenaColor,
+              child: Text(
+                "Regístrate",
+                style: TextStyle(color: AppColors.primaryText),
+              ),
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => PreregForm()));
+              },
+            ),
+          ),
+        ),
+        WhatsappHelpBtn()
+        //_btnWhatsapp(context)
+      ],
+    );
+  }
+
+  Widget _crearFondoLottie(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final fondo = Container(
+      height: size.height * .4,
+      width: double.infinity,
+    );
+
+    final logo = Positioned(
+        top: size.height * .42,
+        left: 60,
+        right: 60,
+        child: Lottie.asset('assets/lotties/pow.json'));
+
+    return Stack(
+      children: <Widget>[
+        logo,
+      ],
     );
   }
 }
@@ -119,10 +197,10 @@ Widget _botonRegistro(BuildContext context) {
           "Para comenzar el registro se verificará el pago, si ya lo realizó favor de mandar foto del voucher por whatsapp");
     //goToForm(context);
     }, */
-    onPressed: () {  
-     Navigator.push(
-      context, MaterialPageRoute(builder: (context) => PreregForm()));
-    },  
+    onPressed: () {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => PreregForm()));
+    },
     height: 45,
     color: Colors.blue,
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
