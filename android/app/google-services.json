@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "649048512981",
+    "project_id": "smart-lumen",
+    "storage_bucket": "smart-lumen.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:649048512981:android:8d486e0c692f0d670cc55c",
+        "android_client_info": {
+          "package_name": "com.example.lumen_app_registro"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "649048512981-r2npb7ce1cjkld7oclau449mmv22qqdj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDgp9uWDbWpkKOKnhMadDWTXYgwAJ4rr30"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "649048512981-r2npb7ce1cjkld7oclau449mmv22qqdj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

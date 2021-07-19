@@ -1,31 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:lumen_app_registro/src/routes/routes.dart';
- 
-void main() {
-  Future.delayed(const Duration(seconds: 5), () {
-    print("15 segundos");
+import 'package:firebase_core/firebase_core.dart';
+import 'package:lumen_app_registro/src/wrapper.dart';
+import 'package:lumen_app_registro/src/bloc/deep_link_bloc.dart';
+
+void main() async {
+   WidgetsFlutterBinding.ensureInitialized();
+   await Firebase.initializeApp();
+  
+  Future.delayed(const Duration(seconds: 3), () {
+    print("10 segundos");
     return runApp(MyApp());
   });
+   
 }
- 
+
 class MyApp extends StatelessWidget {
+   DeepLinkBloc _bloc = DeepLinkBloc();
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+/*DeepLinkBloc _bloc = DeepLinkBloc();
+    return Provider<DeepLinkBloc>(
+                create: (context) => _bloc,
+                dispose: (context, bloc) => bloc.dispose(),
+                child:*/
+                return MaterialApp(
       title: 'LUMEN APP REGISTRO',
       debugShowCheckedModeBanner: false,
       routes: getApplicationRoutes(),
-      initialRoute: 'inicio',
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Material App Bar'),
-        ),
-        body: Center(
-          child: Container(
-            child: Text('Hello World'),
-          ),
-        ),
-      ),
-    );
+     // initialRoute: 'inicio',
+      home: Wrapper() /* Scaffold(body: Center(child:Text("Hola")) )*/   );
+    
+    
   }
+  
 }

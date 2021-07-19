@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+
 class AppColors {
   static const logoheader = Color.fromRGBO(255, 0, 0, 1);
   static const white = Color.fromRGBO(255, 255, 255, 1);
-  static const whatsappColor = Color.fromRGBO(37,211,102, 1);
-  static const paymentInfoHeader = Color.fromRGBO( 103 ,218,255,.5);
+  static const whatsappColor = Color.fromRGBO(37, 211, 102, 1);
+  static const paymentInfoHeader = Color.fromRGBO(103, 218, 255, .5);
   static const primaryText = const Color.fromRGBO(255, 255, 255, 1);
   static const morenaColor = const Color.fromRGBO(94, 33, 41, 1);
 /*   static const br = Border.radius(12); */
@@ -11,7 +12,7 @@ class AppColors {
   static const text = Color.fromRGBO(0, 0, 0, 1);
   static const text2 = Color.fromRGBO(21, 21, 21, 1);
 
- /*  static const paymentDecoration = BoxDecoration(
+  /*  static const paymentDecoration = BoxDecoration(
                          borderRadius: 12,
                          boxShadow: [
                            BoxShadow(
@@ -30,5 +31,8 @@ class AppConstants {
   //static const backendUrl = 'https://api.escuelas.infon.mx/api/v1';
   static const whatsappNumber = 'https://wa.me/5215520779800';
   static const whatsappText = 'hola, necesito ayuda con la app';
-  static const pdfPagoUrl = "https://api.escuelas.infon.mx/public/pdfs/LUMEN%20FORMATO%20PAGO.pdf";
+  static const pdfPagoUrl =
+      "https://api.escuelas.infon.mx/public/pdfs/LUMEN%20FORMATO%20PAGO.pdf";
+  static const urlAttendance = "https://attendance-lumen.web.app/";
+  static const urlAttendanceIdPosition = 33;
 }
