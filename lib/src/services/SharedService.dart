@@ -7,13 +7,23 @@ class SharedService {
         .doc(docId)
         .get()
         .then((result) {
+      print(result);
       if (result.exists) {
-        var data = result.data();
-        return { 
-          ...data['data'] 
-        };
+        return {...result.data()};
       } else
         return null;
     });
   }
+
+  Future<List<Map<String, dynamic>>> getAll(String collection) {
+    return FirebaseFirestore.instance
+        .collection(collection)
+        .get()
+        .then((result) {
+      print(result); 
+      final data = result.docs.map((doc) => ({"id": doc.id, ...doc.data()}));
+      return data.toList();
+    });
+  } //function
+
 }

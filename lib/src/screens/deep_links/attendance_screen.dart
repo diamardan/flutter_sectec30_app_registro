@@ -32,12 +32,13 @@ class _AttendanceLinkScreenState extends State<AttendanceLinkScreen> {
     print("registerId  $registerId");
     if (registerId != null) {
       sharedService.get(registerId, "attendance_records").then((result) {
-        print("OBJETO  ${result}");
+        print("OBJETO  $result");
         if (result != null) {
+          print("no es nulo");
           setState(() {
             attRegister = result;
             placeLocation = attRegister['location'];
-            status = "FOUNDED";
+            status = "FOUND";
           });
         }
       });
@@ -74,10 +75,10 @@ class _AttendanceLinkScreenState extends State<AttendanceLinkScreen> {
   _sayPresent() async {
     userLocation = await location.getLocation();
 
-    final placeX = placeLocation['longitude'];
-    final placeY = placeLocation['latitude'];
-    final userX = userLocation.longitude;
-    final userY = userLocation.latitude;
+    final double placeX = placeLocation['longitude'];
+    final double placeY = placeLocation['latitude'];
+    final double userX = userLocation.longitude;
+    final double userY = userLocation.latitude;
     distanceRadius = distance(placeX, placeY, userX, userY);
     if (distanceRadius <= 0.000045) {
       showAlert(context, "ASISTENCIA", "Tu asistencia ha sido registrada");
@@ -113,7 +114,6 @@ class _AttendanceLinkScreenState extends State<AttendanceLinkScreen> {
               Text("Radio de distancia", style: TextStyle(color: Colors.black)),
               Text(distanceRadius.toString(),
                   style: TextStyle(color: Colors.black)),
-             
             ],
           ),
           actions: <Widget>[
@@ -131,10 +131,10 @@ class _AttendanceLinkScreenState extends State<AttendanceLinkScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print("hola");
+    print("hola $status");
     return Scaffold(
       appBar: AppBar(title: Text("MArca tu asistencia")),
-      body: status == "FOUNDED" ? _attendance() : _notFounded(),
+      body: status == "FOUND" ? _attendance() : _notFounded(),
     );
   }
 
@@ -175,7 +175,7 @@ class _AttendanceLinkScreenState extends State<AttendanceLinkScreen> {
                           Text(attRegister['subject']),
                           Text(attRegister['date']),
                           Text(attRegister['time']),
-                          Text('place'),
+                          Text(attRegister['place']),
                         ],
                         mainAxisSize: MainAxisSize.min,
                       )),
@@ -195,6 +195,14 @@ class _AttendanceLinkScreenState extends State<AttendanceLinkScreen> {
   }
 
   _notFounded() {
-    return Center(child: Text("OBJETO NO ENCOTRADO"));
+    final id = getRegisterId();
+    return Center(
+        child: Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text("ESPERE POR FAVOR"),
+        Text(id != null ? id : "Id no encontrado")
+      ],
+    ));
   }
 }

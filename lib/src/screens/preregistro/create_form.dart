@@ -12,6 +12,7 @@ import 'package:lumen_app_registro/src/services/AlumnoService.dart';
 import 'package:lumen_app_registro/src/services/EspecialidadesService.dart';
 import 'package:lumen_app_registro/src/services/GruposService.dart';
 import 'package:lumen_app_registro/src/services/SemestresService.dart';
+import 'package:lumen_app_registro/src/services/SharedService.dart';
 import 'package:lumen_app_registro/src/services/TurnosService.dart';
 import 'package:lumen_app_registro/src/utils/txtFormater.dart';
 import 'package:lumen_app_registro/src/utils/validator.dart';
@@ -30,6 +31,7 @@ class _PreregFormState extends State<PreregForm> {
   final SemestresService semestresService = SemestresService();
   final GruposService gruposService = GruposService();
   final TurnosService turnosService = TurnosService();
+  final SharedService sharedService = SharedService();
 
   final _curpAlumnoController = TextEditingController();
   final _nombreAlumnoController = TextEditingController();
@@ -76,16 +78,34 @@ class _PreregFormState extends State<PreregForm> {
   @override
   void initState() {
     super.initState();
-    _cargarEspecialidades();
-    _cargarSemestres();
-    _cargarGrupos();
-    _cargarTurnos();
+    _loadSchoolData();
+
     setState(() {
       _loading = false;
     });
   }
 
-  void _cargarEspecialidades() async {
+  void _loadSchoolData() async {
+    try {
+      var careers = await sharedService.getAll("cat_careers");
+      var grades = await sharedService.getAll("cat_grades");
+      var groups = await sharedService.getAll("cat_groups");
+      var turns = await sharedService.getAll("cat_turns");
+
+      setState(() {
+        _especialidades = careers;
+        _semestres = grades;
+        _grupos = groups;
+        _turnos = turns;
+
+        _loading = false;
+      });
+    } catch (error) {
+      print(error);
+    }
+  }
+
+  /*void _cargarEspecialidades() async {
     var especialidades;
     try {
       resultEsp = await especialidadesService.getAll();
@@ -148,7 +168,7 @@ class _PreregFormState extends State<PreregForm> {
     } catch (error) {
       print(error);
     }
-  }
+  }*/
 
   next() async {
     if (formKeys[_currentStep].currentState.validate()) {
@@ -156,13 +176,16 @@ class _PreregFormState extends State<PreregForm> {
         goTo(_currentStep + 1);
       } else {
         if (_currentStep == _mySteps().length - 1) {
-          bool tieneFirma  = await procesarFirma();
-          if( tieneFirma == false){
-            showAlertDialog(context, "Sin firma", "no se puede finalizar el registro si no se captura la firma del alumno", "error");
-          }else{
+          bool tieneFirma = await procesarFirma();
+          if (tieneFirma == false) {
+            showAlertDialog(
+                context,
+                "Sin firma",
+                "no se puede finalizar el registro si no se captura la firma del alumno",
+                "error");
+          } else {
             finishForm();
           }
-          
         }
         setState(() => completed = true);
       }
@@ -192,12 +215,10 @@ class _PreregFormState extends State<PreregForm> {
       print(error);
     }
 
-    
     if (result['message'] != "SUCCESS") {
-      showAlertDialog(
-          context, "Error", "Ocurrió un error al conectarse al servidor",
-          "error");
-          return avanza;
+      showAlertDialog(context, "Error",
+          "Ocurrió un error al conectarse al servidor", "error");
+      return avanza;
     }
 
     if (result['data'].length >= 1) {
@@ -210,7 +231,8 @@ class _PreregFormState extends State<PreregForm> {
       if (alumno.length >= 1) {
         avanza = true;
       }
-    } /* else {
+    }
+    /* else {
       showAlertDialog(
           context, "Error", "Ocurrió un error al conectarse al servidor");
     } */
@@ -249,7 +271,7 @@ class _PreregFormState extends State<PreregForm> {
             title = "No encontrado";
             /* message =
                 "El CURP ingresado no cuenta con registro de pago . Favor de descargar el formato de pago y una vez realizado el deposito enviar foto del voucher original con el nombre y curp del alumno por WhatsApp al 5520779800";
-            */ 
+            */
             message =
                 "El CURP ingresado no cuenta con registro de pago . Favor de descargar el formato de pago y una vez realizado el deposito enviar foto del voucher original con el nombre y curp del alumno por WhatsApp al 5520779800";
           }
@@ -269,21 +291,20 @@ class _PreregFormState extends State<PreregForm> {
         break;
       case 4:
         {
-          if( foto1 ==""){
+          if (foto1 == "") {
             title = "Sin foto";
             message =
                 "Su registro no puede continuar sin capturar la foto del alumno";
             avanzar = false;
-          }else{
+          } else {
             avanzar = true;
           }
-          
         }
         break;
       case 5:
         {
           bool hayFirma = await procesarFirma();
-          if(!hayFirma){
+          if (!hayFirma) {
             avanzar = false;
             title = "Sin firma";
             message =
@@ -299,9 +320,9 @@ class _PreregFormState extends State<PreregForm> {
         break;
     }
     //avanzar == false ? showAlertDialog(context, title, message, "error", true) : null;
-    if(avanzar == false && mostrarFormPago == true){
-     Navigator.push(
-      context, MaterialPageRoute(builder: (context) => PaymentPage()));
+    if (avanzar == false && mostrarFormPago == true) {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => PaymentPage()));
     }
     setState(() {
       _currentStep = avanzar == true ? step : step - 1;
@@ -502,7 +523,7 @@ class _PreregFormState extends State<PreregForm> {
                 width: size.width * 8,
                 child: DropdownButtonFormField(
                   validator: (value) => validators.selectSelected(value),
-                  value: especialidadSeleccionada,
+                  hint: Text("Seleccione una especialidad"),
                   onChanged: (newValue) {
                     setState(() {
                       especialidadSeleccionada = newValue;
@@ -510,8 +531,8 @@ class _PreregFormState extends State<PreregForm> {
                   },
                   items: _especialidades.map((especialidadItem) {
                     return DropdownMenuItem(
-                        value: especialidadItem['IDESPECIALIDAD'],
-                        child: Text(especialidadItem['ESPECIALIDAD']));
+                        value: especialidadItem['name'],
+                        child: Text(especialidadItem['name']));
                   }).toList(),
                 ),
               ),
@@ -519,7 +540,7 @@ class _PreregFormState extends State<PreregForm> {
                 width: size.width * 8,
                 child: DropdownButtonFormField(
                   validator: (value) => validators.selectSelected(value),
-                  value: semestreSeleccionado,
+                  hint: Text("Seleccione un semestre"),
                   onChanged: (newValue) {
                     setState(() {
                       semestreSeleccionado = newValue;
@@ -527,8 +548,8 @@ class _PreregFormState extends State<PreregForm> {
                   },
                   items: _semestres.map((semestreItem) {
                     return DropdownMenuItem(
-                        value: semestreItem['IDSEMESTRE'],
-                        child: Text(semestreItem['SEMESTRE']));
+                        value: semestreItem['name'],
+                        child: Text(semestreItem['name']));
                   }).toList(),
                 ),
               ),
@@ -536,7 +557,7 @@ class _PreregFormState extends State<PreregForm> {
                 width: size.width * 8,
                 child: DropdownButtonFormField(
                   validator: (value) => validators.selectSelected(value),
-                  value: grupoSeleccionado,
+                  hint: Text("Seleccione un grupo"),
                   onChanged: (newValue) {
                     setState(() {
                       grupoSeleccionado = newValue;
@@ -544,8 +565,8 @@ class _PreregFormState extends State<PreregForm> {
                   },
                   items: _grupos.map((grupoItem) {
                     return DropdownMenuItem(
-                        value: grupoItem['IDGRUPO'],
-                        child: Text(grupoItem['GRUPO']));
+                        value: grupoItem['name'],
+                        child: Text(grupoItem['name']));
                   }).toList(),
                 ),
               ),
@@ -553,7 +574,7 @@ class _PreregFormState extends State<PreregForm> {
                 width: size.width * 8,
                 child: DropdownButtonFormField(
                   validator: (value) => validators.selectSelected(value),
-                  value: turnoSeleccionado,
+                  hint: Text("Seleccione un turno"),
                   onChanged: (newValue) {
                     setState(() {
                       turnoSeleccionado = newValue;
@@ -561,8 +582,8 @@ class _PreregFormState extends State<PreregForm> {
                   },
                   items: _turnos.map((turnoItem) {
                     return DropdownMenuItem(
-                        value: turnoItem['IDTURNO'],
-                        child: Text(turnoItem['TURNO']));
+                        value: turnoItem['name'],
+                        child: Text(turnoItem['name']));
                   }).toList(),
                 ),
               ),
@@ -612,7 +633,7 @@ class _PreregFormState extends State<PreregForm> {
                         color: Colors.white,
                       )),
                     )),
-              ), 
+              ),
             ],
           ),
         ));
@@ -647,7 +668,6 @@ class _PreregFormState extends State<PreregForm> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   mainAxisSize: MainAxisSize.max,
                   children: <Widget>[
-                    
                     /* IconButton(
                       icon: const Icon(Icons.clear),
                       color: Colors.blue,
@@ -666,7 +686,6 @@ class _PreregFormState extends State<PreregForm> {
                         style: TextStyle(color: Colors.black),
                       ),
                     ),
-                    
                   ],
                 ),
               ),
@@ -691,8 +710,8 @@ class _PreregFormState extends State<PreregForm> {
   }
 
   checkCombos() async {
-    if (_especialidades.length < 1) {
-      _cargarEspecialidades();
+   /* if (_especialidades.length < 1) {
+      _loadCareers();
     }
     if (_semestres.length < 1) {
       _cargarSemestres();
@@ -702,7 +721,7 @@ class _PreregFormState extends State<PreregForm> {
     }
     if (_turnos.length < 1) {
       _cargarTurnos();
-    }
+    }*/
   }
 
   Future<bool> procesarFirma() async {
@@ -712,7 +731,7 @@ class _PreregFormState extends State<PreregForm> {
     return false;
   }
 
-   _tomarFoto() async {
+  _tomarFoto() async {
     final _picker = ImagePicker();
 
     final pickedFile = await _picker.getImage(source: ImageSource.camera);
@@ -736,10 +755,12 @@ class _PreregFormState extends State<PreregForm> {
         child: Image(
           image: FileImage(foto /* ?? 'assets/img/no-image.png'  */),
           height: 300.0,
-          fit:BoxFit.cover,
+          fit: BoxFit.cover,
         ),
       );
     }
-    return foto1 == "" ? Image.asset('assets/img/no-image.png') : Image.network(foto1);
+    return foto1 == ""
+        ? Image.asset('assets/img/no-image.png')
+        : Image.network(foto1);
   }
 }
