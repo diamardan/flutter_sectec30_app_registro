@@ -5,14 +5,14 @@ import 'package:dio/dio.dart';
 import 'package:ext_storage/ext_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:lumen_app_registro/src/constants/constants.dart';
-import 'package:lumen_app_registro/src/customWidgets/Alert.dart';
-import 'package:lumen_app_registro/src/screens/preregistro/create_form.dart';
+import 'package:cetis32_app_registro/src/constants/constants.dart';
+import 'package:cetis32_app_registro/src/customWidgets/Alert.dart';
+import 'package:cetis32_app_registro/src/screens/preregistro/create_form.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:lottie/lottie.dart';
-import 'package:lumen_app_registro/src/widgets/whatsapp_help_btn.dart';
+import 'package:cetis32_app_registro/src/widgets/whatsapp_help_btn.dart';
 
 var dio = Dio();
 

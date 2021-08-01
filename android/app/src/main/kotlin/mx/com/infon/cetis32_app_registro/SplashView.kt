@@ -1,4 +1,4 @@
-package com.example.lumen_app_registro
+package mx.com.infon.cetis32_app_registro
 
 import android.content.Context
 import android.os.Bundle

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lumen_app_registro/src/services/PaymentsService.dart';
+import 'package:cetis32_app_registro/src/services/PaymentsService.dart';
 //credit card
 import 'package:flutter_credit_card/credit_card_form.dart';
 import 'package:flutter_credit_card/credit_card_model.dart';

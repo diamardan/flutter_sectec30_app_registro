@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:lumen_app_registro/src/screens/pago/payment_wrapper.dart';
-import 'package:lumen_app_registro/src/screens/preregistro/create_form.dart';
+import 'package:cetis32_app_registro/src/screens/pago/payment_wrapper.dart';
+import 'package:cetis32_app_registro/src/screens/preregistro/create_form.dart';
   
 showAlertDialog(BuildContext context, String title, String message, [String kind, bool redirect = false]) {  
   // Create button  

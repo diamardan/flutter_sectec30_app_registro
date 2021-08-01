@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:lumen_app_registro/src/constants/constants.dart';
-import 'package:lumen_app_registro/src/screens/pago/payment_form.dart';
+import 'package:cetis32_app_registro/src/constants/constants.dart';
+import 'package:cetis32_app_registro/src/screens/pago/payment_form.dart';
 
 class PaymentPage extends StatefulWidget {
   PaymentPage({Key key}) : super(key: key);

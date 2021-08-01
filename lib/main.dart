@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:lumen_app_registro/src/routes/routes.dart';
+import 'package:cetis32_app_registro/src/routes/routes.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:lumen_app_registro/src/wrapper.dart';
-import 'package:lumen_app_registro/src/bloc/deep_link_bloc.dart';
+import 'package:cetis32_app_registro/src/wrapper.dart';
+import 'package:cetis32_app_registro/src/bloc/deep_link_bloc.dart';
 
 void main() async {
    WidgetsFlutterBinding.ensureInitialized();
@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
                 dispose: (context, bloc) => bloc.dispose(),
                 child:*/
                 return MaterialApp(
-      title: 'LUMEN APP REGISTRO',
+      title: 'CETIS 32 APP REGISTRO',
       debugShowCheckedModeBanner: false,
       routes: getApplicationRoutes(),
      // initialRoute: 'inicio',

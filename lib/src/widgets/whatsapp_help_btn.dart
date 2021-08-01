@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:lumen_app_registro/src/utils/colors.dart';
+import 'package:cetis32_app_registro/src/utils/colors.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:lumen_app_registro/src/utils/constants.dart';
+import 'package:cetis32_app_registro/src/utils/constants.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class WhatsappHelpBtn extends StatelessWidget {

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:lumen_app_registro/src/screens/deep_links/not_found_screen.dart';
-import 'package:lumen_app_registro/src/screens/initial_screen.dart';
+import 'package:cetis32_app_registro/src/screens/deep_links/not_found_screen.dart';
+import 'package:cetis32_app_registro/src/screens/initial_screen.dart';
 import 'package:provider/provider.dart';
-import 'package:lumen_app_registro/src/bloc/deep_link_bloc.dart';
-import 'package:lumen_app_registro/src/screens/deep_links/attendance_screen.dart';
+import 'package:cetis32_app_registro/src/bloc/deep_link_bloc.dart';
+import 'package:cetis32_app_registro/src/screens/deep_links/attendance_screen.dart';
 
 class Wrapper extends StatelessWidget {
   @override

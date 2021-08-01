@@ -1,4 +1,4 @@
-package com.example.lumen_app_registro
+package mx.com.infon.cetis32_app_registro
 
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.android.SplashScreen

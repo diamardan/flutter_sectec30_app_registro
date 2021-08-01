@@ -1,7 +1,7 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-import 'package:lumen_app_registro/src/utils/enums.dart';
+import 'package:cetis32_app_registro/src/utils/enums.dart';
 class AppException implements Exception {
   final _message;
   final _prefix;

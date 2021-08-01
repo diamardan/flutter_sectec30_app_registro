@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "649048512981",
-    "project_id": "smart-lumen",
-    "storage_bucket": "smart-lumen.appspot.com"
+    "project_number": "1015698783853",
+    "project_id": "smart-school-39135",
+    "storage_bucket": "smart-school-39135.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:649048512981:android:8d486e0c692f0d670cc55c",
+        "mobilesdk_app_id": "1:1015698783853:android:a976f7bc39f8632924c964",
         "android_client_info": {
-          "package_name": "com.example.lumen_app_registro"
+          "package_name": "mx.com.infon.cetis32_app_registro"
         }
       },
       "oauth_client": [
         {
-          "client_id": "649048512981-r2npb7ce1cjkld7oclau449mmv22qqdj.apps.googleusercontent.com",
+          "client_id": "1015698783853-acugnmf3ack93amsq5tjbcvr1b0012dv.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDgp9uWDbWpkKOKnhMadDWTXYgwAJ4rr30"
+          "current_key": "AIzaSyBDJOO0z9m85TP3ljfdJTQxbJUwVc0CnOU"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "649048512981-r2npb7ce1cjkld7oclau449mmv22qqdj.apps.googleusercontent.com",
+              "client_id": "1015698783853-acugnmf3ack93amsq5tjbcvr1b0012dv.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
