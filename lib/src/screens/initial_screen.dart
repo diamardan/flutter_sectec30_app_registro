@@ -46,10 +46,14 @@ class InitialScreen extends StatelessWidget {
     );
 
     final logo = Positioned(
-        top: 120,
+        top: 50,
         left: 60,
         right: 60,
-        child: Image.asset('assets/img/logo.png'));
+        child: Image.asset(
+          'assets/img/cetis32logo.png',
+          height: 210,
+          fit: BoxFit.contain
+          ));
 
     return Stack(
       children: <Widget>[
@@ -73,7 +77,7 @@ class InitialScreen extends StatelessWidget {
               height: 45,
               color: AppColors.morenaColor,
               child: Text(
-                "Regístrate",
+                "REGISTRO ALUMNO",
                 style: TextStyle(color: AppColors.primaryText),
               ),
               onPressed: () {

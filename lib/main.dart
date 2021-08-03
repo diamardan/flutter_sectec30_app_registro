@@ -1,3 +1,4 @@
+import 'package:cetis32_app_registro/src/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:cetis32_app_registro/src/routes/routes.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -28,6 +29,9 @@ class MyApp extends StatelessWidget {
       title: 'CETIS 32 APP REGISTRO',
       debugShowCheckedModeBanner: false,
       routes: getApplicationRoutes(),
+      theme: ThemeData(
+        primaryColor: AppColors.morenaColor
+      ),
      // initialRoute: 'inicio',
       home: Wrapper() /* Scaffold(body: Center(child:Text("Hola")) )*/   );
     

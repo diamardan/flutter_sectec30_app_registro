@@ -44,7 +44,7 @@ class _PreregFormState extends State<PreregForm> {
   int semestreSeleccionado;
   int grupoSeleccionado;
   int turnoSeleccionado;
-  int id_registro;
+
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   List<GlobalKey<FormState>> formKeys = [
     GlobalKey<FormState>(),
@@ -68,6 +68,7 @@ class _PreregFormState extends State<PreregForm> {
   Map<String, dynamic> resultGru;
   Map<String, dynamic> resultTur;
 
+  Map<String, dynamic> alumno;
   List _especialidades = List();
   List _semestres = List();
   List _grupos = List();
@@ -222,9 +223,10 @@ class _PreregFormState extends State<PreregForm> {
     }
 
     if (result['data'].length >= 1) {
-      var alumno = result['data'];
+      alumno = result['data'];
       setState(() {
-        id_registro = alumno[0]['ID_REGISTRO'];
+        _nombreAlumnoController.text = alumno['nombres'];
+        _apellidosAlumnoController.text = alumno['apellidos'];
         /* alumno[0]['FOTO_USUARIO'] != null ? foto1 = "${AppConstants.backendPublicUrl}/uploads/preregistro/fotos/${alumno[0]['FOTO_USUARIO']}"
         : foto1 = ""; */
       });
@@ -335,17 +337,17 @@ class _PreregFormState extends State<PreregForm> {
       _loading = true;
     });
     Map<String, dynamic> _alumno = {};
-    _alumno['ID_REGISTRO'] = id_registro.toString();
-    _alumno['NOMBRE'] = _nombreAlumnoController.text;
-    _alumno['APELLIDOS'] = _apellidosAlumnoController.text;
-    _alumno['CURP'] = _curpAlumnoController.text;
-    _alumno['CORREO'] = _correoAlumnoController.text;
-    _alumno['CELULAR'] = _celularAlumnoController.text;
-    _alumno['MATRICULA'] = _matriculaAlumnoControler.text;
-    _alumno['IDESPECIALIDAD'] = especialidadSeleccionada.toString();
-    _alumno['IDSEMESTRE'] = semestreSeleccionado.toString();
-    _alumno['IDGRUPO'] = grupoSeleccionado.toString();
-    _alumno['IDTURNO'] = turnoSeleccionado.toString();
+    _alumno['nombres'] = _nombreAlumnoController.text;
+    _alumno['apellidos'] = _apellidosAlumnoController.text;
+    _alumno['curp'] = _curpAlumnoController.text;
+    _alumno['correo'] = _correoAlumnoController.text;
+    _alumno['celular'] = _celularAlumnoController.text;
+    _alumno['matricula'] = _matriculaAlumnoControler.text;
+    _alumno['carrera'] = especialidadSeleccionada.toString();
+    _alumno['grado'] = semestreSeleccionado.toString();
+    _alumno['grupo'] = grupoSeleccionado.toString();
+    _alumno['turno'] = turnoSeleccionado.toString();
+    _alumno['sexo'] = alumno['sexo'];
 
     var firma = await _signController.toPngBytes();
     var data = Image.memory(firma);
@@ -393,7 +395,7 @@ class _PreregFormState extends State<PreregForm> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         RaisedButton(
-                          color: Colors.blue,
+                          color: AppColors.morenaColor,
                           onPressed: onStepContinue,
                           child: const Text(
                             'Continuar',
@@ -469,12 +471,14 @@ class _PreregFormState extends State<PreregForm> {
                 inputFormatters: [TextoMayusculas()],
                 controller: _nombreAlumnoController,
                 decoration: InputDecoration(labelText: 'Nombre'),
+                enabled: false,
               ),
               TextFormField(
                 validator: (value) => validators.notEmptyField(value),
                 inputFormatters: [TextoMayusculas()],
                 controller: _apellidosAlumnoController,
                 decoration: InputDecoration(labelText: 'Apellidos'),
+                enabled: false,
               ),
               TextFormField(
                 validator: (value) =>
@@ -517,9 +521,9 @@ class _PreregFormState extends State<PreregForm> {
                 inputFormatters: [TextoMayusculas()],
                 controller: _matriculaAlumnoControler,
                 decoration: InputDecoration(
-                    labelText: 'Matricula', hintText: '(Opcional)'),
+                    labelText: 'Matricula    (opcional)', hintText: ''),
               ),
-              Container(
+             /*  Container(
                 width: size.width * 8,
                 child: DropdownButtonFormField(
                   validator: (value) => validators.selectSelected(value),
@@ -586,7 +590,7 @@ class _PreregFormState extends State<PreregForm> {
                         child: Text(turnoItem['name']));
                   }).toList(),
                 ),
-              ),
+              ), */
               SizedBox(
                 height: 15,
               ),
@@ -613,7 +617,7 @@ class _PreregFormState extends State<PreregForm> {
                 bottom: 5,
                 right: 5,
                 child: MaterialButton(
-                    color: Colors.blue,
+                    color: AppColors.morenaColor,
                     padding: EdgeInsets.all(0),
                     minWidth: 10,
                     onPressed: () {

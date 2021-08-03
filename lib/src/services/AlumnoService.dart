@@ -17,6 +17,7 @@ class AlumnoService {
     };
      String json = jsonEncode(<String, String>{
       "curp": curpAlumno,
+      "schoolName": AppConstants.fsCollectionName
     });
     http.Response response = await http.post(endpoint,headers: headers, body: json);
     int statusCode = response.statusCode;
@@ -37,17 +38,18 @@ class AlumnoService {
     final firmaMime = mime(imgFirma.path).split('/');
 
     var request = http.MultipartRequest('POST', endpoint)
-    ..fields['ID_REGISTRO'] = alumno['ID_REGISTRO']
-    ..fields["NOMBRE"] = alumno['NOMBRE']
-    ..fields["APELLIDOS"] = alumno['APELLIDOS']
-    ..fields["CURP"] = alumno['CURP']
-    ..fields["CORREO"] = alumno['CORREO']
-    ..fields["CELULAR"] = alumno['CELULAR']
-    ..fields["IDESPECIALIDAD"] = alumno['IDESPECIALIDAD']
-    ..fields["IDSEMESTRE"] = alumno['IDSEMESTRE']
-    ..fields["IDGRUPO"] = alumno['IDGRUPO']
-    ..fields["IDTURNO"] = alumno['IDTURNO']
-    ..fields["MATRICULA"] = alumno['MATRICULA'];
+    ..fields["nombres"] = alumno['nombres']
+    ..fields["apellidos"] = alumno['apellidos']
+    ..fields["curp"] = alumno['curp']
+    ..fields["correo"] = alumno['correo']
+    ..fields["celular"] = alumno['celular']
+    ..fields["carrera"] = alumno['carrera']
+    ..fields["grado"] = alumno['grado']
+    ..fields["grupo"] = alumno['grupo']
+    ..fields["turno"] = alumno['turno']
+    ..fields["matricula"] = alumno['matricula']
+    ..fields["sexo"] = alumno['sexo']
+    ..fields["escuela"] = AppConstants.fsCollectionName;
 
     if(foto != null){
       request.files.add(await http.MultipartFile.fromPath('foto', foto.path,
