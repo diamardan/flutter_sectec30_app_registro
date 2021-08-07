@@ -27,8 +27,8 @@ class AppColors {
 
 class AppConstants {
    //backendUrl hace referencia ya sea a la url de producción o a la de desarrollo
-  static const backendUrl =  "http://192.168.1.64:5000/api/v1/firebase";  
- /*  static const backendUrl = 'https://api.escuelas.infon.mx/api/v1/firebase'; */
+  /* static const backendUrl =  "http://192.168.1.64:5000/api/v1/firebase";   */
+  static const backendUrl = 'https://api.escuelas.infon.mx/api/v1/firebase';
   static const backendPublicUrl = 'https://api.escuelas.infon.mx/public';
   //static const backendUrl = 'https://api.escuelas.infon.mx/api/v1';
   static const whatsappNumber = 'https://wa.me/5215520779800';

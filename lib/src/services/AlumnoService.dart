@@ -27,7 +27,7 @@ class AlumnoService {
   
   }
 
-  finish(Map<String, dynamic> alumno, File foto,  firma) async {
+  finish(Map<String, dynamic> alumno, File voucher, File foto,  firma) async {
     String url =  AppConstants.backendUrl + '/preregistros/finish';
     final dir = await getTemporaryDirectory();
     await dir.create(recursive:true);
@@ -35,6 +35,7 @@ class AlumnoService {
     await imgFirma.writeAsBytes(firma.buffer.asUint8List(firma.offsetInBytes, firma.lengthInBytes));
     final endpoint = Uri.parse(url);
     final fotoMime = mime(foto.path).split('/');
+    final voucherMime = mime(foto.path).split('/');
     final firmaMime = mime(imgFirma.path).split('/');
 
     var request = http.MultipartRequest('POST', endpoint)
@@ -54,6 +55,11 @@ class AlumnoService {
     if(foto != null){
       request.files.add(await http.MultipartFile.fromPath('foto', foto.path,
       contentType: MediaType(fotoMime[0], fotoMime[1]),
+      filename: "FOTO"));
+    }
+    if(voucher != null){
+      request.files.add(await http.MultipartFile.fromPath('voucher', voucher.path,
+      contentType: MediaType(voucherMime[0], voucherMime[1]),
       filename: "FOTO"));
     }
     if(firma != null){

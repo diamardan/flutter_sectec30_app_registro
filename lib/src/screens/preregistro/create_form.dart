@@ -51,6 +51,7 @@ class _PreregFormState extends State<PreregForm> {
     GlobalKey<FormState>(),
     GlobalKey<FormState>(),
     GlobalKey<FormState>(),
+    GlobalKey<FormState>(),
     GlobalKey<FormState>()
   ];
   int _currentStep = 0;
@@ -75,6 +76,8 @@ class _PreregFormState extends State<PreregForm> {
   List _turnos = List();
   File foto;
   String foto1 = "";
+  File voucher;
+  String voucher1 = "";
 
   @override
   void initState() {
@@ -88,10 +91,10 @@ class _PreregFormState extends State<PreregForm> {
 
   void _loadSchoolData() async {
     try {
-      var careers = await sharedService.getAll("cat_careers");
-      var grades = await sharedService.getAll("cat_grades");
-      var groups = await sharedService.getAll("cat_groups");
-      var turns = await sharedService.getAll("cat_turns");
+      var careers = await sharedService.getAll("cat_carreras");
+      var grades = await sharedService.getAll("cat_semestres");
+      var groups = await sharedService.getAll("cat_grupos");
+      var turns = await sharedService.getAll("cat_turnos");
 
       setState(() {
         _especialidades = careers;
@@ -105,71 +108,6 @@ class _PreregFormState extends State<PreregForm> {
       print(error);
     }
   }
-
-  /*void _cargarEspecialidades() async {
-    var especialidades;
-    try {
-      resultEsp = await especialidadesService.getAll();
-      especialidades = resultEsp['data'];
-      print(especialidades);
-      setState(() {
-        _especialidades = especialidades;
-        _especialidades
-            .add({'id': -1, 'ESPECIALIDAD': 'Seleccione una carrera'});
-        _loading = false;
-      });
-    } catch (error) {
-      print(error);
-    }
-  }
-
-  void _cargarSemestres() async {
-    var semestres;
-    try {
-      resultSem = await semestresService.getAll();
-      semestres = resultSem['data'];
-      print(semestres);
-      setState(() {
-        _semestres = semestres;
-        _semestres.add({'id': -1, 'SEMESTRE': 'Seleccione un semestre'});
-        _loading = false;
-      });
-    } catch (error) {
-      print(error);
-    }
-  }
-
-  void _cargarGrupos() async {
-    var grupos;
-    try {
-      resultGru = await gruposService.getAll();
-      grupos = resultGru['data'];
-      print(grupos);
-      setState(() {
-        _grupos = grupos;
-        _grupos.add({'id': -1, 'GRUPO': 'Seleccione un grupo'});
-        _loading = false;
-      });
-    } catch (error) {
-      print(error);
-    }
-  }
-
-  void _cargarTurnos() async {
-    var turnos;
-    try {
-      resultTur = await turnosService.getAll();
-      turnos = resultTur['data'];
-      print(turnos);
-      setState(() {
-        _turnos = turnos;
-        _turnos.add({'id': -1, 'TURNO': 'Seleccione un turno'});
-        _loading = false;
-      });
-    } catch (error) {
-      print(error);
-    }
-  }*/
 
   next() async {
     if (formKeys[_currentStep].currentState.validate()) {
@@ -282,7 +220,7 @@ class _PreregFormState extends State<PreregForm> {
         break;
       case 2:
         {
-          checkCombos();
+          //checkCombos();
           avanzar = true;
         }
         break;
@@ -292,6 +230,18 @@ class _PreregFormState extends State<PreregForm> {
         }
         break;
       case 4:
+        {
+          if (voucher1 == "") {
+            title = "Sin foto";
+            message =
+                "Su registro no puede continuar sin capturar la foto del voucher";
+            avanzar = false;
+          } else {
+            avanzar = true;
+          }
+        }
+        break;
+      case 5:
         {
           if (foto1 == "") {
             title = "Sin foto";
@@ -303,7 +253,7 @@ class _PreregFormState extends State<PreregForm> {
           }
         }
         break;
-      case 5:
+      case 6:
         {
           bool hayFirma = await procesarFirma();
           if (!hayFirma) {
@@ -352,9 +302,10 @@ class _PreregFormState extends State<PreregForm> {
     var firma = await _signController.toPngBytes();
     var data = Image.memory(firma);
 
-    final finishStep = await alumnoService.finish(_alumno, foto, firma);
-    final result = finishStep['message'];
-    if (result == "success") {
+    final finishStep = await alumnoService.finish(_alumno, voucher, foto, firma);
+    final resultMessage = finishStep['message'];
+    final resultCode = finishStep['code'];
+    if (resultCode == 200) {
       setState(() {
         _loading = false;
         lastScreen(context);
@@ -427,6 +378,7 @@ class _PreregFormState extends State<PreregForm> {
       _validarCurp(),
       _datosAlumno(),
       _datosEscuela(),
+      _voucher(),
       _foto(),
       _firma()
     ];
@@ -523,7 +475,7 @@ class _PreregFormState extends State<PreregForm> {
                 decoration: InputDecoration(
                     labelText: 'Matricula    (opcional)', hintText: ''),
               ),
-             /*  Container(
+              Container(
                 width: size.width * 8,
                 child: DropdownButtonFormField(
                   validator: (value) => validators.selectSelected(value),
@@ -535,8 +487,8 @@ class _PreregFormState extends State<PreregForm> {
                   },
                   items: _especialidades.map((especialidadItem) {
                     return DropdownMenuItem(
-                        value: especialidadItem['name'],
-                        child: Text(especialidadItem['name']));
+                        value: especialidadItem['carrera'],
+                        child: Text(especialidadItem['carrera']));
                   }).toList(),
                 ),
               ),
@@ -552,8 +504,8 @@ class _PreregFormState extends State<PreregForm> {
                   },
                   items: _semestres.map((semestreItem) {
                     return DropdownMenuItem(
-                        value: semestreItem['name'],
-                        child: Text(semestreItem['name']));
+                        value: semestreItem['semestre'],
+                        child: Text(semestreItem['semestre']));
                   }).toList(),
                 ),
               ),
@@ -569,8 +521,8 @@ class _PreregFormState extends State<PreregForm> {
                   },
                   items: _grupos.map((grupoItem) {
                     return DropdownMenuItem(
-                        value: grupoItem['name'],
-                        child: Text(grupoItem['name']));
+                        value: grupoItem['grupo'],
+                        child: Text(grupoItem['grupo']));
                   }).toList(),
                 ),
               ),
@@ -586,11 +538,11 @@ class _PreregFormState extends State<PreregForm> {
                   },
                   items: _turnos.map((turnoItem) {
                     return DropdownMenuItem(
-                        value: turnoItem['name'],
-                        child: Text(turnoItem['name']));
+                        value: turnoItem['turno'],
+                        child: Text(turnoItem['turno']));
                   }).toList(),
                 ),
-              ), */
+              ),
               SizedBox(
                 height: 15,
               ),
@@ -603,13 +555,52 @@ class _PreregFormState extends State<PreregForm> {
     );
   }
 
-  Step _foto() {
+  Step _voucher() {
     return Step(
         isActive: _currentStep >= 3,
         state: StepState.complete,
-        title: Text(_currentStep == 3 ? "Fotografía" : ''),
+        title: Text(_currentStep == 3 ? "Foto voucher" : ''),
         content: Form(
           key: formKeys[3],
+          child: Stack(
+            children: <Widget>[
+              _mostrarVoucher(),
+              Positioned(
+                bottom: 5,
+                right: 5,
+                child: MaterialButton(
+                    color: AppColors.morenaColor,
+                    padding: EdgeInsets.all(0),
+                    minWidth: 10,
+                    onPressed: () {
+                      _tomarVoucher();
+                    },
+                    shape: RoundedRectangleBorder(
+                        borderRadius: new BorderRadius.circular(22)),
+                    child: Container(
+                      padding: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                          border: Border.all(
+                              color: Color.fromRGBO(255, 255, 255, 1)),
+                          borderRadius: BorderRadius.circular(22)),
+                      child: Center(
+                          child: Icon(
+                        Icons.add_a_photo,
+                        color: Colors.white,
+                      )),
+                    )),
+              ),
+            ],
+          ),
+        ));
+  }
+  Step _foto() {
+    return Step(
+        isActive: _currentStep >= 4,
+        state: StepState.complete,
+        title: Text(_currentStep == 4 ? "Fotografía" : ''),
+        content: Form(
+          key: formKeys[4],
           child: Stack(
             children: <Widget>[
               _mostrarFoto(),
@@ -645,11 +636,11 @@ class _PreregFormState extends State<PreregForm> {
 
   Step _firma() {
     return Step(
-        isActive: _currentStep >= 4,
+        isActive: _currentStep >= 5,
         state: StepState.complete,
-        title: Text(_currentStep == 4 ? "Firma" : ''),
+        title: Text(_currentStep == 5 ? "Firma" : ''),
         content: Form(
-          key: formKeys[4],
+          key: formKeys[5],
           child: ListView(
             scrollDirection: Axis.vertical,
             shrinkWrap: true,
@@ -713,20 +704,6 @@ class _PreregFormState extends State<PreregForm> {
     );
   }
 
-  checkCombos() async {
-   /* if (_especialidades.length < 1) {
-      _loadCareers();
-    }
-    if (_semestres.length < 1) {
-      _cargarSemestres();
-    }
-    if (_grupos.length < 1) {
-      _cargarGrupos();
-    }
-    if (_turnos.length < 1) {
-      _cargarTurnos();
-    }*/
-  }
 
   Future<bool> procesarFirma() async {
     if (_signController.isNotEmpty) {
@@ -767,4 +744,39 @@ class _PreregFormState extends State<PreregForm> {
         ? Image.asset('assets/img/no-image.png')
         : Image.network(foto1);
   }
+
+  _tomarVoucher() async {
+    final _picker = ImagePicker();
+
+    final pickedFile = await _picker.getImage(source: ImageSource.camera);
+    //foto = await ImagePicker.pickImage(source: ImageSource.camera);
+    //
+    voucher = File(pickedFile.path);
+
+    if (voucher != null) {
+      //limpieza
+    }
+
+    setState(() {
+      voucher1 = "conVouhcer";
+      //foto = File(pickedFile.path);
+    });
+  }
+
+  Widget _mostrarVoucher() {
+    if (voucher != null) {
+      return Center(
+        child: Image(
+          image: FileImage(voucher /* ?? 'assets/img/no-image.png'  */),
+          height: 300.0,
+          fit: BoxFit.cover,
+        ),
+      );
+    }
+    return voucher1 == ""
+        ? Image.asset('assets/img/no-image.png')
+        : Image.network(voucher1);
+  }
+
+
 }

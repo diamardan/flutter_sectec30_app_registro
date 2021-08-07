@@ -1,3 +1,4 @@
+import 'package:cetis32_app_registro/src/constants/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class SharedService {
@@ -17,6 +18,8 @@ class SharedService {
 
   Future<List<Map<String, dynamic>>> getAll(String collection) {
     return FirebaseFirestore.instance
+        .collection('schools')
+        .doc(AppConstants.fsCollectionName)
         .collection(collection)
         .get()
         .then((result) {

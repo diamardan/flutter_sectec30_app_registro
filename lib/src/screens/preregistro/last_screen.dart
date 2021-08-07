@@ -59,7 +59,7 @@ class LastScreen extends StatelessWidget {
       children: <Widget>[
         Container(
           height: size.height * .4,
-          child: Image.asset('assets/img/logo.png'),
+          child: Image.asset('assets/img/cetis32logo.png'),
         )
       ],
     );

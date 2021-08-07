@@ -8,7 +8,7 @@ import 'package:cetis32_app_registro/src/utils/net_util.dart';
 class GruposService {
 
   getAll() async {
-    String endpoint = AppConstants.backendUrl + '/grupos/getAll';
+    String endpoint = AppConstants.backendUrl + 'firebase/grupos/getAll';
 
     Map<String, String> headers = {
       "Content-type": "application/json; charset=UTF-8"
