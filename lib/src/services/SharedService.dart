@@ -21,6 +21,7 @@ class SharedService {
         .collection('schools')
         .doc(AppConstants.fsCollectionName)
         .collection(collection)
+        .orderBy("position")
         .get()
         .then((result) {
       print(result); 

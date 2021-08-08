@@ -69,6 +69,7 @@ class _PreregFormState extends State<PreregForm> {
   List _grupos = List();
   List _turnos = List();
   File foto;
+  File voucher;
 
   @override
   void initState() {
@@ -296,7 +297,7 @@ class _PreregFormState extends State<PreregForm> {
     var firma = await _signController.toPngBytes();
     var data = Image.memory(firma);
 
-    final finishStep = await alumnoService.finish(_alumno, foto, firma);
+    final finishStep = await alumnoService.finish(_alumno, voucher, foto, firma);
     final result = finishStep['message'];
     if (result == "success") {
       setState(() {

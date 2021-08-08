@@ -187,7 +187,7 @@ class _PreregFormState extends State<PreregForm> {
   goTo(int step) async {
     bool avanzar = false;
     String title = "", message = "";
-    bool mostrarFormPago = true;
+    bool mostrarFormPago = false;
 
     setState(() {
       _loading = true;
@@ -271,11 +271,11 @@ class _PreregFormState extends State<PreregForm> {
         }
         break;
     }
-    //avanzar == false ? showAlertDialog(context, title, message, "error", true) : null;
-    if (avanzar == false && mostrarFormPago == true) {
+    avanzar == false ? showAlertDialog(context, title, message, "error", false) : null;
+    /* if (avanzar == false && mostrarFormPago == true) {
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => PaymentPage()));
-    }
+    } */
     setState(() {
       _currentStep = avanzar == true ? step : step - 1;
       _loading = false;
@@ -469,28 +469,27 @@ class _PreregFormState extends State<PreregForm> {
           key: formKeys[2],
           child: Column(
             children: <Widget>[
+                            Container(child: Center(child: Text("Alumnos de nuevo ingreso, deberán escoger la especialidad 'COMPONENTE BÁSICO Y PROPEDEUTICO'"))),
+
               TextFormField(
                 inputFormatters: [TextoMayusculas()],
                 controller: _matriculaAlumnoControler,
                 decoration: InputDecoration(
                     labelText: 'Matricula    (opcional)', hintText: ''),
               ),
-              Container(
-                width: size.width * 8,
-                child: DropdownButtonFormField(
-                  validator: (value) => validators.selectSelected(value),
-                  hint: Text("Seleccione una especialidad"),
-                  onChanged: (newValue) {
-                    setState(() {
-                      especialidadSeleccionada = newValue;
-                    });
-                  },
-                  items: _especialidades.map((especialidadItem) {
-                    return DropdownMenuItem(
-                        value: especialidadItem['carrera'],
-                        child: Text(especialidadItem['carrera']));
-                  }).toList(),
-                ),
+              DropdownButtonFormField(
+                validator: (value) => validators.selectSelected(value),
+                hint: Text("Seleccione una especialidad"),
+                onChanged: (newValue) {
+                  setState(() {
+                    especialidadSeleccionada = newValue;
+                  });
+                },
+                items: _especialidades.map((especialidadItem) {
+                  return DropdownMenuItem(
+                      value: especialidadItem['carrera'],
+                      child: Text(especialidadItem['carrera']));
+                }).toList(),
               ),
               Container(
                 width: size.width * 8,
