@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cetis32_app_registro/src/screens/initial_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -138,7 +139,9 @@ class _PreregFormState extends State<PreregForm> {
     if (_currentStep > 1) {
       goTo(_currentStep - 1);
     } else {
-      Navigator.popUntil(context, ModalRoute.withName('inicio'));
+       Navigator.push(
+          context, MaterialPageRoute(builder: (context) => InitialScreen()));
+      /* Navigator.popUntil(context, ModalRoute.withName('inicio')); */
     }
   }
 
@@ -160,7 +163,12 @@ class _PreregFormState extends State<PreregForm> {
       return avanza;
     }
 
-    if (result['data'].length >= 1) {
+    if(result['code'] == 201){
+      showAlertDialog(context, "Error",
+          "No se encontró el alumno con la C.U.R.P. ingresada, en caso de que sea correcto por favor comunicarse al 5520779800 para darlo de alta en el sistema", "error");
+      return avanza;
+    }
+    if (result['code'] == 200) {
       alumno = result['data'];
       setState(() {
         _nombreAlumnoController.text = alumno['nombres'];
@@ -212,15 +220,20 @@ class _PreregFormState extends State<PreregForm> {
             /* message =
                 "El CURP ingresado no cuenta con registro de pago . Favor de descargar el formato de pago y una vez realizado el deposito enviar foto del voucher original con el nombre y curp del alumno por WhatsApp al 5520779800";
             */
-            message =
-                "El CURP ingresado no cuenta con registro de pago . Favor de descargar el formato de pago y una vez realizado el deposito enviar foto del voucher original con el nombre y curp del alumno por WhatsApp al 5520779800";
+            message = "No se encontró el alumno con la C.U.R.P. ingresada, en caso de que sea correcto por favor comunicarse al 5520779800 para darlo de alta en el sistema";
+;
           }
           print("puedo avanzar ? : $avanzar");
         }
         break;
       case 2:
         {
-          //checkCombos();
+          if(avanzar != true){
+          title = "¡Atención!";
+          message = "Alumnos de nuevo ingreso, deberán escoger la especialidad 'COMPONENTE BÁSICO Y PROPEDEUTICO'";
+          showAlertDialog(context, title, message, "warning", false);
+
+          }
           avanzar = true;
         }
         break;
@@ -361,7 +374,7 @@ class _PreregFormState extends State<PreregForm> {
                     );
                   },
                   type: StepperType.horizontal,
-                  physics: AlwaysScrollableScrollPhysics(),
+                  physics: ClampingScrollPhysics(),
                   currentStep: _currentStep,
                   onStepContinue: () {
                     next();
@@ -468,16 +481,16 @@ class _PreregFormState extends State<PreregForm> {
         child: Form(
           key: formKeys[2],
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-                            Container(child: Center(child: Text("Alumnos de nuevo ingreso, deberán escoger la especialidad 'COMPONENTE BÁSICO Y PROPEDEUTICO'"))),
-
               TextFormField(
                 inputFormatters: [TextoMayusculas()],
                 controller: _matriculaAlumnoControler,
-                decoration: InputDecoration(
+                decoration: InputDecoration( 
                     labelText: 'Matricula    (opcional)', hintText: ''),
               ),
               DropdownButtonFormField(
+                isExpanded: true,
                 validator: (value) => validators.selectSelected(value),
                 hint: Text("Seleccione una especialidad"),
                 onChanged: (newValue) {
