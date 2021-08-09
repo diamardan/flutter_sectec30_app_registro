@@ -1,3 +1,4 @@
+import 'package:cetis32_app_registro/src/screens/initial_screen.dart';
 import 'package:flutter/material.dart';
 
 class LastScreen extends StatelessWidget {
@@ -43,7 +44,12 @@ class LastScreen extends StatelessWidget {
                 child: new Text('Salir',
                     style: new TextStyle(fontSize: 16.0, color: Colors.white)),
                 onPressed: () {
-                  Navigator.popUntil(context, ModalRoute.withName('login'));
+                  Navigator.of(context).push(
+                    MaterialPageRoute(builder: (BuildContext context) {
+                      return InitialScreen();
+                    }),
+                  );
+                  //Navigator.popUntil(context, ModalRoute.withName('login'));
                 },
               )),
             )
