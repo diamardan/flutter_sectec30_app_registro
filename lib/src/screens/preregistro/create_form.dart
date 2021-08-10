@@ -41,10 +41,10 @@ class _PreregFormState extends State<PreregForm> {
   final _celularAlumnoController = TextEditingController();
   final _matriculaAlumnoControler = TextEditingController();
 
-  int especialidadSeleccionada;
-  int semestreSeleccionado;
-  int grupoSeleccionado;
-  int turnoSeleccionado;
+  String especialidadSeleccionada;
+  String semestreSeleccionado;
+  String grupoSeleccionado;
+  String turnoSeleccionado;
 
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   List<GlobalKey<FormState>> formKeys = [
@@ -164,9 +164,7 @@ class _PreregFormState extends State<PreregForm> {
     }
 
     if(result['code'] == 201){
-      showAlertDialog(context, "Error",
-          "No se encontró el alumno con la C.U.R.P. ingresada, en caso de que sea correcto por favor comunicarse al 5520779800 para darlo de alta en el sistema", "error");
-      return avanza;
+     return avanza;
     }
     if (result['code'] == 200) {
       alumno = result['data'];
@@ -306,10 +304,10 @@ class _PreregFormState extends State<PreregForm> {
     _alumno['correo'] = _correoAlumnoController.text;
     _alumno['celular'] = _celularAlumnoController.text;
     _alumno['matricula'] = _matriculaAlumnoControler.text;
-    _alumno['carrera'] = especialidadSeleccionada.toString();
-    _alumno['grado'] = semestreSeleccionado.toString();
-    _alumno['grupo'] = grupoSeleccionado.toString();
-    _alumno['turno'] = turnoSeleccionado.toString();
+    _alumno['carrera'] = especialidadSeleccionada;
+    _alumno['grado'] = semestreSeleccionado;
+    _alumno['grupo'] = grupoSeleccionado;
+    _alumno['turno'] = turnoSeleccionado;
     _alumno['sexo'] = alumno['sexo'];
 
     var firma = await _signController.toPngBytes();
@@ -406,6 +404,7 @@ class _PreregFormState extends State<PreregForm> {
         child: Column(
           children: <Widget>[
             TextFormField(
+              maxLength: 18,
               validator: (value) => validators.validarCurp(value),
               controller: _curpAlumnoController,
               keyboardType: TextInputType.name,

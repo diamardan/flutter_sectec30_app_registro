@@ -13,20 +13,26 @@ class LastScreen extends StatelessWidget {
         leading: new IconButton(
           icon: new Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.popUntil(context, ModalRoute.withName('inicio'));
+             Navigator.of(context).push(
+                    MaterialPageRoute(builder: (BuildContext context) {
+                      return InitialScreen();
+                    }),
+                  );
           },
         ),
       ),
       body: SafeArea(
         child: Stack(
           children: <Widget>[
-            AppLogo(context),
+            Container(
+              height: size.height *.4,
+              child: Center(child: AppLogo(context))),
             //TextoFin(context),
             Center(
               child: Container(
                 padding: const EdgeInsets.all(12.0),
                 child: Text(
-                  "Las instrucciones para recoger su credencial se han enviado al correo y celular registrado.",
+                  "Las instrucciones para recoger su credencial se han enviado al correo registrado.",
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
@@ -64,7 +70,7 @@ class LastScreen extends StatelessWidget {
     return Stack(
       children: <Widget>[
         Container(
-          height: size.height * .4,
+          height: size.height * .3,
           child: Image.asset('assets/img/cetis32logo.png'),
         )
       ],
