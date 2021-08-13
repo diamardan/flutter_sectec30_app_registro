@@ -35,7 +35,7 @@ class _WhatsappHelpBtnState extends State<WhatsappHelpBtn> {
           child: MaterialButton(
             elevation: 20,
             onPressed: () {
-              enviarWhatsapp();
+              enviarWhatsapp(context);
             },
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
@@ -57,7 +57,7 @@ class _WhatsappHelpBtnState extends State<WhatsappHelpBtn> {
     );
   }
 
-  enviarWhatsapp() async {
+  enviarWhatsapp(BuildContext _context) async {
     var url =
         "whatsapp://send?phone=${AppConstants.whatsappNumber}&text=${AppConstants.whatsappText}, ";
     /* var url =
@@ -69,9 +69,13 @@ class _WhatsappHelpBtnState extends State<WhatsappHelpBtn> {
             "whatsapp://wa.me/${AppConstants.whatsappNumber}?text=${AppConstants.whatsappText},",
             forceSafariVC: false);
       } else {
+                    print('android');
+
         await launch(url, forceSafariVC: true);
       }
     } else {
+      await canLaunch(url)
+          ? launch(url) :
       await FormUtil.showAlert(_context, 'Aviso', 'WhatsApp no instalado');
     }
     /* await launch(

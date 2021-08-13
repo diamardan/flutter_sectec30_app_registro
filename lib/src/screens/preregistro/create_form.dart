@@ -41,6 +41,7 @@ class _PreregFormState extends State<PreregForm> {
   final _celularAlumnoController = TextEditingController();
   final _matriculaAlumnoControler = TextEditingController();
 
+  String sexoSeleccionado;
   String especialidadSeleccionada;
   String semestreSeleccionado;
   String grupoSeleccionado;
@@ -308,7 +309,7 @@ class _PreregFormState extends State<PreregForm> {
     _alumno['grado'] = semestreSeleccionado;
     _alumno['grupo'] = grupoSeleccionado;
     _alumno['turno'] = turnoSeleccionado;
-    _alumno['sexo'] = alumno['sexo'];
+    _alumno['sexo'] = sexoSeleccionado;
 
     var firma = await _signController.toPngBytes();
     var data = Image.memory(firma);
@@ -443,6 +444,24 @@ class _PreregFormState extends State<PreregForm> {
                 controller: _apellidosAlumnoController,
                 decoration: InputDecoration(labelText: 'Apellidos'),
                 enabled: false,
+              ),
+              DropdownButtonFormField(
+                isExpanded: true,
+                validator: (value) => validators.selectSelected(value),
+                hint: Text("Seleccione un Sexo"),
+                onChanged: (newValue) {
+                  setState(() {
+                    sexoSeleccionado = newValue;
+                  });
+                },
+                items: [
+                  DropdownMenuItem(
+                      value: "H",
+                      child: Text("HOMBRE"),),
+                  DropdownMenuItem(
+                      value: "M",
+                      child: Text("MUJER"),),
+                ]
               ),
               TextFormField(
                 validator: (value) =>
@@ -752,7 +771,7 @@ class _PreregFormState extends State<PreregForm> {
       );
     }
     return foto1 == ""
-        ? Image.asset('assets/img/no-image.png')
+        ? Image.asset('assets/img/no-image-alumno.png')
         : Image.network(foto1);
   }
 
@@ -785,7 +804,7 @@ class _PreregFormState extends State<PreregForm> {
       );
     }
     return voucher1 == ""
-        ? Image.asset('assets/img/no-image.png')
+        ? Image.asset('assets/img/no-image-voucher.png')
         : Image.network(voucher1);
   }
 
