@@ -26,7 +26,7 @@ class InitialScreen extends StatelessWidget {
         _crearFondo(context),
         _crearFondoLottie(context),
         _registerButton(context)
-       // _btnWhatsapp(context),
+        // _btnWhatsapp(context),
       ]),
     );
   }
@@ -49,11 +49,8 @@ class InitialScreen extends StatelessWidget {
         top: 50,
         left: 60,
         right: 60,
-        child: Image.asset(
-          'assets/img/cetis32logo.png',
-          height: 210,
-          fit: BoxFit.contain
-          ));
+        child: Image.asset('assets/img/cetis32logo.png',
+            height: 210, fit: BoxFit.contain));
 
     return Stack(
       children: <Widget>[
