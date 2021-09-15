@@ -1,6 +1,5 @@
 import 'dart:io' show Platform;
 import 'dart:io';
-import 'package:cetis32_app_registro/src/screens/login/select_login_screen.dart';
 import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
 import 'package:ext_storage/ext_storage.dart';
@@ -17,19 +16,32 @@ import 'package:cetis32_app_registro/src/widgets/whatsapp_help_btn.dart';
 
 var dio = Dio();
 
-class InitialScreen extends StatelessWidget {
-  const InitialScreen({Key key}) : super(key: key);
+class SelectLoginScreen extends StatelessWidget {
+  const SelectLoginScreen({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return SafeArea(
+        child: Scaffold(
+      appBar: AppBar(
+        title: Text(
+          "Inicio de sesión",
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 14,
+            fontWeight: FontWeight.w800,
+          ),
+        ),
+      ),
       body: Stack(children: <Widget>[
-        _crearFondo(context),
-        _crearFondoLottie(context),
-        _mainButtons(context),
-       //  _btnWhatsapp(context),
+        Container(
+            width: double.infinity,
+            height: 200,
+            child: Center(child: Container())),
+        Center(child: _SelectButtons(context)),
+        WhatsappHelpBtn(context: context)
       ]),
-    );
+    ));
   }
 
   Widget _crearFondo(BuildContext context) {
@@ -47,11 +59,10 @@ class InitialScreen extends StatelessWidget {
     );
 
     final logo = Positioned(
-        top: 50,
-        left: 60,
-        right: 60,
+        top: 100,
+        left: 50,
         child: Image.asset('assets/img/cetis32logo.png',
-            height: 210, fit: BoxFit.contain));
+            height: 80, fit: BoxFit.contain));
 
     return Stack(
       children: <Widget>[
@@ -61,52 +72,83 @@ class InitialScreen extends StatelessWidget {
     );
   }
 
-  Widget _mainButtons(BuildContext context) {
+  Widget _SelectButtons(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Stack(
       children: <Widget>[
-        Positioned(
-          bottom: 140,
-          left: 40,
-          right: 40,
-          child:
-          
-           Container(
-            width: size.width * .7,
-            child: 
-            Column(children: [
-              MaterialButton(
-              height: 45,
-              minWidth: 200,
-              color: AppColors.morenaLightColor, 
-              child: Text(
-                "INICAR SESIÓN",
-                style: TextStyle(color: AppColors.primaryText),
-              ),
-              onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => SelectLoginScreen()));
-              },
+        Column(mainAxisSize: MainAxisSize.min, children: [
+          Container(
+            width: 280,
+            decoration: BoxDecoration(
+                color: AppColors.morenaLightColor.withOpacity(0.3),
+                borderRadius: BorderRadius.all(Radius.circular(12))),
+            padding: EdgeInsets.symmetric(horizontal: 9, vertical: 5),
+            child: Text(
+              'Escoge una de estas opciones para iniciar sesión:',
+              style: TextStyle(fontSize: 16, color: Colors.black54),
+              textAlign: TextAlign.center,
             ),
-            SizedBox(height: 10,),
-            MaterialButton(
-              height: 45,
-              minWidth: 200,
-              color: AppColors.morenaColor,
-              child: Text(
-                "REGISTRO ALUMNO",
-                style: TextStyle(color: AppColors.primaryText),
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          Container(
+            width: 250,
+            height: 80,
+            child: OutlinedButton.icon(
+              icon: Icon(Icons.qr_code, color: AppColors.morenaLightColor),
+              label: Text(
+                "QR desde camara",
+                style: TextStyle(color: AppColors.morenaLightColor),
               ),
               onPressed: () {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => PreregForm()));
               },
             ),
-            ],),
-            
           ),
-        ),
-        WhatsappHelpBtn()
+          SizedBox(
+            height: 10,
+          ),
+          Container(
+              width: 250,
+              height: 80,
+              child: OutlinedButton.icon(
+                icon:
+                    Icon(Icons.upload_file, color: AppColors.morenaLightColor),
+                label: Text(
+                  "QR desde archivo",
+                  style: TextStyle(color: AppColors.morenaLightColor),
+                ),
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => PreregForm()));
+                },
+              )),
+          SizedBox(
+            height: 10,
+          ),
+          Container(
+              width: 250,
+              height: 80,
+              child: OutlinedButton.icon(
+                icon: Icon(Icons.email, color: AppColors.morenaLightColor),
+                label: Text(
+                  "Correo Electrónico",
+                  style: TextStyle(color: AppColors.morenaLightColor),
+                ),
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => PreregForm()));
+                },
+              )),
+          SizedBox(
+            height: 30,
+          ),
+          Image.asset('assets/img/cetis32logo.png',
+              height: 80, fit: BoxFit.contain)
+        ]),
+
         //_btnWhatsapp(context)
       ],
     );
