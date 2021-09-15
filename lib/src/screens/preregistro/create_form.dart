@@ -505,7 +505,7 @@ class _PreregFormState extends State<PreregForm> {
                 inputFormatters: [TextoMayusculas()],
                 controller: _matriculaAlumnoControler,
                 decoration: InputDecoration( 
-                    labelText: 'Número de control    (opcional)', hintText: ''),
+                    labelText: 'Número de Control  (opcional)', hintText: ''),
               ),
               DropdownButtonFormField(
                 isExpanded: true,
