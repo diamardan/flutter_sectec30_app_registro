@@ -28,7 +28,9 @@ class MyApp extends StatelessWidget {
         title: 'CETIS 32 APP REGISTRO',
         debugShowCheckedModeBanner: false,
         routes: getApplicationRoutes(),
-        theme: ThemeData(primaryColor: AppColors.morenaColor),
+        theme: ThemeData(
+            primaryColor: AppColors.morenaColor,
+            scaffoldBackgroundColor: Color(0Xffffffff)),
         // initialRoute: 'inicio',
         home: Wrapper() /* Scaffold(body: Center(child:Text("Hola")) )*/);
   }

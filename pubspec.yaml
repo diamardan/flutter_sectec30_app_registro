@@ -45,6 +45,7 @@ dependencies:
   cloud_firestore: ^0.15.0
   location: ^3.2.0
   dio:
+  barcode_scan: ^3.0.1
 
 dev_dependencies:
   flutter_test:
