@@ -1,3 +1,4 @@
+import 'package:cetis32_app_registro/src/models/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cetis32_app_registro/src/services/SharedService.dart';
 
@@ -19,8 +20,10 @@ class RegisterService {
       print(result);
 
       if (result.docs.isNotEmpty) {
-        var register = result.docs.first;
-        return {...register.data()};
+        var registerMap = result.docs.first.data();
+        print(registerMap);
+        Register register = Register.fromJson(registerMap);
+        return register;
       } else
         return null;
     });

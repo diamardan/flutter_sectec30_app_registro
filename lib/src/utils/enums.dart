@@ -13,3 +13,5 @@ enum AppSection {
 enum AppStreamming { COURSE, DEPUTY, ENTERTAINMENT }
 
 enum Status { LOADING, COMPLETED, EMPTY, ERROR }
+
+enum LoginResponseStatus { SUCCESS, QR_INVALID, QR_NOT_FOUND, AUTH_ERROR }

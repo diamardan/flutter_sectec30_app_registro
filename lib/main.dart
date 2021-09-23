@@ -2,8 +2,10 @@ import 'package:cetis32_app_registro/src/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:cetis32_app_registro/src/routes/routes.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:cetis32_app_registro/src/wrapper.dart';
+import 'package:cetis32_app_registro/src/screens/wrapper_screen.dart';
 import 'package:cetis32_app_registro/src/bloc/deep_link_bloc.dart';
+import 'package:provider/provider.dart';
+import 'package:cetis32_app_registro/src/models/user_model.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,6 +34,6 @@ class MyApp extends StatelessWidget {
             primaryColor: AppColors.morenaColor,
             scaffoldBackgroundColor: Color(0Xffffffff)),
         // initialRoute: 'inicio',
-        home: Wrapper() /* Scaffold(body: Center(child:Text("Hola")) )*/);
+        home: Wrapper());
   }
 }

@@ -1,6 +1,6 @@
 import 'dart:io' show Platform;
 import 'dart:io';
-import 'package:cetis32_app_registro/src/screens/login/select_login_screen.dart';
+import 'package:cetis32_app_registro/src/screens/login/login_options_screen.dart';
 import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
 import 'package:ext_storage/ext_storage.dart';
@@ -27,7 +27,7 @@ class InitialScreen extends StatelessWidget {
         _crearFondo(context),
         _crearFondoLottie(context),
         _mainButtons(context),
-       //  _btnWhatsapp(context),
+        //  _btnWhatsapp(context),
       ]),
     );
   }
@@ -47,7 +47,7 @@ class InitialScreen extends StatelessWidget {
     );
 
     final logo = Positioned(
-        top: 50,
+        top: 70,
         left: 60,
         right: 60,
         child: Image.asset('assets/img/cetis32logo.png',
@@ -55,7 +55,7 @@ class InitialScreen extends StatelessWidget {
 
     return Stack(
       children: <Widget>[
-        fondo,
+        //  fondo,
         logo,
       ],
     );
@@ -69,44 +69,46 @@ class InitialScreen extends StatelessWidget {
           bottom: 140,
           left: 40,
           right: 40,
-          child:
-          
-           Container(
+          child: Container(
             width: size.width * .7,
-            child: 
-            Column(children: [
-              MaterialButton(
-              height: 45,
-              minWidth: 200,
-              color: AppColors.morenaLightColor, 
-              child: Text(
-                "INICAR SESIÓN",
-                style: TextStyle(color: AppColors.primaryText),
-              ),
-              onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => SelectLoginScreen()));
-              },
+            child: Column(
+              children: [
+                MaterialButton(
+                  height: 45,
+                  minWidth: 200,
+                  color: AppColors.morenaLightColor,
+                  child: Text(
+                    "INICAR SESIÓN",
+                    style: TextStyle(color: AppColors.primaryText),
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => LoginOptionsScreen()));
+                  },
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                MaterialButton(
+                  height: 45,
+                  minWidth: 200,
+                  color: AppColors.morenaColor,
+                  child: Text(
+                    "REGISTRO ALUMNO",
+                    style: TextStyle(color: AppColors.primaryText),
+                  ),
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => PreregForm()));
+                  },
+                ),
+              ],
             ),
-            SizedBox(height: 10,),
-            MaterialButton(
-              height: 45,
-              minWidth: 200,
-              color: AppColors.morenaColor,
-              child: Text(
-                "REGISTRO ALUMNO",
-                style: TextStyle(color: AppColors.primaryText),
-              ),
-              onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => PreregForm()));
-              },
-            ),
-            ],),
-            
           ),
         ),
-        WhatsappHelpBtn()
+        WhatsappHelpBtn(context: context)
         //_btnWhatsapp(context)
       ],
     );

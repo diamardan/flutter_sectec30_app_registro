@@ -3,7 +3,7 @@ import 'package:cetis32_app_registro/src/utils/colors.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:cetis32_app_registro/src/utils/constants.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:cetis32_app_registro/src/utils/form_util.dart';
+import 'package:cetis32_app_registro/src/utils/alerts.dart';
 import 'dart:io';
 
 class WhatsappHelpBtn extends StatefulWidget {
@@ -69,14 +69,15 @@ class _WhatsappHelpBtnState extends State<WhatsappHelpBtn> {
             "whatsapp://wa.me/${AppConstants.whatsappNumber}?text=${AppConstants.whatsappText},",
             forceSafariVC: false);
       } else {
-                    print('android');
+        print('android');
 
         await launch(url, forceSafariVC: true);
       }
     } else {
       await canLaunch(url)
-          ? launch(url) :
-      await FormUtil.showAlert(_context, 'Aviso', 'WhatsApp no instalado');
+          ? launch(url)
+          : await AppAlert.showBasic(
+              _context, 'Aviso', 'WhatsApp no instalado');
     }
     /* await launch(
         "${AppConstants.whatsappNumber}?text=${AppConstants.whatsappText}"); */

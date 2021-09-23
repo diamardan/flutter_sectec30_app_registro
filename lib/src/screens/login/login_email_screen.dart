@@ -10,7 +10,11 @@ class _LoginMailScreenState extends State<LoginMailScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
-            appBar: AppBar(title: Text("INICIAR SESIÓN")),
+            appBar: AppBar(
+              backgroundColor: AppColors.morenaLightColor,
+              title: Text("INICIAR SESIÓN"),
+            ),
+            backgroundColor: Color(0Xfafafaff),
             body: Stack(
               children: [
                 Center(
@@ -35,7 +39,8 @@ class _LoginMailScreenState extends State<LoginMailScreen> {
     return (Container(
         padding: EdgeInsets.symmetric(horizontal: 15, vertical: 30),
         decoration: BoxDecoration(
-            color: Colors.grey.withOpacity(0.07),
+            //color: Colors.grey.withOpacity(0.07),
+            color: Colors.white,
             borderRadius: BorderRadius.all(Radius.circular(10))),
         child: Column(
           children: [
