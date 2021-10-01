@@ -28,4 +28,24 @@ class RegisterService {
         return null;
     });
   }
+
+  existsEmail(String email) {
+    print("hola -------------------------------");
+    return FirebaseFirestore.instance
+        .collection("schools")
+        .doc(school)
+        .collection("registros")
+        .where("correo", isEqualTo: email)
+        .get()
+        .then((result) {
+      print(result);
+
+      if (result.docs.isNotEmpty) {
+        print("hola -------------------------------2");
+        return true;
+      } else
+        print("hola -------------------------------3");
+      return false;
+    });
+  }
 }

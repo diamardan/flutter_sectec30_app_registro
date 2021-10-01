@@ -7,7 +7,6 @@ class ValidatorsLumen {
     if (value.length < 18) {
       return 'El curp no puede ser menor a 18 caracteres';
     }
-
   }
 
   notEmptyField(value) {
@@ -28,17 +27,18 @@ class ValidatorsLumen {
         .hasMatch(value);
     print("email es : > $emailValid");
     if (emailValid == false) {
-      return "El email es incorrecto";
+      return "El email es inválido";
     }
   }
+
   validateCellphone(value) {
     if (value.trim().length < 10) {
       return "Deben ser 10 dígitos";
     }
   }
 
-  validateImage(value){
-    if(value == ""){
+  validateImage(value) {
+    if (value == "") {
       return "ésta imagen no puede ir vacía";
     }
   }

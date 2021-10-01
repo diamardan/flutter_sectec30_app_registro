@@ -1,9 +1,9 @@
 import 'dart:io' show Platform;
 import 'dart:io';
 import 'package:cetis32_app_registro/src/constants/constants.dart';
-import 'package:cetis32_app_registro/src/screens/home_SCreen.dart';
+import 'package:cetis32_app_registro/src/screens/home/home_sCreen.dart';
 import 'package:cetis32_app_registro/src/screens/login/login_email_screen.dart';
-import 'package:cetis32_app_registro/src/utils/alerts.dart';
+import 'package:cetis32_app_registro/src/utils/notify_ui.dart';
 import 'package:cetis32_app_registro/src/utils/enums.dart';
 import 'package:cetis32_app_registro/src/utils/login_methods.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
@@ -34,14 +34,14 @@ class _LoginOptionsScreenState extends State<LoginOptionsScreen> {
             (route) => false);
         break;
       case LoginResponseStatus.QR_INVALID:
-        await AppAlert.showBasic(
+        await NotifyUI.showError(
             context, 'Aviso', 'No se encontró código qr o es inválido');
         break;
       case LoginResponseStatus.QR_NOT_FOUND:
-        await AppAlert.showBasic(context, 'Aviso', 'El usuario no existe');
+        await NotifyUI.showError(context, 'Aviso', 'El usuario no existe');
         break;
       case LoginResponseStatus.AUTH_ERROR:
-        await AppAlert.showBasic(context, 'Aviso', 'Error Fb-Auth');
+        await NotifyUI.showError(context, 'Aviso', 'Error Fb-Auth');
         break;
     }
   }
@@ -60,10 +60,10 @@ class _LoginOptionsScreenState extends State<LoginOptionsScreen> {
             (route) => false);
         break;
       case LoginResponseStatus.QR_NOT_FOUND:
-        await AppAlert.showBasic(context, 'Aviso', 'El usuario no existe');
+        await NotifyUI.showError(context, 'Aviso', 'El usuario no existe.');
         break;
       case LoginResponseStatus.AUTH_ERROR:
-        await AppAlert.showBasic(context, 'Aviso', 'Error Fb-Auth');
+        await NotifyUI.showError(context, 'Aviso', 'Error Fb-Auth');
         break;
     }
   }
@@ -89,23 +89,28 @@ class _LoginOptionsScreenState extends State<LoginOptionsScreen> {
   Widget _login_options(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Container(
-        padding: EdgeInsets.symmetric(vertical: 40, horizontal: 5),
+        padding: EdgeInsets.symmetric(vertical: 30, horizontal: 5),
         decoration: BoxDecoration(
-            border: Border.all(color: AppColors.morenaLightColor, width: 1.2),
-            borderRadius: BorderRadius.all(Radius.circular(10))),
+          // border: Border.all(color: Colors.grey.withOpacity(0.7), width: 1.0),
+          borderRadius: BorderRadius.all(Radius.circular(10)),
+        ),
         child: Column(mainAxisSize: MainAxisSize.min, children: [
+          Image.asset('assets/img/cetis32logo.png',
+              height: 100, fit: BoxFit.contain),
+          SizedBox(height: 20),
           Container(
             width: 290,
             decoration: BoxDecoration(
-                //color: AppColors.morenaLightColor.withOpacity(0.1),
+                color: Colors.white,
                 borderRadius: BorderRadius.all(Radius.circular(5))),
             padding: EdgeInsets.symmetric(horizontal: 9, vertical: 5),
             child: Text(
               '¿COMO DESEAS INICIAR SESIÓN?',
               style: TextStyle(
                   fontSize: 16,
+                  fontWeight: FontWeight.w500,
                   //fontStyle: FontStyle.italic,
-                  color: AppColors.morenaLightColor),
+                  color: Color.fromRGBO(212, 154, 106, 1)),
               textAlign: TextAlign.center,
             ),
           ),
@@ -165,8 +170,6 @@ class _LoginOptionsScreenState extends State<LoginOptionsScreen> {
           SizedBox(
             height: 30,
           ),
-          Image.asset('assets/img/cetis32logo.png',
-              height: 80, fit: BoxFit.contain)
         ]));
   }
 }

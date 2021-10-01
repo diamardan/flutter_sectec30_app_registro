@@ -1,7 +1,7 @@
 import 'package:barcode_scan2/barcode_scan2.dart';
 import 'package:cetis32_app_registro/src/models/user_model.dart';
 import 'package:cetis32_app_registro/src/services/RegisterService.dart';
-import 'package:cetis32_app_registro/src/utils/alerts.dart';
+import 'package:cetis32_app_registro/src/services/authentication_service.dart';
 import 'package:cetis32_app_registro/src/utils/enums.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -14,6 +14,7 @@ import 'package:image_picker/image_picker.dart';
 
 class LoginMethods {
   static RegisterService registerService = RegisterService();
+  static AuthenticationService authenticationService = AuthenticationService();
 
   static withQrCamera(BuildContext context) async {
     var response = {};
@@ -38,9 +39,9 @@ class LoginMethods {
       prefs.setString('register_qr', futureString.rawContent);
 */
       // auth with firebase
-      final FirebaseAuth _auth = FirebaseAuth.instance;
+
       try {
-        await _auth.signInAnonymously();
+        await authenticationService.signInAnonymously();
       } catch (error) {
         return response["code"] = LoginResponseStatus.AUTH_ERROR;
       }
@@ -101,12 +102,10 @@ class LoginMethods {
       prefs.setString('register_qr', futureString.rawContent);
 */
     // auth with firebase
-    final FirebaseAuth _auth = FirebaseAuth.instance;
-    try {
-      await _auth.signInAnonymously();
-    } catch (error) {
-      return response["code"] = LoginResponseStatus.AUTH_ERROR;
-    }
+
+    await authenticationService.signInAnonymously();
+
+    //return response["code"] = LoginResponseStatus.AUTH_ERROR;
 
     return response["code"] = LoginResponseStatus.SUCCESS;
   }
