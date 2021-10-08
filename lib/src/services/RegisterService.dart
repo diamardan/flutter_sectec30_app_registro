@@ -20,8 +20,8 @@ class RegisterService {
       print(result);
 
       if (result.docs.isNotEmpty) {
-        var registerMap = result.docs.first.data();
-        print(registerMap);
+        var data = result.docs.first.data();
+        var registerMap = {"id": result.docs.first.id, ...data};
         Register register = Register.fromJson(registerMap);
         return register;
       } else
@@ -29,8 +29,7 @@ class RegisterService {
     });
   }
 
-  existsEmail(String email) {
-    print("hola -------------------------------");
+  Future<Register> checkEmail(String email) {
     return FirebaseFirestore.instance
         .collection("schools")
         .doc(school)
@@ -38,14 +37,33 @@ class RegisterService {
         .where("correo", isEqualTo: email)
         .get()
         .then((result) {
-      print(result);
-
       if (result.docs.isNotEmpty) {
-        print("hola -------------------------------2");
-        return true;
+        var data = result.docs.first.data();
+        var registerMap = {"id": result.docs.first.id, ...data};
+        Register register = Register.fromJson(registerMap);
+        return register;
       } else
-        print("hola -------------------------------3");
-      return false;
+        return null;
+    });
+  }
+
+  Future<Register> get(String registrationId) {
+    return FirebaseFirestore.instance
+        .collection("schools")
+        .doc(school)
+        .collection("registros")
+        .doc(registrationId)
+        .get()
+        .then((result) {
+      print("hey ++++++++");
+      print(result);
+      if (result.exists) {
+        var data = result.data();
+        var registerMap = {"id": result.id, ...data};
+        Register register = Register.fromJson(registerMap);
+        return register;
+      } else
+        return null;
     });
   }
 }

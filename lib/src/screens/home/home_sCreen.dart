@@ -1,7 +1,7 @@
 import 'dart:ui';
 import 'package:cetis32_app_registro/src/constants/constants.dart';
 import 'package:cetis32_app_registro/src/screens/home/my_data_view.dart' '';
-import 'package:cetis32_app_registro/src/utils/notify_ui.dart';
+import 'package:cetis32_app_registro/src/utils/auth_actions.dart';
 
 import 'package:flutter/material.dart';
 
@@ -16,7 +16,7 @@ class _homeScreenState extends State<HomeScreen> {
 
   void _onItemTapped(BuildContext context, int index) {
     if (index == 2) {
-      NotifyUI.showConfimLogout(context);
+      AuthActions.showConfimLogout(context);
       return;
     }
 

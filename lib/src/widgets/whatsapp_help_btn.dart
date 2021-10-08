@@ -15,8 +15,6 @@ class WhatsappHelpBtn extends StatefulWidget {
 }
 
 class _WhatsappHelpBtnState extends State<WhatsappHelpBtn> {
-  BuildContext _context;
-
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;

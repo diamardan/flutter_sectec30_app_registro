@@ -1,7 +1,24 @@
+import 'package:cetis32_app_registro/src/utils/enums.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-import 'package:cetis32_app_registro/src/utils/enums.dart';
+Map<String, String> getResponse(http.Response response) {
+  switch (response.statusCode) {
+    case 200:
+      var responseJson = json.decode(response.body.toString());
+      print(responseJson);
+      return {"code": "delivery_email_successful"};
+    case 400:
+      return {"code": "bad_request"};
+    case 401:
+    case 403:
+      return {"code": "unauthorised_access"};
+    case 500:
+    default:
+      return {"code": "communication_error"};
+  }
+}
+
 class AppException implements Exception {
   final _message;
   final _prefix;

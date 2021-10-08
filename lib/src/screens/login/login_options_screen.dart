@@ -5,7 +5,7 @@ import 'package:cetis32_app_registro/src/screens/home/home_sCreen.dart';
 import 'package:cetis32_app_registro/src/screens/login/login_email_screen.dart';
 import 'package:cetis32_app_registro/src/utils/notify_ui.dart';
 import 'package:cetis32_app_registro/src/utils/enums.dart';
-import 'package:cetis32_app_registro/src/utils/login_methods.dart';
+import 'package:cetis32_app_registro/src/utils/auth_methods.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:flutter/material.dart';
 import 'package:cetis32_app_registro/src/widgets/whatsapp_help_btn.dart';
@@ -22,25 +22,23 @@ class _LoginOptionsScreenState extends State<LoginOptionsScreen> {
 
   void _loginQrImage() async {
     setState(() => loading = true);
-    var response = await LoginMethods.fromFile();
+    var response = await AuthMethods.signInfromQrFile(context);
     setState(() => loading = false);
-    print("reponse");
-    print(response);
     switch (response) {
-      case LoginResponseStatus.SUCCESS:
+      case AuthResponseStatus.SUCCESS:
         Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(builder: (context) => HomeScreen()),
             (route) => false);
         break;
-      case LoginResponseStatus.QR_INVALID:
+      case AuthResponseStatus.QR_INVALID:
         await NotifyUI.showError(
             context, 'Aviso', 'No se encontró código qr o es inválido');
         break;
-      case LoginResponseStatus.QR_NOT_FOUND:
+      case AuthResponseStatus.QR_NOT_FOUND:
         await NotifyUI.showError(context, 'Aviso', 'El usuario no existe');
         break;
-      case LoginResponseStatus.AUTH_ERROR:
+      case AuthResponseStatus.AUTH_ERROR:
         await NotifyUI.showError(context, 'Aviso', 'Error Fb-Auth');
         break;
     }
@@ -48,21 +46,21 @@ class _LoginOptionsScreenState extends State<LoginOptionsScreen> {
 
   _loginWithCamera(BuildContext context) async {
     setState(() => loading = true);
-    var response = await LoginMethods.withQrCamera(context);
+    var response = await AuthMethods.signInWithQrCamera(context);
     setState(() => loading = false);
     print("reponse");
     print(response);
     switch (response) {
-      case LoginResponseStatus.SUCCESS:
+      case AuthResponseStatus.SUCCESS:
         Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(builder: (context) => HomeScreen()),
             (route) => false);
         break;
-      case LoginResponseStatus.QR_NOT_FOUND:
+      case AuthResponseStatus.QR_NOT_FOUND:
         await NotifyUI.showError(context, 'Aviso', 'El usuario no existe.');
         break;
-      case LoginResponseStatus.AUTH_ERROR:
+      case AuthResponseStatus.AUTH_ERROR:
         await NotifyUI.showError(context, 'Aviso', 'Error Fb-Auth');
         break;
     }

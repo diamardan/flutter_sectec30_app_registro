@@ -1,5 +1,8 @@
+import 'package:cetis32_app_registro/src/models/user_model.dart';
 import 'package:cetis32_app_registro/src/services/RegisterService.dart';
 import 'package:cetis32_app_registro/src/services/authentication_service.dart';
+import 'package:cetis32_app_registro/src/utils/auth_methods.dart';
+import 'package:cetis32_app_registro/src/utils/enums.dart';
 import 'package:cetis32_app_registro/src/utils/notify_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:cetis32_app_registro/src/constants/constants.dart';
@@ -13,12 +16,12 @@ class ForgetPasswordScreen extends StatefulWidget {
 }
 
 class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
-  bool emailSent = false;
+  bool showSignInButton = false;
   bool loading = false;
   final _authService = AuthenticationService();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String _email = "";
-  bool enabledSendBtn = false;
+  bool enabledSendButton = false;
   bool emailError = false;
 
   @override
@@ -26,53 +29,37 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
     super.dispose();
   }
 
-  String generatePassword() {
-    final length = 12;
-    final letterLowerCase = "abcdefghijklmnopqrstuvwxyz";
-    final letterUpperCase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    final number = '01234567890123456789';
-    final special = '@#%+&@#%+&';
-
-    String chars = "";
-    chars += '$letterLowerCase$letterUpperCase';
-    chars += '$number';
-    chars += '$special';
-
-    return List.generate(length, (index) {
-      final indexRandom = Random.secure().nextInt(chars.length);
-      return chars[indexRandom];
-    }).join('');
-  }
-
-  _sendEmail() async {
+  _recoveryPassword() async {
+    _formKey.currentState.save();
+    if (!_formKey.currentState.validate()) return;
     setState(() {
       loading = true;
     });
-    _formKey.currentState.save();
-    if (!_formKey.currentState.validate()) return;
+    var result = await AuthMethods.recoveryPassword(_email);
 
-    var result = await RegisterService().existsEmail(_email);
-
-    if (result == true) {
-      result = await _authService.sendEmailResetPassword(email: _email);
-      if (result['code'] == "SUCCESS_LOGIN") {
+    switch (result['code']) {
+      case AuthResponseStatus.SUCCESS:
         setState(() {
-          enabledSendBtn = false;
-          emailSent = true;
+          loading = false;
+          enabledSendButton = false;
+          showSignInButton = true;
         });
         NotifyUI.flushbar(context,
             "El correo electrónico de restablecimiento de contraseña ha sido enviado");
-      } else {
+        break;
+
+      case AuthResponseStatus.EMAIL_NOT_FOUND:
+      case AuthResponseStatus.ACCOUNT_NOT_FOUND:
+        setState(() {
+          loading = false;
+        });
         await NotifyUI.showError(
-            context, "Error de activación de cuenta ", result['code']);
-        return;
-      }
-    } else {
-      NotifyUI.showError(context, "ERROR", "Correo electrónico no registrado");
+          context,
+          "Error de recuperación de contraseña ",
+          "No existe una cuenta asociada a este correo electrónico.",
+        );
+        break;
     }
-    setState(() {
-      loading = false;
-    });
   }
 
   @override
@@ -132,7 +119,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
             SizedBox(
               height: 20,
             ),
-            emailSent == true
+            showSignInButton == true
                 ? OutlinedButton(
                     onPressed: () {
                       Navigator.pop(context);
@@ -182,13 +169,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
           ElevatedButton(
             onPressed: _email != ""
                 ? () async {
-                    setState(() {
-                      loading = true;
-                    });
-                    _sendEmail();
-                    setState(() {
-                      loading = false;
-                    });
+                    _recoveryPassword();
                   }
                 : null,
             child: Text("ENVIAR CORREO ELECTRÓNICO"),

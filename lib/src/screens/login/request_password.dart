@@ -1,5 +1,9 @@
+import 'dart:io';
+
 import 'package:cetis32_app_registro/src/services/RegisterService.dart';
 import 'package:cetis32_app_registro/src/services/authentication_service.dart';
+import 'package:cetis32_app_registro/src/utils/auth_methods.dart';
+import 'package:cetis32_app_registro/src/utils/enums.dart';
 import 'package:cetis32_app_registro/src/utils/notify_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:cetis32_app_registro/src/constants/constants.dart';
@@ -13,8 +17,8 @@ class RequestPasswordScreen extends StatefulWidget {
 }
 
 class _RequestPasswordScreenState extends State<RequestPasswordScreen> {
-  bool emailSent = false;
-  bool enabledSendBtn = true;
+  bool showeSigInButton = false;
+  bool enabledSendButton = true;
   bool loading = false;
   final _authService = AuthenticationService();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -48,29 +52,31 @@ class _RequestPasswordScreenState extends State<RequestPasswordScreen> {
     setState(() {
       loading = true;
     });
+
     _formKey.currentState.save();
     if (!_formKey.currentState.validate()) return;
 
-    var result = await RegisterService().existsEmail(_email);
-
-    if (result == true) {
-      var _password = generatePassword();
-
-      result = await _authService.signUp(email: _email, password: _password);
-      if (result['code'] == "SUCCESS_LOGIN") {
-        await _authService.sendEmailWithPassword(_email, _password);
+    var result = await AuthMethods.signUpWithEmailAndPassword(_email);
+    switch (result['code']) {
+      case AuthResponseStatus.SUCCESS:
+        NotifyUI.flushbar(context, "El correo electrónico ha sido enviado.");
         setState(() {
-          enabledSendBtn = false;
-          emailSent = true;
+          enabledSendButton = false;
+          showeSigInButton = true;
         });
-        NotifyUI.flushbar(context, "El correo electrónico ha sido enviado");
-      } else {
+        break;
+      case AuthResponseStatus.EMAIL_ALREADY_EXISTS:
+        await NotifyUI.showError(context, "Error de activación de cuenta",
+            "Ya existe una cuenta activa para este correo. ");
+        break;
+      case AuthResponseStatus.EMAIL_NOT_FOUND:
+        await NotifyUI.showError(context, "Error de activación de cuenta",
+            "El correo proporcionado no fue encontrado. ");
+        break;
+      case AuthResponseStatus.AUTH_ERROR:
         await NotifyUI.showError(
             context, "Error de activación de cuenta ", result['code']);
-        return;
-      }
-    } else {
-      NotifyUI.showError(context, "ERROR", "Correo electrónico no encontradao");
+        break;
     }
     setState(() {
       loading = false;
@@ -91,13 +97,8 @@ class _RequestPasswordScreenState extends State<RequestPasswordScreen> {
                   MediaQuery.of(context).padding.top,
               //decoration: BoxDecoration(color: Color(0Xcdcdcdff)),
               child: Center(
-                  child: ModalProgressHUD(
-                      inAsyncCall: loading,
-                      child: SingleChildScrollView(
-                        child: Center(
-                          child: _content(),
-                        ),
-                      ))))),
+                child: _content(),
+              ))),
     )));
   }
 
@@ -136,7 +137,7 @@ class _RequestPasswordScreenState extends State<RequestPasswordScreen> {
             SizedBox(
               height: 20,
             ),
-            emailSent == true
+            showeSigInButton == true
                 ? OutlinedButton(
                     onPressed: () {
                       Navigator.pop(context);
@@ -184,16 +185,8 @@ class _RequestPasswordScreenState extends State<RequestPasswordScreen> {
             height: 30,
           ),
           ElevatedButton(
-            onPressed: _email != "" && enabledSendBtn == true
-                ? () async {
-                    setState(() {
-                      loading = true;
-                    });
-                    _createAccount();
-                    setState(() {
-                      loading = false;
-                    });
-                  }
+            onPressed: _email != "" && enabledSendButton == true
+                ? _createAccount
                 : null,
             child: Text("ENVIAR CORREO"),
             style: ElevatedButton.styleFrom(

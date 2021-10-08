@@ -1,13 +1,14 @@
-import 'dart:ffi';
-
 import 'package:cetis32_app_registro/src/screens/home/home_sCreen.dart';
 import 'package:cetis32_app_registro/src/screens/login/forget_password.dart';
 import 'package:cetis32_app_registro/src/screens/login/request_password.dart';
 import 'package:cetis32_app_registro/src/services/authentication_service.dart';
+import 'package:cetis32_app_registro/src/utils/auth_methods.dart';
+import 'package:cetis32_app_registro/src/utils/enums.dart';
 import 'package:cetis32_app_registro/src/utils/notify_ui.dart';
 import 'package:cetis32_app_registro/src/utils/validator.dart';
 import 'package:flutter/material.dart';
 import 'package:cetis32_app_registro/src/constants/constants.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 class LoginMailScreen extends StatefulWidget {
   _LoginMailScreenState createState() => _LoginMailScreenState();
@@ -15,12 +16,12 @@ class LoginMailScreen extends StatefulWidget {
 
 class _LoginMailScreenState extends State<LoginMailScreen> {
   bool loading = false;
-  final _authService = AuthenticationService();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   bool _emailError = false;
   bool _passwordError = false;
+  bool _passwordVisible = false;
 
   @override
   void dispose() {
@@ -34,42 +35,65 @@ class _LoginMailScreenState extends State<LoginMailScreen> {
 
     print(_formKey.currentState.validate());
     if (!_formKey.currentState.validate()) return;
+
     var _email = emailController.text.trim();
     var _password = passwordController.text.trim();
-    var result = await _authService.signIn(email: _email, password: _password);
-    if (result['code'] == "SUCCESS_LOGIN") {
-      Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(builder: (context) => HomeScreen()),
-          (route) => false);
-    } else
-      await NotifyUI.showError(
-          context, "Error de inicio de sesión ", result['code']);
+
+    setState(() {
+      loading = true;
+    });
+    var result = await AuthMethods.signInWithEmailAndPassword(
+        context, _email, _password);
+    setState(() {
+      loading = false;
+    });
+
+    switch (result['code']) {
+      case AuthResponseStatus.SUCCESS:
+        FocusScope.of(context).requestFocus(FocusNode());
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => HomeScreen()),
+            (route) => false);
+        break;
+      case AuthResponseStatus.EMAIL_NOT_FOUND:
+      case AuthResponseStatus.ACCOUNT_NOT_FOUND:
+      case AuthResponseStatus.WRONG_PASSWORD:
+        await NotifyUI.showError(context, "No se puede iniciar de sesión ",
+            "El correo electrónico o contraseña son incorrectos.");
+        break;
+      case AuthResponseStatus.AUTH_ERROR:
+        await NotifyUI.showError(context, "Error de inicio de sesión ",
+            "La autenticación genero un error interno.");
+        break;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
-            body: SingleChildScrollView(
-                child: Container(
-      width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height -
-          MediaQuery.of(context).padding.top,
-      //decoration: BoxDecoration(color: Color(0Xcdcdcdff)),
-      child: Center(
-        child: Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              _form(),
-              SizedBox(
-                height: 20,
-              ),
-              _notHavePassword()
-            ]),
-      ),
-    ))));
+            body: ModalProgressHUD(
+                inAsyncCall: loading,
+                child: SingleChildScrollView(
+                    child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height -
+                      MediaQuery.of(context).padding.top,
+                  //decoration: BoxDecoration(color: Color(0Xcdcdcdff)),
+                  child: Center(
+                    child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          _form(),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          _notHavePassword()
+                        ]),
+                  ),
+                )))));
   }
 
   _form() {
@@ -207,27 +231,45 @@ class _LoginMailScreenState extends State<LoginMailScreen> {
   _passwordTextField() {
     return Container(
         height: !_passwordError ? 40 : 60,
-        child: TextFormField(
-          controller: passwordController,
-          keyboardType: TextInputType.visiblePassword,
-          obscureText: true,
-          decoration: InputDecoration(
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-              filled: true,
-              fillColor: Colors.white,
-              contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 1)),
-          validator: (value) {
-            if (value.trim() == "") {
-              setState(() {
-                _passwordError = true;
-              });
-              return "Campo requerido";
-            }
+        child: Stack(
+          children: [
+            TextFormField(
+              controller: passwordController,
+              keyboardType: TextInputType.visiblePassword,
+              obscureText: !_passwordVisible,
+              decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  filled: true,
+                  fillColor: Colors.white,
+                  contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 1)),
+              validator: (value) {
+                if (value.trim() == "") {
+                  setState(() {
+                    _passwordError = true;
+                  });
+                  return "Campo requerido";
+                }
 
-            return null;
-          },
+                return null;
+              },
+            ),
+            Align(
+              alignment: Alignment.centerRight,
+              child: IconButton(
+                icon: Icon(
+                  _passwordVisible ? Icons.visibility : Icons.visibility_off,
+                  color: Theme.of(context).primaryColorDark,
+                ),
+                onPressed: () {
+                  setState(() {
+                    _passwordVisible = !_passwordVisible;
+                  });
+                },
+              ),
+            ),
+          ],
         ));
   }
 

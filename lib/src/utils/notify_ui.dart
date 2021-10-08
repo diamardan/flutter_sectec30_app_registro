@@ -47,6 +47,15 @@ class NotifyUI {
     ).show(context);
   }
 
+  static flushbarAutoHide(BuildContext context, String message) {
+    Flushbar(
+      messageText:
+          Text(message, style: TextStyle(fontSize: 13, color: Colors.white)),
+      margin: EdgeInsets.fromLTRB(2, 0, 2, 40),
+      duration: Duration(seconds: 3),
+    ).show(context);
+  }
+
   static Future<void> showError(
       BuildContext context, String title, String message) {
     return showDialog<void>(
@@ -81,48 +90,6 @@ class NotifyUI {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  static Future<bool> showConfimLogout(BuildContext context) {
-    return showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(
-            "Cerrar Sesión",
-            style: TextStyle(color: AppColors.morenaLightColor),
-          ),
-          content: Text("¿Desea continuar con esta acción?"),
-          backgroundColor: Colors.white.withOpacity(0.7),
-          elevation: 3,
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context, true);
-              },
-              child: Text("Cancelarr", style: TextStyle(color: Colors.black45)),
-            ),
-            TextButton(
-              onPressed: () async {
-                // auth with firebase
-                final FirebaseAuth _auth = FirebaseAuth.instance;
-                try {
-                  Navigator.pop(context, false);
-                  await _auth.signOut();
-                  Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(builder: (context) => InitialScreen()),
-                      (route) => false);
-                } catch (error) {
-                  print(error);
-                }
-              },
-              child: Text("Salir", style: TextStyle(color: Colors.black45)),
             ),
           ],
         );

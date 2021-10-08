@@ -5,6 +5,7 @@ import 'package:flutter_credit_card/credit_card_form.dart';
 import 'package:flutter_credit_card/credit_card_model.dart';
 import 'package:flutter_credit_card/flutter_credit_card.dart';
 import 'package:flutter_openpay/flutter_openpay.dart';
+
 //end credit card
 class PaymentForm extends StatefulWidget {
   PaymentForm({Key key}) : super(key: key);
@@ -14,7 +15,6 @@ class PaymentForm extends StatefulWidget {
 }
 
 class _PaymentFormState extends State<PaymentForm> {
-
   PaymentsService paymentsService = PaymentsService();
   String _name = "";
   String _number = "";
@@ -30,9 +30,7 @@ class _PaymentFormState extends State<PaymentForm> {
 
   @override
   void initState() {
-    Future.delayed(const Duration(seconds: 5), (){
-
-    });
+    Future.delayed(const Duration(seconds: 5), () {});
     super.initState();
   }
 
@@ -136,7 +134,7 @@ class _PaymentFormState extends State<PaymentForm> {
   @override
   Widget build(BuildContext context) {
     return Container(
-       child: formPago(),
+      child: formPago(),
     );
   }
 
@@ -174,15 +172,16 @@ class _PaymentFormState extends State<PaymentForm> {
                           formKey: formKey,
                           obscureCvv: false,
                           obscureNumber: false,
-                          numberValidationMessage: 'Número de tarjeta no válido',
+                          numberValidationMessage:
+                              'Número de tarjeta no válido',
                           dateValidationMessage: 'Formato de fecha no válido',
                           cvvValidationMessage: 'CVV no válido',
                           cardHolderName: "asd",
                           cardNumberDecoration: const InputDecoration(
-                              border: OutlineInputBorder(),
-                              labelText: 'Número de tarjeta',
-                              hintText: 'XXXX XXXX XXXX XXXX',
-                              ),
+                            border: OutlineInputBorder(),
+                            labelText: 'Número de tarjeta',
+                            hintText: 'XXXX XXXX XXXX XXXX',
+                          ),
                           expiryDateDecoration: const InputDecoration(
                             border: OutlineInputBorder(),
                             labelText: 'Expiración',
@@ -194,9 +193,9 @@ class _PaymentFormState extends State<PaymentForm> {
                             hintText: 'XXX',
                           ),
                           cardHolderDecoration: const InputDecoration(
-                              border: OutlineInputBorder(),
-                              labelText: 'Nombre del titular',
-                              ),
+                            border: OutlineInputBorder(),
+                            labelText: 'Nombre del titular',
+                          ),
                           onCreditCardModelChange: onCreditCardModelChange,
                         ),
                         tokenizeCardButton(),
@@ -212,7 +211,7 @@ class _PaymentFormState extends State<PaymentForm> {
     );
   }
 
-   void onCreditCardModelChange(CreditCardModel creditCardModel) {
+  void onCreditCardModelChange(CreditCardModel creditCardModel) {
     print(_number);
     setState(() {
       _number = creditCardModel.cardNumber;
