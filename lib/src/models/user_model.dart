@@ -20,6 +20,11 @@ class Register {
   String sexo;
   String qr;
   String password;
+  String fotoUsuarioDrive;
+  int idbio;
+  String qrDrive;
+  String firmaDrive;
+
   Register({
     this.id,
     this.nombre,
@@ -34,6 +39,10 @@ class Register {
     this.turno,
     this.sexo,
     this.password,
+    this.fotoUsuarioDrive,
+    this.idbio,
+    this.qrDrive,
+    this.firmaDrive,
   });
 
   factory Register.fromJson(Map<String, dynamic> json) => Register(
@@ -48,7 +57,11 @@ class Register {
       grupo: json["grupo"],
       turno: json["turno"],
       sexo: json["sexo"],
-      password: json["password"]);
+      password: json["password"],
+      fotoUsuarioDrive: json["foto_usuario_drive"],
+      idbio: json["idbio"],
+      qrDrive: json["qr_drive"],
+      firmaDrive: json["firma_drive"]);
 
   factory Register.clone(Register reg) => Register(
         id: reg.id,
@@ -77,5 +90,9 @@ class Register {
         "turno": turno,
         "sexo": sexo,
         "password": password,
+        "fotoDriveId": fotoUsuarioDrive,
+        "idbio": idbio,
+        "qrDrive": qrDrive,
+        "firmaDrive": firmaDrive
       };
 }

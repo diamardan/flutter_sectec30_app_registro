@@ -12,6 +12,7 @@ class AppColors {
   static const blackTransparent = const Color(0x88000000);
   static const yellow = const Color(0XFFFFDD00);
   static const redError = const Color(0XFFFF8888);
+  static const textoRojoCredencial = const Color(0XFF93243a);
 
 /*   static const br = Border.radius(12); */
 
@@ -45,4 +46,8 @@ class AppConstants {
   static const urlAttendanceIdPosition = 33;
   //fsCollectionName almacena el nombre de la collection que hace referencia a la escuela sobre la que se va a trabajar
   static const fsCollectionName = "cetis32";
+
+  //éste link es el de la carpeta del google drive credenciales
+  static const gdriveUrl =
+      "https://drive.google.com/drive/folders/1u06DdjAA3RxWwc7EyYGWjia_gxLBNHhS?usp=sharing";
 }
