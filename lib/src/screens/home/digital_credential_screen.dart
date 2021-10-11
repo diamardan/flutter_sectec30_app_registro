@@ -32,9 +32,13 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
         centerTitle: true,
         backgroundColor: AppColors.morenaLightColor,
       ),
-      floatingActionButton: FloatingActionButton.small(
-          backgroundColor: AppColors.morenaColor,
-          child: Icon(Icons.download),
+      floatingActionButton: FloatingActionButton.extended(
+          //sbackgroundColor: AppColors.morenaColor,
+          label: Text("Descargar"),
+          icon: Icon(Icons.download),
+          /* child: 
+              Icon(Icons.download),
+          ), */
           onPressed: () async {
             _showSnackbar("Su descarga comenzará en breve");
             final bytes1 = await ImageUtils.capture(key1);
@@ -91,8 +95,6 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
     return WidgetToImage(builder: (key) {
       this.key1 = key;
       return Card(
-        /* semanticContainer: true,
-                clipBehavior: Clip.antiAliasWithSaveLayer, */
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15.0),
         ),
@@ -115,19 +117,6 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
               _cintillaNombre(),
               _cintillaEspecialidad(),
               _cintillaNumeroControl(),
-              /* Container(
-                        width: double.infinity,
-                        child: Container(
-                          padding: EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                              //color: AppColors.morenaColor,
-                              borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(10),
-                                  topRight: Radius.circular(10))),
-                          width: double.infinity,
-                          child: Text("hola 1"),
-                        ), 
-                      )*/
             ],
           ),
         ),
@@ -142,23 +131,8 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
         SizedBox(
           height: 174,
           width: 81,
-          /* child: Column(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Text("IDBIO"),
-                              Text("IDBIO"),
-                            ],
-                          ), */
         ),
-        Container(
-          height: 174,
-          width: 148,
-          child: Image.network(
-            'https://drive.google.com/uc?export=view&id=${widget.register.fotoUsuarioDrive}',
-            alignment: Alignment.center,
-            fit: BoxFit.fill,
-          ),
-        ),
+        _networkImageWidget(174, 148, widget.register.fotoUsuarioDrive),
         Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -185,6 +159,43 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
           ],
         )
       ],
+    );
+  }
+
+  Widget _networkImageWidget(double height, double width, String image,
+      [bool transparency, bool margin, double marginTop]) {
+    return Container(
+      height: height,
+      width: width,
+      margin: margin == true ? EdgeInsets.fromLTRB(0, marginTop, 0, 0) : null,
+      child: Image.network(
+        'https://drive.google.com/uc?export=view&id=${image}',
+        alignment: Alignment.center,
+        fit: BoxFit.fill,
+        color: transparency == true
+            ? const Color.fromRGBO(255, 255, 255, 0.5)
+            : null,
+        colorBlendMode: transparency == true ? BlendMode.modulate : null,
+        loadingBuilder: (BuildContext context, Widget child,
+            ImageChunkEvent loadingProgress) {
+          if (loadingProgress == null) return child;
+          return Center(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                CircularProgressIndicator(
+                  value: loadingProgress.expectedTotalBytes != null
+                      ? loadingProgress.cumulativeBytesLoaded /
+                          loadingProgress.expectedTotalBytes
+                      : null,
+                ),
+                Text("Descargando imagen ")
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 
@@ -387,10 +398,11 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
               SizedBox(
                 height: 35,
               ),
-              Image.network(
+              _networkImageWidget(110, 110, widget.register.qrDrive)
+              /* Image.network(
                 'https://drive.google.com/uc?export=view&id=${widget.register.qrDrive}',
                 height: 110,
-              ),
+              ), */
             ],
           ),
         ),
@@ -407,7 +419,9 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
           height: 90,
           //color: Colors.amber,
         ),
-        Container(
+        _networkImageWidget(
+            60, 200, widget.register.firmaDrive, false, true, 15.0)
+        /* Container(
           width: 200,
           height: 60,
           margin: EdgeInsets.fromLTRB(0, 15, 0, 0),
@@ -417,7 +431,7 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
             height: 50,
             //fit: BoxFit.fitHeight,
           ),
-        ),
+        ), */
       ],
     );
   }
@@ -426,7 +440,8 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Container(
+        _networkImageWidget(90, 80, widget.register.fotoUsuarioDrive, true)
+        /* Container(
           margin: EdgeInsets.all(0),
           //color: Colors.green,
           height: 90,
@@ -438,7 +453,7 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
             alignment: Alignment.center,
             fit: BoxFit.fill,
           ),
-        )
+        ) */
       ],
     );
   }
@@ -489,7 +504,9 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
     //Directory output = await getDownloadsDirectory();
     String tempPath = '/storage/emulated/0/Download';
     //output.path;
-    var filePath = tempPath + '/${widget.register.curp}.pdf';
+    var pdfName =
+        widget.register.apellidos + " " + widget.register.nombre + ".pdf";
+    var filePath = tempPath + '/${pdfName.replaceAll(" ", "_")}';
     final file = File(filePath);
     //
     /* final output = await getExternalStorageDirectory();
