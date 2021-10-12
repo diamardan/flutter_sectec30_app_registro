@@ -53,6 +53,9 @@ dependencies:
   qr_code_tools: ^0.0.7
   another_flushbar: ^1.10.23
   pdf: ^2.1.0
+  pdf_viewer_plugin: ^2.0.1
+  syncfusion_flutter_pdfviewer: ^19.1.55-beta
+  share_plus: ^2.0.1
 
 dev_dependencies:
   flutter_test:
