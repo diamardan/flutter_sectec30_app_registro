@@ -1,14 +1,19 @@
 import 'dart:typed_data';
 import 'dart:io';
+import 'dart:async';
+
 import 'package:cetis32_app_registro/src/constants/constants.dart';
 import 'package:cetis32_app_registro/src/models/user_model.dart';
+import 'package:cetis32_app_registro/src/screens/home/render_crendetial_screen.dart';
 import 'package:cetis32_app_registro/src/utils/imageUtil.dart';
 import 'package:cetis32_app_registro/src/utils/widget_to_image.dart';
+import 'package:ext_storage/ext_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:permission_handler/permission_handler.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class DigitalCredentialScreen extends StatefulWidget {
   final Register register;
@@ -19,37 +24,60 @@ class DigitalCredentialScreen extends StatefulWidget {
       _DigitalCredentialScreenState();
 }
 
+const timeout = const Duration(seconds: 5);
+
 class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
   GlobalKey key1;
   GlobalKey key2;
   Uint8List bytes1;
   Uint8List bytes2;
+  bool visibleButton;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  startTimeout() {
+    return new Timer(timeout, handleTimeout);
+  }
+
+  void handleTimeout() {
+    setState(() {
+      visibleButton = true;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("MI CREDENCIAL"),
+        title: Text("CREDENCIAL DIGITAL"),
         centerTitle: true,
         backgroundColor: AppColors.morenaLightColor,
       ),
-      floatingActionButton: FloatingActionButton.extended(
-          //sbackgroundColor: AppColors.morenaColor,
-          label: Text("Descargar"),
-          icon: Icon(Icons.download),
-          /* child: 
-              Icon(Icons.download),
-          ), */
-          onPressed: () async {
-            _showSnackbar("Su descarga comenzará en breve");
-            final bytes1 = await ImageUtils.capture(key1);
-            final bytes2 = await ImageUtils.capture(key2);
+      floatingActionButton: Visibility(
+        visible: visibleButton == true ? true : false,
+        child: FloatingActionButton.extended(
+            //sbackgroundColor: AppColors.morenaColor,
+            //backgroundColor: canDownload == true ? Colors.blue : Colors.grey,
+            label: Text("Descargar"),
+            icon: Icon(Icons.download),
+            /* child: 
+                Icon(Icons.download),
+            ), */
+            onPressed: () async {
+              _showSnackbar("Su descarga comenzará en breve");
+              final bytes1 = await ImageUtils.capture(key1);
+              final bytes2 = await ImageUtils.capture(key2);
 
-            setState(() {
-              this.bytes1 = bytes1;
-              this.bytes2 = bytes2;
-            });
-            makePdf();
-          }),
+              setState(() {
+                this.bytes1 = bytes1;
+                this.bytes2 = bytes2;
+              });
+              makePdf();
+            }),
+      ),
       body: SafeArea(
           child: SingleChildScrollView(
         child: Center(
@@ -164,39 +192,52 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
 
   Widget _networkImageWidget(double height, double width, String image,
       [bool transparency, bool margin, double marginTop]) {
+    if (this.widget.register.fotoUsuarioDrive == null || image == "") {
+      image = "1TvA4s1r-c2NpsPCRdHozdk8dk0xQ_riY";
+    }
     return Container(
-      height: height,
-      width: width,
-      margin: margin == true ? EdgeInsets.fromLTRB(0, marginTop, 0, 0) : null,
-      child: Image.network(
-        'https://drive.google.com/uc?export=view&id=${image}',
-        alignment: Alignment.center,
-        fit: BoxFit.fill,
-        color: transparency == true
-            ? const Color.fromRGBO(255, 255, 255, 0.5)
-            : null,
-        colorBlendMode: transparency == true ? BlendMode.modulate : null,
-        loadingBuilder: (BuildContext context, Widget child,
-            ImageChunkEvent loadingProgress) {
-          if (loadingProgress == null) return child;
-          return Center(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                CircularProgressIndicator(
-                  value: loadingProgress.expectedTotalBytes != null
-                      ? loadingProgress.cumulativeBytesLoaded /
-                          loadingProgress.expectedTotalBytes
-                      : null,
-                ),
-                Text("Descargando imagen ")
-              ],
-            ),
-          );
-        },
-      ),
-    );
+        height: height,
+        width: width,
+        margin: margin == true ? EdgeInsets.fromLTRB(0, marginTop, 0, 0) : null,
+        child: Image.network(
+          'https://drive.google.com/uc?export=view&id=${image}',
+          alignment: Alignment.center,
+          fit: BoxFit.fill,
+          color: transparency == true
+              ? const Color.fromRGBO(255, 255, 255, 0.5)
+              : null,
+          colorBlendMode: transparency == true ? BlendMode.modulate : null,
+          loadingBuilder: (BuildContext context, Widget child,
+              ImageChunkEvent loadingProgress) {
+            if (loadingProgress == null) {
+              startTimeout();
+              return child;
+            } /* else {
+              if (loadingProgress.cumulativeBytesLoaded /
+                          loadingProgress.expectedTotalBytes ==
+                      1.0 &&
+                  image == this.widget.register.fotoUsuarioDrive) {
+                startTimeout();
+              }
+            } */
+
+            return Center(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CircularProgressIndicator(
+                    value: loadingProgress.expectedTotalBytes != null
+                        ? loadingProgress.cumulativeBytesLoaded /
+                            loadingProgress.expectedTotalBytes
+                        : null,
+                  ),
+                  Text("Descargando imagen ")
+                ],
+              ),
+            );
+          },
+        ));
   }
 
   Widget _cintillaBlanca() {
@@ -441,19 +482,6 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _networkImageWidget(90, 80, widget.register.fotoUsuarioDrive, true)
-        /* Container(
-          margin: EdgeInsets.all(0),
-          //color: Colors.green,
-          height: 90,
-          width: 80,
-          child: Image.network(
-            'https://drive.google.com/uc?export=view&id=${widget.register.fotoUsuarioDrive}',
-            color: const Color.fromRGBO(255, 255, 255, 0.5),
-            colorBlendMode: BlendMode.modulate,
-            alignment: Alignment.center,
-            fit: BoxFit.fill,
-          ),
-        ) */
       ],
     );
   }
@@ -502,10 +530,16 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
 
 // the downloads folder path
     //Directory output = await getDownloadsDirectory();
-    String tempPath = '/storage/emulated/0/Download';
+    // String tempPath = '/storage/emulated/0/Download';
+    String tempPath = await ExtStorage.getExternalStoragePublicDirectory(
+        ExtStorage.DIRECTORY_DOWNLOADS);
+    String apellidos = widget.register.apellidos != null
+        ? widget.register.apellidos
+        : "SIN APELLIDOS";
+    String nombre =
+        widget.register.nombre != null ? widget.register.nombre : "SIN NOMBRE";
     //output.path;
-    var pdfName =
-        widget.register.apellidos + " " + widget.register.nombre + ".pdf";
+    var pdfName = apellidos + " " + nombre + ".pdf";
     var filePath = tempPath + '/${pdfName.replaceAll(" ", "_")}';
     final file = File(filePath);
     //
@@ -517,6 +551,14 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
     await file.writeAsBytes(await pdf.save());
     print("hola");
     _showSnackbar("El PDF está en su carpeta de Descargas");
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => RenderCredentialScreen(
+                  pdfPath: filePath,
+                  pdfName: pdfName,
+                )));
+    //launch(filePath);
   }
 }
 
