@@ -16,7 +16,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class DigitalCredentialScreen extends StatefulWidget {
-  final Register register;
+  final Registration register;
   DigitalCredentialScreen(this.register, {Key key}) : super(key: key);
 
   @override
@@ -172,7 +172,7 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
               margin: EdgeInsets.only(top: 30),
               width: 80,
               child: Text(
-                widget.register.grupo != null ? widget.register.grupo : "",
+                widget.register.group != null ? widget.register.group : "",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     fontSize: 40,
@@ -293,7 +293,7 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
           child: Column(
             children: [
               Text(
-                widget.register.grado != null ? widget.register.grado : "-",
+                widget.register.grade != null ? widget.register.grade : "-",
                 style: TextStyle(color: AppColors.textoRojoCredencial),
               ),
               Text(
@@ -324,7 +324,7 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
             child: FittedBox(
               fit: BoxFit.fitWidth,
               child: Text(
-                  widget.register.nombre != null ? widget.register.nombre : "-",
+                  widget.register.name != null ? widget.register.name : "-",
                   style: TextStyle(
                       fontSize: 50,
                       fontWeight: FontWeight.bold,
@@ -336,8 +336,8 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
             child: FittedBox(
               fit: BoxFit.fitWidth,
               child: Text(
-                  widget.register.apellidos != null
-                      ? widget.register.apellidos
+                  widget.register.surnames != null
+                      ? widget.register.surnames
                       : "-",
                   style: TextStyle(
                       fontWeight: FontWeight.bold, color: Colors.white)),
@@ -373,9 +373,7 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
             child: FittedBox(
               fit: BoxFit.fitWidth,
               child: Text(
-                  widget.register.carrera != null
-                      ? widget.register.carrera
-                      : "-",
+                  widget.register.career != null ? widget.register.career : "-",
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: AppColors.textoRojoCredencial)),
@@ -392,7 +390,7 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
       child: Column(
         children: <Widget>[
           Text(
-            'No. CONTROL   ${widget.register.matricula != "" ? widget.register.matricula : "NO CAPTURADO"}',
+            'No. CONTROL   ${widget.register.registrationCode != "" ? widget.register.registrationCode : "NO CAPTURADO"}',
             style: TextStyle(color: AppColors.textoRojoCredencial),
           ),
           Image.asset(
@@ -413,7 +411,7 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
       height: 30,
       width: double.infinity,
       child: Text(
-        widget.register.turno != null ? widget.register.turno : "-",
+        widget.register.turn != null ? widget.register.turn : "-",
         textAlign: TextAlign.right,
         style: TextStyle(
             fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
@@ -533,11 +531,11 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
     // String tempPath = '/storage/emulated/0/Download';
     String tempPath = await ExtStorage.getExternalStoragePublicDirectory(
         ExtStorage.DIRECTORY_DOWNLOADS);
-    String apellidos = widget.register.apellidos != null
-        ? widget.register.apellidos
+    String apellidos = widget.register.surnames != null
+        ? widget.register.surnames
         : "SIN APELLIDOS";
     String nombre =
-        widget.register.nombre != null ? widget.register.nombre : "SIN NOMBRE";
+        widget.register.name != null ? widget.register.name : "SIN NOMBRE";
     //output.path;
     var pdfName = apellidos + " " + nombre + ".pdf";
     var filePath = tempPath + '/${pdfName.replaceAll(" ", "_")}';

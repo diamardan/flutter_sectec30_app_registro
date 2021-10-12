@@ -131,12 +131,11 @@ class _MyDataViewState extends State<MyDataView> {
                 : Container(),
             OutlinedButton(
                 onPressed: () {
-                  print(register);
                   Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) =>
-                              DigitalCredentialScreen(register)));
+                              DigitalCredentialScreen(registration)));
                   //AuthActions.showChangePassword(context);
                 },
                 child: Text("Credencial digital",
