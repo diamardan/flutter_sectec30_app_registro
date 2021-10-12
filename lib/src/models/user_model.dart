@@ -19,6 +19,16 @@ class Registration {
   String turn;
   String sex;
   String password;
+  String fotoUsuarioDrive;
+  int idbio;
+  String qrDrive;
+  String firmaDrive;
+
+  /*Registration({
+  String fotoUsuarioDrive;
+  int idbio;
+  String qrDrive;
+  String firmaDrive;*/
 
   Registration({
     this.id,
@@ -34,22 +44,29 @@ class Registration {
     this.turn,
     this.sex,
     this.password,
+    this.fotoUsuarioDrive,
+    this.idbio,
+    this.qrDrive,
+    this.firmaDrive,
   });
 
   factory Registration.fromJson(Map<String, dynamic> json) => Registration(
-        id: json["id"],
-        name: json["nombres"],
-        surnames: json["apellidos"],
-        curp: json["curp"],
-        email: json["correo"],
-        cellphone: json["celular"],
-        registrationCode: json["matricula"],
-        grade: json["grado"],
-        group: json["grupo"],
-        turn: json["turno"],
-        sex: json["sexo"],
-        password: json["password"],
-      );
+      id: json["id"],
+      name: json["nombres"],
+      surnames: json["apellidos"],
+      curp: json["curp"],
+      email: json["correo"],
+      cellphone: json["celular"],
+      registrationCode: json["matricula"],
+      grade: json["grado"],
+      group: json["grupo"],
+      turn: json["turno"],
+      sex: json["sexo"],
+      password: json["password"],
+      fotoUsuarioDrive: json["foto_usuario_drive"],
+      idbio: json["idbio"],
+      qrDrive: json["qr_drive"],
+      firmaDrive: json["firma_drive"]);
 
   @override
   String toString() {
@@ -72,4 +89,22 @@ class Registration {
       );
 */
 
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "nombres": name,
+        "apellidos": surnames,
+        "curp": curp,
+        "correo": email,
+        "celular": cellphone,
+        "matricula": registrationCode,
+        "grado": grade,
+        "grupo": group,
+        "turno": turn,
+        "sexo": sex,
+        "password": password,
+        "fotoDriveId": fotoUsuarioDrive,
+        "idbio": idbio,
+        "qrDrive": qrDrive,
+        "firmaDrive": firmaDrive
+      };
 }

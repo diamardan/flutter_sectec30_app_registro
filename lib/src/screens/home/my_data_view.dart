@@ -2,6 +2,7 @@ import 'package:cetis32_app_registro/src/constants/constants.dart';
 import 'package:cetis32_app_registro/src/models/user_model.dart';
 import 'package:cetis32_app_registro/src/provider/user_provider.dart';
 import 'package:cetis32_app_registro/src/services/RegistrationService.dart';
+import 'package:cetis32_app_registro/src/screens/home/digital_credential_screen.dart';
 import 'package:cetis32_app_registro/src/utils/auth_actions.dart';
 import 'package:cetis32_app_registro/src/utils/enums.dart';
 import 'package:flutter/material.dart';
@@ -127,7 +128,21 @@ class _MyDataViewState extends State<MyDataView> {
                             fontSize: 13,
                             color:
                                 AppColors.morenaLightColor.withOpacity(0.7))))
-                : Container()
+                : Container(),
+            OutlinedButton(
+                onPressed: () {
+                  print(register);
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              DigitalCredentialScreen(register)));
+                  //AuthActions.showChangePassword(context);
+                },
+                child: Text("Credencial digital",
+                    style: TextStyle(
+                        fontSize: 13,
+                        color: AppColors.morenaLightColor.withOpacity(0.7))))
           ]),
         )
       ])),

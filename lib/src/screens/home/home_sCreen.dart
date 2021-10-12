@@ -167,7 +167,7 @@ class _homeScreenState extends State<HomeScreen> {
                                         size: 90,
                                         color: AppColors.morenaLightColor
                                             .withOpacity(0.6)),
-                                    Text("Ver Accesos",
+                                    Text("Accesos",
                                         style: TextStyle(
                                             fontSize: 14,
                                             color: AppColors.morenaLightColor
@@ -189,7 +189,7 @@ class _homeScreenState extends State<HomeScreen> {
                                         size: 90,
                                         color: AppColors.morenaLightColor
                                             .withOpacity(0.6)),
-                                    Text("Ver Asistencias",
+                                    Text("Asistencias",
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
                                             fontSize: 13,
@@ -215,7 +215,7 @@ class _homeScreenState extends State<HomeScreen> {
                                         color: AppColors.morenaLightColor
                                             .withOpacity(0.6)),
                                     Text(
-                                      "Abrir Notificaciones",
+                                      "Notificaciones",
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
                                           fontSize: 11,
