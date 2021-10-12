@@ -5,52 +5,59 @@ class User {
   User(this.id, this.authMethod);
 }
 
-class Register {
+class Registration {
   String id;
-  String nombre;
-  String apellidos;
+  String name;
+  String surnames;
   String curp;
-  String correo;
-  String celular;
-  String matricula;
-  String carrera;
-  String grado;
-  String grupo;
-  String turno;
-  String sexo;
-  String qr;
+  String email;
+  String cellphone;
+  String registrationCode;
+  String career;
+  String grade;
+  String group;
+  String turn;
+  String sex;
   String password;
-  Register({
+
+  Registration({
     this.id,
-    this.nombre,
-    this.apellidos,
+    this.name,
+    this.surnames,
     this.curp,
-    this.correo,
-    this.celular,
-    this.matricula,
-    this.carrera,
-    this.grado,
-    this.grupo,
-    this.turno,
-    this.sexo,
+    this.email,
+    this.cellphone,
+    this.registrationCode,
+    this.career,
+    this.grade,
+    this.group,
+    this.turn,
+    this.sex,
     this.password,
   });
 
-  factory Register.fromJson(Map<String, dynamic> json) => Register(
-      id: json["id"],
-      nombre: json["nombres"],
-      apellidos: json["apellidos"],
-      curp: json["curp"],
-      correo: json["correo"],
-      celular: json["celular"],
-      matricula: json["matricula"],
-      grado: json["grado"],
-      grupo: json["grupo"],
-      turno: json["turno"],
-      sexo: json["sexo"],
-      password: json["password"]);
+  factory Registration.fromJson(Map<String, dynamic> json) => Registration(
+        id: json["id"],
+        name: json["nombres"],
+        surnames: json["apellidos"],
+        curp: json["curp"],
+        email: json["correo"],
+        cellphone: json["celular"],
+        registrationCode: json["matricula"],
+        grade: json["grado"],
+        group: json["grupo"],
+        turn: json["turno"],
+        sex: json["sexo"],
+        password: json["password"],
+      );
 
-  factory Register.clone(Register reg) => Register(
+  @override
+  String toString() {
+    var strOutput =
+        " id $id\n name: $name \n surnames $surnames \n  curp: $curp \n email: $email \n cellphone: $cellphone \n  registrationCode: $registrationCode \n grade: $grade \n group: $group \n turn: $turn \n  sex: $sex \n  password: $password ";
+    return strOutput;
+  }
+  /*factory Register.clone(Register reg) => Register(
         id: reg.id,
         nombre: reg.nombre,
         apellidos: reg.apellidos,
@@ -63,19 +70,6 @@ class Register {
         turno: reg.turno,
         sexo: reg.sexo,
       );
+*/
 
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "nombres": nombre,
-        "apellidos": apellidos,
-        "curp": curp,
-        "correo": correo,
-        "celular": celular,
-        "matricula": matricula,
-        "grado": grado,
-        "grupo": grupo,
-        "turno": turno,
-        "sexo": sexo,
-        "password": password,
-      };
 }

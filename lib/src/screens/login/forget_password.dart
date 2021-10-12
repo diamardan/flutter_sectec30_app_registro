@@ -1,5 +1,5 @@
 import 'package:cetis32_app_registro/src/models/user_model.dart';
-import 'package:cetis32_app_registro/src/services/RegisterService.dart';
+import 'package:cetis32_app_registro/src/services/RegistrationService.dart';
 import 'package:cetis32_app_registro/src/services/authentication_service.dart';
 import 'package:cetis32_app_registro/src/utils/auth_methods.dart';
 import 'package:cetis32_app_registro/src/utils/enums.dart';

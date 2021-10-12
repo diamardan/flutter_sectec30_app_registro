@@ -1,7 +1,7 @@
 import 'package:cetis32_app_registro/src/constants/constants.dart';
 import 'package:cetis32_app_registro/src/models/user_model.dart';
 import 'package:cetis32_app_registro/src/provider/user_provider.dart';
-import 'package:cetis32_app_registro/src/services/RegisterService.dart';
+import 'package:cetis32_app_registro/src/services/RegistrationService.dart';
 import 'package:cetis32_app_registro/src/utils/auth_actions.dart';
 import 'package:cetis32_app_registro/src/utils/enums.dart';
 import 'package:flutter/material.dart';
@@ -18,8 +18,8 @@ class MyDataView extends StatefulWidget {
 class _MyDataViewState extends State<MyDataView> {
   UserProvider userProvider;
   User user;
-  Register register = Register();
-  final RegisterService registerService = RegisterService();
+  Registration registration = Registration();
+  final RegistrationService registrationService = RegistrationService();
   bool showCnangePassword = false;
 
   @override
@@ -43,11 +43,11 @@ class _MyDataViewState extends State<MyDataView> {
       setState(() {
         showCnangePassword = true;
       });
-    Register _register = await registerService.get(user.id);
+    Registration _registration = await registrationService.get(user.id);
 
-    if (register != null) {
+    if (registration != null) {
       setState(() {
-        register = _register;
+        registration = _registration;
       });
     }
   }
@@ -91,31 +91,31 @@ class _MyDataViewState extends State<MyDataView> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                       Text(
-                        "${register.nombre ?? "No disponible"} ${register.apellidos ?? "No disponible"}",
+                        "${registration.name ?? "No disponible"} ${registration.surnames ?? "No disponible"}",
                         textAlign: TextAlign.center,
                         style: TextStyle(fontSize: 16),
                       ),
                       SizedBox(height: 20),
                       Text("Matrícula"),
-                      Text(register.matricula ?? "No disponible"),
+                      Text(registration.registrationCode ?? "No disponible"),
                       SizedBox(height: 20),
                       Text("CURP"),
-                      Text(register.curp ?? "No disponible"),
+                      Text(registration.curp ?? "No disponible"),
                       SizedBox(height: 20),
                       Text("Grado"),
-                      Text(register.grado ?? "No disponible"),
+                      Text(registration.grade ?? "No disponible"),
                       SizedBox(height: 20),
                       Text("Grupo"),
-                      Text(register.grupo ?? "No disponible"),
+                      Text(registration.group ?? "No disponible"),
                       SizedBox(height: 20),
                       Text("Turno"),
-                      Text(register.turno ?? "No disponible"),
+                      Text(registration.turn ?? "No disponible"),
                       SizedBox(height: 20),
                       Text("Correo"),
-                      Text(register.correo ?? "No disponible"),
+                      Text(registration.email ?? "No disponible"),
                       SizedBox(height: 20),
                       Text("Celular"),
-                      Text(register.celular ?? "No disponible"),
+                      Text(registration.cellphone ?? "No disponible"),
                     ]))),
             showCnangePassword == true
                 ? OutlinedButton(

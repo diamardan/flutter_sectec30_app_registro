@@ -1,9 +1,16 @@
 import 'dart:ui';
 import 'package:cetis32_app_registro/src/constants/constants.dart';
-import 'package:cetis32_app_registro/src/screens/home/my_data_view.dart' '';
+import 'package:cetis32_app_registro/src/models/user_model.dart';
+import 'package:cetis32_app_registro/src/provider/user_provider.dart';
+import 'package:cetis32_app_registro/src/screens/home/my_data_view.dart';
+import '../../services/RegistrationService.dart';
+import 'package:cetis32_app_registro/src/screens/notifications/notifications_screen.dart';
+import 'package:cetis32_app_registro/src/services/RegistrationService.dart';
 import 'package:cetis32_app_registro/src/utils/auth_actions.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -13,8 +20,50 @@ class HomeScreen extends StatefulWidget {
 // ignore: camel_case_types
 class _homeScreenState extends State<HomeScreen> {
   int _viewIndex = 0;
+  FirebaseMessaging messaging;
+  final RegistrationService registrationService = RegistrationService();
+  User _user;
+  Registration _registration;
 
-  void _onItemTapped(BuildContext context, int index) {
+  @override
+  void initState() {
+    Future.delayed(Duration(seconds: 10), setMessaging);
+
+    super.initState();
+  }
+
+  setMessaging() {
+    UserProvider userProvider =
+        Provider.of<UserProvider>(context, listen: false);
+    _user = userProvider.getUser;
+    _registration = userProvider.getRegistration;
+
+    messaging = FirebaseMessaging.instance;
+
+    /*  messaging.getToken().then((value) {
+      registrationService.setFCMToken(_user.id, value);
+
+      FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+        // app on foreground
+        print("message recieved");
+      });
+
+      FirebaseMessaging.onMessageOpenedApp.listen((message) {
+        //click from user on notification when app is backgroud
+        print('Message clicked!');
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => NotificationsScreen(message)));
+      });
+    });*/
+    print(_user.id);
+    print(_registration.id);
+    print(_registration.toString());
+    //messaging.subscribeToTopic();
+  }
+
+  void _switchView(BuildContext context, int index) {
     if (index == 2) {
       AuthActions.showConfimLogout(context);
       return;
@@ -44,7 +93,7 @@ class _homeScreenState extends State<HomeScreen> {
         BottomNavigationBarItem(
             icon: Icon(Icons.logout_outlined), label: "Salir"),
       ],
-      onTap: (index) => _onItemTapped(context, index),
+      onTap: (index) => _switchView(context, index),
       currentIndex: 0,
       fixedColor: Colors.green[800],
       iconSize: 30,

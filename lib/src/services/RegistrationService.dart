@@ -4,9 +4,9 @@ import 'package:cetis32_app_registro/src/services/SharedService.dart';
 
 const school = "cetis32";
 
-class RegisterService {
+class RegistrationService {
   checkCurp(String curp) async {
-    return SharedService().get(curp, "registers");
+    return SharedService().get(curp, "registrations");
   }
 
   checkQr(String qrData) {
@@ -21,15 +21,15 @@ class RegisterService {
 
       if (result.docs.isNotEmpty) {
         var data = result.docs.first.data();
-        var registerMap = {"id": result.docs.first.id, ...data};
-        Register register = Register.fromJson(registerMap);
-        return register;
+        var registrationMap = {"id": result.docs.first.id, ...data};
+        Registration registration = Registration.fromJson(registrationMap);
+        return registration;
       } else
         return null;
     });
   }
 
-  Future<Register> checkEmail(String email) {
+  Future<Registration> checkEmail(String email) {
     return FirebaseFirestore.instance
         .collection("schools")
         .doc(school)
@@ -39,15 +39,15 @@ class RegisterService {
         .then((result) {
       if (result.docs.isNotEmpty) {
         var data = result.docs.first.data();
-        var registerMap = {"id": result.docs.first.id, ...data};
-        Register register = Register.fromJson(registerMap);
-        return register;
+        var registrationMap = {"id": result.docs.first.id, ...data};
+        Registration registration = Registration.fromJson(registrationMap);
+        return registration;
       } else
         return null;
     });
   }
 
-  Future<Register> get(String registrationId) {
+  Future<Registration> get(String registrationId) {
     return FirebaseFirestore.instance
         .collection("schools")
         .doc(school)
@@ -59,11 +59,20 @@ class RegisterService {
       print(result);
       if (result.exists) {
         var data = result.data();
-        var registerMap = {"id": result.id, ...data};
-        Register register = Register.fromJson(registerMap);
-        return register;
+        var registrationMap = {"id": result.id, ...data};
+        Registration registration = Registration.fromJson(registrationMap);
+        return registration;
       } else
         return null;
     });
+  }
+
+  Future<void> setFCMToken(String registrationId, String token) {
+    return FirebaseFirestore.instance
+        .collection("schools")
+        .doc(school)
+        .collection("registros")
+        .doc(registrationId)
+        .update({"fcm_token": token});
   }
 }

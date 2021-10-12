@@ -1,7 +1,7 @@
 import 'package:barcode_scan2/barcode_scan2.dart';
 import 'package:cetis32_app_registro/src/models/user_model.dart';
 import 'package:cetis32_app_registro/src/provider/user_provider.dart';
-import 'package:cetis32_app_registro/src/services/RegisterService.dart';
+import 'package:cetis32_app_registro/src/services/RegistrationService.dart';
 import 'package:cetis32_app_registro/src/services/authentication_service.dart';
 import 'package:cetis32_app_registro/src/utils/enums.dart';
 import 'package:flutter/cupertino.dart';
@@ -15,7 +15,7 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:math';
 
 class AuthMethods {
-  static RegisterService registerService = RegisterService();
+  static RegistrationService registrationService = RegistrationService();
 
   static AuthenticationService authenticationService = AuthenticationService();
 
@@ -33,10 +33,10 @@ class AuthMethods {
         return response["code"] = AuthResponseStatus.QR_INVALID;
 
       // check if qr is valid
-      Register register =
-          await registerService.checkQr(futureString.rawContent);
+      Registration registration =
+          await registrationService.checkQr(futureString.rawContent);
 
-      if (register == null) {
+      if (registration == null) {
         return response["code"] = AuthResponseStatus.QR_NOT_FOUND;
       }
 
@@ -45,8 +45,8 @@ class AuthMethods {
       try {
         await authenticationService.signInAnonymously();
 
-        createState(context, register, AuthnMethodEnum.EMAIL_PASSWORD);
-        createPersistence(register, AuthnMethodEnum.EMAIL_PASSWORD);
+        createState(context, registration, AuthnMethodEnum.EMAIL_PASSWORD);
+        createPersistence(registration, AuthnMethodEnum.EMAIL_PASSWORD);
       } catch (error) {
         return response["code"] = AuthResponseStatus.AUTH_ERROR;
       }
@@ -83,18 +83,18 @@ class AuthMethods {
     if (qrData == null || qrData == "")
       return response["code"] = AuthResponseStatus.QR_INVALID;
 
-    Register register = await registerService.checkQr(qrData);
+    Registration registration = await registrationService.checkQr(qrData);
 
-    if (register == null) {
+    if (registration == null) {
       return response["code"] = AuthResponseStatus.QR_NOT_FOUND;
     }
     /*   SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setString('register_qr', futureString.rawContent);
+      prefs.setString('registration_qr', futureString.rawContent);
 */
     await authenticationService.signInAnonymously();
 
-    createState(context, register, AuthnMethodEnum.EMAIL_PASSWORD);
-    createPersistence(register, AuthnMethodEnum.EMAIL_PASSWORD);
+    createState(context, registration, AuthnMethodEnum.EMAIL_PASSWORD);
+    createPersistence(registration, AuthnMethodEnum.EMAIL_PASSWORD);
 
     //return response["code"] = LoginResponseStatus.AUTH_ERROR;
 
@@ -104,8 +104,9 @@ class AuthMethods {
 // * * *  Sign in with email and password  * * *
   static signInWithEmailAndPassword(
       BuildContext context, String email, String password) async {
-    Register register = await RegisterService().checkEmail(email);
-    if (register == null) return {'code': AuthResponseStatus.EMAIL_NOT_FOUND};
+    Registration registration = await RegistrationService().checkEmail(email);
+    if (registration == null)
+      return {'code': AuthResponseStatus.EMAIL_NOT_FOUND};
 
     var result = await authenticationService.signInEmailAndPassword(
         email: email, password: password);
@@ -115,8 +116,8 @@ class AuthMethods {
     switch (result['code']) {
       case "sign_in_success":
         response['code'] = AuthResponseStatus.SUCCESS;
-        createState(context, register, AuthnMethodEnum.EMAIL_PASSWORD);
-        createPersistence(register, AuthnMethodEnum.EMAIL_PASSWORD);
+        createState(context, registration, AuthnMethodEnum.EMAIL_PASSWORD);
+        createPersistence(registration, AuthnMethodEnum.EMAIL_PASSWORD);
         break;
       case "user-not-found":
         response['code'] = AuthResponseStatus.ACCOUNT_NOT_FOUND;
@@ -133,8 +134,9 @@ class AuthMethods {
 
 // * * *  Sign up email and password  * * *
   static signUpWithEmailAndPassword(String email) async {
-    Register register = await RegisterService().checkEmail(email);
-    if (register == null) return {'code': AuthResponseStatus.EMAIL_NOT_FOUND};
+    Registration registration = await RegistrationService().checkEmail(email);
+    if (registration == null)
+      return {'code': AuthResponseStatus.EMAIL_NOT_FOUND};
 
     var password = generatePassword();
 
@@ -144,7 +146,7 @@ class AuthMethods {
     switch (result['code']) {
       case "sign_up_success":
         await authenticationService.sendPassword(email, password);
-        await authenticationService.savePassword(register.id, password);
+        await authenticationService.savePassword(registration.id, password);
         response['code'] = AuthResponseStatus.SUCCESS;
         break;
 
@@ -162,8 +164,9 @@ class AuthMethods {
 // * * *  Recovery password * * *
 
   static recoveryPassword(String email) async {
-    Register register = await RegisterService().checkEmail(email);
-    if (register == null) return {'code': AuthResponseStatus.EMAIL_NOT_FOUND};
+    Registration registration = await RegistrationService().checkEmail(email);
+    if (registration == null)
+      return {'code': AuthResponseStatus.EMAIL_NOT_FOUND};
 
     var result = await authenticationService.signInEmailAndPassword(
         email: email, password: "xxxxxx");
@@ -180,7 +183,7 @@ class AuthMethods {
         break;
     }
 
-    await authenticationService.remindPassword(email, register.password);
+    await authenticationService.remindPassword(email, registration.password);
 
     return {'code': AuthResponseStatus.SUCCESS};
   }
@@ -226,12 +229,13 @@ class AuthMethods {
   }
 
   static createState(
-      BuildContext context, Register reg, String authMethod) async {
+      BuildContext context, Registration reg, String authMethod) async {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     userProvider.setUser(reg.id, authMethod);
+    userProvider.setRegistration(reg);
   }
 
-  static createPersistence(Register reg, String authMethod) async {
+  static createPersistence(Registration reg, String authMethod) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString("registration_id", reg.id);
     prefs.setString("auth_method", authMethod);
