@@ -1,3 +1,5 @@
+import 'package:cetis32_app_registro/src/models/subscription_model.dart';
+
 class User {
   final String id;
   final String authMethod;
@@ -23,6 +25,8 @@ class Registration {
   int idbio;
   String qrDrive;
   String firmaDrive;
+  Subscription subscribedTo;
+  String fcmToken;
 
   /*Registration({
   String fotoUsuarioDrive;
@@ -48,46 +52,40 @@ class Registration {
     this.idbio,
     this.qrDrive,
     this.firmaDrive,
+    this.subscribedTo,
+    this.fcmToken,
   });
 
   factory Registration.fromJson(Map<String, dynamic> json) => Registration(
-      id: json["id"],
-      name: json["nombres"],
-      surnames: json["apellidos"],
-      curp: json["curp"],
-      email: json["correo"],
-      cellphone: json["celular"],
-      registrationCode: json["matricula"],
-      grade: json["grado"],
-      group: json["grupo"],
-      turn: json["turno"],
-      sex: json["sexo"],
-      password: json["password"],
-      fotoUsuarioDrive: json["foto_usuario_drive"],
-      idbio: json["idbio"],
-      qrDrive: json["qr_drive"],
-      firmaDrive: json["firma_drive"]);
+        id: json["id"],
+        name: json["nombres"],
+        surnames: json["apellidos"],
+        curp: json["curp"],
+        email: json["correo"],
+        cellphone: json["celular"],
+        registrationCode: json["matricula"],
+        career: json["carrera"],
+        grade: json["grado"],
+        group: json["grupo"],
+        turn: json["turno"],
+        sex: json["sexo"],
+        password: json["password"],
+        fotoUsuarioDrive: json["foto_usuario_drive"],
+        idbio: json["idbio"],
+        qrDrive: json["qr_drive"],
+        firmaDrive: json["firma_drive"],
+        subscribedTo: json["subscribed_to"] == null
+            ? null
+            : Subscription.fromJson(json["subscribed_to"]),
+        fcmToken: json["fcm_token"],
+      );
 
   @override
   String toString() {
     var strOutput =
-        " id $id\n name: $name \n surnames $surnames \n  curp: $curp \n email: $email \n cellphone: $cellphone \n  registrationCode: $registrationCode \n grade: $grade \n group: $group \n turn: $turn \n  sex: $sex \n  password: $password ";
+        " id $id\n name: $name \n surnames $surnames \n  curp: $curp \n email: $email \n cellphone: $cellphone \n  registrationCode: $registrationCode \n carrera: $career\n grade: $grade \n group: $group \n turn: $turn \n  sex: $sex \n  password: $password \n subscribedTo: $subscribedTo";
     return strOutput;
   }
-  /*factory Register.clone(Register reg) => Register(
-        id: reg.id,
-        nombre: reg.nombre,
-        apellidos: reg.apellidos,
-        curp: reg.curp,
-        correo: reg.correo,
-        celular: reg.celular,
-        matricula: reg.matricula,
-        grado: reg.grado,
-        grupo: reg.grupo,
-        turno: reg.turno,
-        sexo: reg.sexo,
-      );
-*/
 
   Map<String, dynamic> toJson() => {
         "id": id,
@@ -97,6 +95,7 @@ class Registration {
         "correo": email,
         "celular": cellphone,
         "matricula": registrationCode,
+        "carrera": career,
         "grado": grade,
         "grupo": group,
         "turno": turn,
@@ -105,6 +104,8 @@ class Registration {
         "fotoDriveId": fotoUsuarioDrive,
         "idbio": idbio,
         "qrDrive": qrDrive,
-        "firmaDrive": firmaDrive
+        "firmaDrive": firmaDrive,
+        "subscribed_to": subscribedTo,
+        "fcm_token": fcmToken,
       };
 }

@@ -1,3 +1,4 @@
+import 'package:cetis32_app_registro/src/services/RegistrationService.dart';
 import 'package:flutter/widgets.dart';
 import 'package:cetis32_app_registro/src/models/user_model.dart';
 //import 'package:cetis32_app_registro/src/utils/log_util.dart';
@@ -17,6 +18,8 @@ class UserProvider with ChangeNotifier {
         String id = prefs.getString("registration_id");
         String authMethod = prefs.getString("auth_method");
         setUser(id, authMethod);
+        RegistrationService().get(id).then((registration) =>
+            {if (registration != null) setRegistration(registration)});
       }
     });
   }

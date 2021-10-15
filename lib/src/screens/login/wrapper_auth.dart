@@ -9,13 +9,13 @@ class Wrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
-    userProvider.inituSer();
     final FirebaseAuth _auth = FirebaseAuth.instance;
     var user = _auth.currentUser;
     if (user != null) {
+      userProvider.inituSer();
       return HomeScreen();
     } else {
-      return InitialScreen();   
+      return InitialScreen();
     }
   }
 }

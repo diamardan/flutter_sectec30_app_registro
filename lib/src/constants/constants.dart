@@ -13,6 +13,7 @@ class AppColors {
   static const yellow = const Color(0XFFFFDD00);
   static const redError = const Color(0XFFFF8888);
   static const textoRojoCredencial = const Color(0XFF93243a);
+  static const yellowNotif = Color.fromRGBO(247, 220, 111, 1);
 
 /*   static const br = Border.radius(12); */
 

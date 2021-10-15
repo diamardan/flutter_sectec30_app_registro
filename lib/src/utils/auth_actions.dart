@@ -1,6 +1,6 @@
 import 'package:cetis32_app_registro/src/provider/user_provider.dart';
 import 'package:cetis32_app_registro/src/screens/initial_screen.dart';
-import 'package:cetis32_app_registro/src/services/authentication_service.dart';
+import 'package:cetis32_app_registro/src/services/AuthenticationService.dart';
 import 'package:cetis32_app_registro/src/utils/enums.dart';
 import 'package:cetis32_app_registro/src/utils/notify_ui.dart';
 import 'package:firebase_auth/firebase_auth.dart';

@@ -1,7 +1,7 @@
 import 'package:cetis32_app_registro/src/screens/home/home_sCreen.dart';
 import 'package:cetis32_app_registro/src/screens/login/forget_password.dart';
 import 'package:cetis32_app_registro/src/screens/login/request_password.dart';
-import 'package:cetis32_app_registro/src/services/authentication_service.dart';
+import 'package:cetis32_app_registro/src/services/AuthenticationService.dart';
 import 'package:cetis32_app_registro/src/utils/auth_methods.dart';
 import 'package:cetis32_app_registro/src/utils/enums.dart';
 import 'package:cetis32_app_registro/src/utils/notify_ui.dart';

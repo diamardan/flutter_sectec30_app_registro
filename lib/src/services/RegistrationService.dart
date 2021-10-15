@@ -55,8 +55,6 @@ class RegistrationService {
         .doc(registrationId)
         .get()
         .then((result) {
-      print("hey ++++++++");
-      print(result);
       if (result.exists) {
         var data = result.data();
         var registrationMap = {"id": result.id, ...data};

@@ -1,13 +1,17 @@
 import 'dart:ui';
+import 'package:cetis32_app_registro/main.dart';
 import 'package:cetis32_app_registro/src/constants/constants.dart';
 import 'package:cetis32_app_registro/src/models/user_model.dart';
+import 'package:cetis32_app_registro/src/models/notification_model.dart'
+    as NotificationModel;
 import 'package:cetis32_app_registro/src/provider/user_provider.dart';
 import 'package:cetis32_app_registro/src/screens/home/my_data_view.dart';
+import 'package:cetis32_app_registro/src/services/MessagingService.dart';
 import '../../services/RegistrationService.dart';
-import 'package:cetis32_app_registro/src/screens/notifications/notifications_screen.dart';
 import 'package:cetis32_app_registro/src/services/RegistrationService.dart';
 import 'package:cetis32_app_registro/src/utils/auth_actions.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -19,20 +23,21 @@ class HomeScreen extends StatefulWidget {
 
 // ignore: camel_case_types
 class _homeScreenState extends State<HomeScreen> {
-  int _viewIndex = 0;
-  FirebaseMessaging messaging;
   final RegistrationService registrationService = RegistrationService();
-  User _user;
+  final MessagingService messagingService = MessagingService();
+  FirebaseMessaging messaging;
   Registration _registration;
+  int _viewIndex = 0;
+  User _user;
 
   @override
   void initState() {
-    Future.delayed(Duration(seconds: 10), setMessaging);
+    Future.delayed(Duration(seconds: 10), initMessaging);
 
     super.initState();
   }
 
-  setMessaging() {
+  initMessaging() {
     UserProvider userProvider =
         Provider.of<UserProvider>(context, listen: false);
     _user = userProvider.getUser;
@@ -40,27 +45,94 @@ class _homeScreenState extends State<HomeScreen> {
 
     messaging = FirebaseMessaging.instance;
 
-    /*  messaging.getToken().then((value) {
-      registrationService.setFCMToken(_user.id, value);
-
-      FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    setListeners() {
+      FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
         // app on foreground
         print("message recieved");
+
+        RemoteNotification notification = message.notification;
+
+        AndroidNotification android = message.notification?.android;
+
+        // If `onMessage` is triggered with a notification, construct our own
+        // local notification to show to users using the created channel.
+        if (notification != null && android != null) {
+          NotificationModel.Notification myNotification =
+              NotificationModel.Notification(
+                  title: notification.title,
+                  message: notification.body,
+                  receivedDate: DateTime.now(),
+                  sentDate: message.sentTime,
+                  sender: message.senderId,
+                  read: false);
+          messagingService.save(myNotification);
+
+          AndroidInitializationSettings android =
+              AndroidInitializationSettings("@mipmap/launch");
+          await flutterLocalNotificationsPlugin.initialize(
+              InitializationSettings(android: android),
+              onSelectNotification: onSelectNotification);
+
+          flutterLocalNotificationsPlugin.show(
+              notification.hashCode,
+              notification.title,
+              notification.body,
+              NotificationDetails(
+                  android: AndroidNotificationDetails(
+                      channel.id, channel.name, channel.description,
+                      icon: "@mipmap/launch"
+                      // other properties...
+                      )),
+              payload: "go-to-notification");
+        }
       });
 
       FirebaseMessaging.onMessageOpenedApp.listen((message) {
         //click from user on notification when app is backgroud
         print('Message clicked!');
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => NotificationsScreen(message)));
+        Navigator.pushNamed(context, 'notifications');
       });
-    });*/
-    print(_user.id);
-    print(_registration.id);
+    }
+
     print(_registration.toString());
-    //messaging.subscribeToTopic();
+    if (_registration.fcmToken == null) {
+      messaging.getToken().then((value) {
+        registrationService.setFCMToken(_user.id, value);
+        setListeners();
+        messagingService.suscribeToTopics(_registration);
+      });
+    } else {
+      print("before setlisteners");
+      setListeners();
+      if (_registration.subscribedTo == null)
+        messagingService.suscribeToTopics(_registration);
+    }
+  }
+
+  Future<dynamic> onSelectNotification(payload) async {
+    // implement the navigation logic
+    if (payload == "go-to-notification") {
+      Navigator.pushNamed(context, 'notifications');
+    }
+  }
+
+  testNotification() async {
+    AndroidInitializationSettings android =
+        AndroidInitializationSettings("@mipmap/launch");
+    await flutterLocalNotificationsPlugin.initialize(
+        InitializationSettings(android: android),
+        onSelectNotification: onSelectNotification);
+    flutterLocalNotificationsPlugin.show(
+        1,
+        "hola",
+        "test",
+        NotificationDetails(
+            android: AndroidNotificationDetails(
+                channel.id, channel.name, channel.description,
+                icon: "@mipmap/launch"
+                // other properties...
+                )),
+        payload: "go-to-notification");
   }
 
   void _switchView(BuildContext context, int index) {
@@ -159,9 +231,7 @@ class _homeScreenState extends State<HomeScreen> {
                               height: 150,
                               width: 135,
                               child: OutlineButton(
-                                  onPressed: () {
-                                    print("hola");
-                                  },
+                                  onPressed: testNotification,
                                   child: Column(children: [
                                     Icon(Icons.account_box_outlined,
                                         size: 90,
@@ -208,7 +278,10 @@ class _homeScreenState extends State<HomeScreen> {
                               height: 140,
                               width: 130,
                               child: OutlineButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    Navigator.pushNamed(
+                                        context, "notifications");
+                                  },
                                   child: Column(children: [
                                     Icon(Icons.add_alert_outlined,
                                         size: 100,
