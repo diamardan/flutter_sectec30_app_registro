@@ -101,12 +101,8 @@ class _homeScreenState extends State<HomeScreen> {
         setListeners();
         messagingService.suscribeToTopics(_registration);
       });
-    } else {
-      print("before setlisteners");
+    } else
       setListeners();
-      if (_registration.subscribedTo == null)
-        messagingService.suscribeToTopics(_registration);
-    }
   }
 
   Future<dynamic> onSelectNotification(payload) async {
@@ -114,25 +110,6 @@ class _homeScreenState extends State<HomeScreen> {
     if (payload == "go-to-notification") {
       Navigator.pushNamed(context, 'notifications');
     }
-  }
-
-  testNotification() async {
-    AndroidInitializationSettings android =
-        AndroidInitializationSettings("@mipmap/launch");
-    await flutterLocalNotificationsPlugin.initialize(
-        InitializationSettings(android: android),
-        onSelectNotification: onSelectNotification);
-    flutterLocalNotificationsPlugin.show(
-        1,
-        "hola",
-        "test",
-        NotificationDetails(
-            android: AndroidNotificationDetails(
-                channel.id, channel.name, channel.description,
-                icon: "@mipmap/launch"
-                // other properties...
-                )),
-        payload: "go-to-notification");
   }
 
   void _switchView(BuildContext context, int index) {
@@ -231,7 +208,7 @@ class _homeScreenState extends State<HomeScreen> {
                               height: 150,
                               width: 135,
                               child: OutlineButton(
-                                  onPressed: testNotification,
+                                  onPressed: () {},
                                   child: Column(children: [
                                     Icon(Icons.account_box_outlined,
                                         size: 90,

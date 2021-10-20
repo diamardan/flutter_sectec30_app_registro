@@ -1,4 +1,5 @@
 import 'package:cetis32_app_registro/src/models/notification_model.dart';
+import 'package:cetis32_app_registro/src/models/subscription_model.dart';
 import 'package:cetis32_app_registro/src/models/user_model.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -9,32 +10,33 @@ class MessagingService {
   final school = "cetis32";
 
   suscribeToTopics(Registration reg) {
-    Map<String, String> topicsNames = _convertToTopicsNaming(reg);
+    Subscription subscription = _convertToTopicsNaming(reg);
 
-    print(topicsNames.toString());
+    //print(topicsNames.toString());
 
     /* FCM subscriptions to topics */
-    if (topicsNames["career"] != null)
-      messaging.subscribeToTopic(topicsNames["career"]);
-    if (topicsNames["grade"] != null)
-      messaging.subscribeToTopic(topicsNames["grade"]);
-    if (topicsNames["group"] != null)
-      messaging.subscribeToTopic(topicsNames["group"]);
-    if (topicsNames["turn"] != null)
-      messaging.subscribeToTopic(topicsNames["turn"]);
+    if (subscription.careerTopic != "none")
+      messaging.subscribeToTopic(subscription.careerTopic);
+    if (subscription.gradeTopic != "none")
+      messaging.subscribeToTopic(subscription.gradeTopic);
+    if (subscription.groupTopic != "none")
+      messaging.subscribeToTopic(subscription.groupTopic);
+    if (subscription.turnTopic != "none")
+      messaging.subscribeToTopic(subscription.turnTopic);
+
     messaging.subscribeToTopic(school);
 
     /* save topics on firestore */
-    saveTopics(reg.id, topicsNames);
+    saveTopics(reg.id, subscription);
   }
 
-  saveTopics(docId, topics) {
+  saveTopics(String docId, Subscription topics) {
     return firestore
         .collection("schools")
         .doc(school)
         .collection("registros")
         .doc(docId)
-        .update({"subscribed_to": topics});
+        .update({"subscribed_to": topics.toJson()});
   }
 
   save(Notification notification) {
@@ -49,7 +51,7 @@ class MessagingService {
 
 /* * * * utils functions * * * */
 
-Map<String, String> _convertToTopicsNaming(Registration reg) {
+Subscription _convertToTopicsNaming(Registration reg) {
   String career;
   String grade;
   String group;
@@ -68,12 +70,11 @@ Map<String, String> _convertToTopicsNaming(Registration reg) {
 
   if (reg.turn != null) turn = _replaceChars(reg.turn.toLowerCase());
 
-  return {
-    "topic-career": career ?? "no-career",
-    "topic-grade": grade ?? "no-grade",
-    "topic-group": group ?? "no-group",
-    "topic-turn": turn ?? "no-turn",
-  };
+  return Subscription(
+      careerTopic: career ?? "none",
+      gradeTopic: grade ?? "none",
+      groupTopic: group ?? "none",
+      turnTopic: turn ?? "none");
 }
 
 String _replaceChars(word) {
