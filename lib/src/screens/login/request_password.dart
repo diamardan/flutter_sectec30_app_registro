@@ -2,7 +2,8 @@ import 'dart:io';
 
 import 'package:cetis32_app_registro/src/services/RegistrationService.dart';
 import 'package:cetis32_app_registro/src/services/AuthenticationService.dart';
-import 'package:cetis32_app_registro/src/utils/auth_methods.dart';
+import 'package:cetis32_app_registro/src/utils/auth_sign.dart';
+import 'package:cetis32_app_registro/src/utils/auth_sign_in.dart';
 import 'package:cetis32_app_registro/src/utils/enums.dart';
 import 'package:cetis32_app_registro/src/utils/notify_ui.dart';
 import 'package:flutter/material.dart';
@@ -56,7 +57,7 @@ class _RequestPasswordScreenState extends State<RequestPasswordScreen> {
     _formKey.currentState.save();
     if (!_formKey.currentState.validate()) return;
 
-    var result = await AuthMethods.signUpWithEmailAndPassword(_email);
+    var result = await AuthSign.signUpWithEmailAndPassword(_email);
     switch (result['code']) {
       case AuthResponseStatus.SUCCESS:
         NotifyUI.flushbar(context, "El correo electrónico ha sido enviado.");

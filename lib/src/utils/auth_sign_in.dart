@@ -1,4 +1,5 @@
 import 'package:barcode_scan2/barcode_scan2.dart';
+import 'package:cetis32_app_registro/src/models/subscription_model.dart';
 import 'package:cetis32_app_registro/src/models/user_model.dart';
 import 'package:cetis32_app_registro/src/provider/user_provider.dart';
 import 'package:cetis32_app_registro/src/services/RegistrationService.dart';
@@ -12,16 +13,15 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_code_tools/qr_code_tools.dart';
 import 'package:image_picker/image_picker.dart';
-import 'dart:math';
 
-class AuthMethods {
+class AuthSignIn {
   static RegistrationService registrationService = RegistrationService();
 
   static AuthenticationService authenticationService = AuthenticationService();
 
   // * * *  Sing in with code QR from Camera  * * *
 
-  static signInWithQrCamera(BuildContext context) async {
+  static withQrCamera(BuildContext context) async {
     var response = {};
     try {
       // scan qr
@@ -65,20 +65,16 @@ class AuthMethods {
 
   // * * *  Sign in with code QR from file  * * *
 
-  static signInfromQrFile(BuildContext context) async {
+  static fromQrFile(BuildContext context, String imagePath) async {
     ImagePicker picker = ImagePicker();
     String qrData;
     var response = {};
 
-    try {
-      PickedFile _file = await picker.getImage(source: ImageSource.gallery);
+    /* PickedFile _file = await picker.getImage(source: ImageSource.gallery);
+    
+    if (_file == null) return;*/
 
-      if (_file == null) return;
-
-      qrData = await QrCodeToolsPlugin.decodeFrom(_file.path);
-    } catch (error) {
-      print(error);
-    }
+    qrData = await QrCodeToolsPlugin.decodeFrom(imagePath);
 
     if (qrData == null || qrData == "")
       return response["code"] = AuthResponseStatus.QR_INVALID;
@@ -88,9 +84,7 @@ class AuthMethods {
     if (registration == null) {
       return response["code"] = AuthResponseStatus.QR_NOT_FOUND;
     }
-    /*   SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setString('registration_qr', futureString.rawContent);
-*/
+
     await authenticationService.signInAnonymously();
 
     createState(context, registration, AuthnMethodEnum.EMAIL_PASSWORD);
@@ -102,7 +96,7 @@ class AuthMethods {
   }
 
 // * * *  Sign in with email and password  * * *
-  static signInWithEmailAndPassword(
+  static withEmailAndPassword(
       BuildContext context, String email, String password) async {
     Registration registration = await RegistrationService().checkEmail(email);
     if (registration == null)
@@ -132,81 +126,7 @@ class AuthMethods {
     return response;
   }
 
-// * * *  Sign up email and password  * * *
-  static signUpWithEmailAndPassword(String email) async {
-    Registration registration = await RegistrationService().checkEmail(email);
-    if (registration == null)
-      return {'code': AuthResponseStatus.EMAIL_NOT_FOUND};
-
-    var password = generatePassword();
-
-    Map<String, String> result = await authenticationService
-        .signUpEmailAndPassword(email: email, password: password);
-    var response = {};
-    switch (result['code']) {
-      case "sign_up_success":
-        await authenticationService.sendPassword(email, password);
-        await authenticationService.savePassword(registration.id, password);
-        response['code'] = AuthResponseStatus.SUCCESS;
-        break;
-
-      case "email-already-in-use":
-        response['code'] = AuthResponseStatus.EMAIL_ALREADY_EXISTS;
-        break;
-      default:
-        print(result['code']);
-        response['code'] = AuthResponseStatus.AUTH_ERROR;
-    }
-
-    return response;
-  }
-
-// * * *  Recovery password * * *
-
-  static recoveryPassword(String email) async {
-    Registration registration = await RegistrationService().checkEmail(email);
-    if (registration == null)
-      return {'code': AuthResponseStatus.EMAIL_NOT_FOUND};
-
-    var result = await authenticationService.signInEmailAndPassword(
-        email: email, password: "xxxxxx");
-
-    print(result['code']);
-    switch (result['code']) {
-      case "user-not-found":
-        return {"code": AuthResponseStatus.ACCOUNT_NOT_FOUND};
-        break;
-      case "wrong-password": //means user exists
-        break;
-      default:
-        return {"code": AuthResponseStatus.AUTH_ERROR};
-        break;
-    }
-
-    await authenticationService.remindPassword(email, registration.password);
-
-    return {'code': AuthResponseStatus.SUCCESS};
-  }
-
   // * * *  Utilities  * * *
-
-  static String generatePassword() {
-    final length = 12;
-    final letterLowerCase = "abcdefghijklmnopqrstuvwxyz";
-    final letterUpperCase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    final number = '01234567890123456789';
-    final special = '@#%+&#%+&';
-
-    String chars = "";
-    chars += '$letterLowerCase$letterUpperCase';
-    chars += '$number';
-    chars += '$special';
-
-    return List.generate(length, (index) {
-      final indexRandom = Random.secure().nextInt(chars.length);
-      return chars[indexRandom];
-    }).join('');
-  }
 
   static showDialogPermissions(BuildContext context) {
     showDialog(
@@ -232,6 +152,8 @@ class AuthMethods {
       BuildContext context, Registration reg, String authMethod) async {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     userProvider.setUser(reg.id, authMethod);
+
+    reg.resetMessagingInfo();
     userProvider.setRegistration(reg);
   }
 
@@ -239,5 +161,9 @@ class AuthMethods {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString("registration_id", reg.id);
     prefs.setString("auth_method", authMethod);
+  }
+
+  static resetMessaging(String fcmToken, Subscription subscription) {
+    if (fcmToken != null) {}
   }
 }

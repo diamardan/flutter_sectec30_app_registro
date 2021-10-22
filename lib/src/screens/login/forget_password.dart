@@ -1,13 +1,9 @@
-import 'package:cetis32_app_registro/src/models/user_model.dart';
-import 'package:cetis32_app_registro/src/services/RegistrationService.dart';
 import 'package:cetis32_app_registro/src/services/AuthenticationService.dart';
-import 'package:cetis32_app_registro/src/utils/auth_methods.dart';
+import 'package:cetis32_app_registro/src/utils/auth_sign_psw.dart';
 import 'package:cetis32_app_registro/src/utils/enums.dart';
 import 'package:cetis32_app_registro/src/utils/notify_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:cetis32_app_registro/src/constants/constants.dart';
-import 'dart:math';
-
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:cetis32_app_registro/src/utils/validator.dart';
 
@@ -18,7 +14,6 @@ class ForgetPasswordScreen extends StatefulWidget {
 class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
   bool showSignInButton = false;
   bool loading = false;
-  final _authService = AuthenticationService();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String _email = "";
   bool enabledSendButton = false;
@@ -35,7 +30,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
     setState(() {
       loading = true;
     });
-    var result = await AuthMethods.recoveryPassword(_email);
+    var result = await AuthSignPassword.recoveryPassword(_email);
 
     switch (result['code']) {
       case AuthResponseStatus.SUCCESS:

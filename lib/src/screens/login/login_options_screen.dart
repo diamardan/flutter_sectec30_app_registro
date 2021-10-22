@@ -5,7 +5,8 @@ import 'package:cetis32_app_registro/src/screens/home/home_sCreen.dart';
 import 'package:cetis32_app_registro/src/screens/login/login_email_screen.dart';
 import 'package:cetis32_app_registro/src/utils/notify_ui.dart';
 import 'package:cetis32_app_registro/src/utils/enums.dart';
-import 'package:cetis32_app_registro/src/utils/auth_methods.dart';
+import 'package:cetis32_app_registro/src/utils/auth_sign_in.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:flutter/material.dart';
 import 'package:cetis32_app_registro/src/widgets/whatsapp_help_btn.dart';
@@ -19,10 +20,23 @@ class LoginOptionsScreen extends StatefulWidget {
 
 class _LoginOptionsScreenState extends State<LoginOptionsScreen> {
   bool loading = false;
+  String imagePath;
+  final picker = ImagePicker();
 
-  void _loginQrImage() async {
+  void _loginQrFromFile() async {
     setState(() => loading = true);
-    var response = await AuthMethods.signInfromQrFile(context);
+    PickedFile _file;
+    try {
+      _file = await picker.getImage(source: ImageSource.gallery);
+    } catch (error) {
+      print(error);
+    }
+    setState(() {
+      if (_file == null) return;
+      imagePath = _file.path;
+    });
+
+    var response = await AuthSignIn.fromQrFile(context, imagePath);
     setState(() => loading = false);
     switch (response) {
       case AuthResponseStatus.SUCCESS:
@@ -46,7 +60,7 @@ class _LoginOptionsScreenState extends State<LoginOptionsScreen> {
 
   _loginWithCamera(BuildContext context) async {
     setState(() => loading = true);
-    var response = await AuthMethods.signInWithQrCamera(context);
+    var response = await AuthSignIn.withQrCamera(context);
     setState(() => loading = false);
     print("reponse");
     print(response);
@@ -143,7 +157,7 @@ class _LoginOptionsScreenState extends State<LoginOptionsScreen> {
                   style: TextStyle(color: AppColors.morenaLightColor),
                 ),
                 onPressed: () {
-                  _loginQrImage();
+                  _loginQrFromFile();
                 },
               )),
           SizedBox(

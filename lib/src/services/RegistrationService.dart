@@ -64,13 +64,4 @@ class RegistrationService {
         return null;
     });
   }
-
-  Future<void> setFCMToken(String registrationId, String token) {
-    return FirebaseFirestore.instance
-        .collection("schools")
-        .doc(school)
-        .collection("registros")
-        .doc(registrationId)
-        .update({"fcm_token": token});
-  }
 }

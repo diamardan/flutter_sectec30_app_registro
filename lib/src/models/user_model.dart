@@ -113,4 +113,9 @@ class Registration {
         "fcm_token": fcmToken,
         "fecha_registro": fecha_registro
       };
+
+  void resetMessagingInfo() {
+    fcmToken = null;
+    subscribedTo = null;
+  }
 }

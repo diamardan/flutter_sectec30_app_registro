@@ -2,7 +2,7 @@ import 'package:cetis32_app_registro/src/screens/home/home_sCreen.dart';
 import 'package:cetis32_app_registro/src/screens/login/forget_password.dart';
 import 'package:cetis32_app_registro/src/screens/login/request_password.dart';
 import 'package:cetis32_app_registro/src/services/AuthenticationService.dart';
-import 'package:cetis32_app_registro/src/utils/auth_methods.dart';
+import 'package:cetis32_app_registro/src/utils/auth_sign_in.dart';
 import 'package:cetis32_app_registro/src/utils/enums.dart';
 import 'package:cetis32_app_registro/src/utils/notify_ui.dart';
 import 'package:cetis32_app_registro/src/utils/validator.dart';
@@ -42,8 +42,8 @@ class _LoginMailScreenState extends State<LoginMailScreen> {
     setState(() {
       loading = true;
     });
-    var result = await AuthMethods.signInWithEmailAndPassword(
-        context, _email, _password);
+    var result =
+        await AuthSignIn.withEmailAndPassword(context, _email, _password);
     setState(() {
       loading = false;
     });

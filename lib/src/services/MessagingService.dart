@@ -30,7 +30,16 @@ class MessagingService {
     saveTopics(reg.id, subscription);
   }
 
-  saveTopics(String docId, Subscription topics) {
+  Future<void> setFCMToken(String registrationId, String token) {
+    return FirebaseFirestore.instance
+        .collection("schools")
+        .doc(school)
+        .collection("registros")
+        .doc(registrationId)
+        .update({"fcm_token": token});
+  }
+
+  Future<void> saveTopics(String docId, Subscription topics) {
     return firestore
         .collection("schools")
         .doc(school)

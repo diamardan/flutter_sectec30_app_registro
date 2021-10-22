@@ -3,7 +3,8 @@ import 'package:cetis32_app_registro/src/models/user_model.dart';
 import 'package:cetis32_app_registro/src/provider/user_provider.dart';
 import 'package:cetis32_app_registro/src/services/RegistrationService.dart';
 import 'package:cetis32_app_registro/src/screens/home/digital_credential_screen.dart';
-import 'package:cetis32_app_registro/src/utils/auth_actions.dart';
+import 'package:cetis32_app_registro/src/utils/auth_sign.dart';
+import 'package:cetis32_app_registro/src/utils/auth_sign_psw.dart';
 import 'package:cetis32_app_registro/src/utils/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -121,7 +122,7 @@ class _MyDataViewState extends State<MyDataView> {
             showCnangePassword == true
                 ? OutlinedButton(
                     onPressed: () {
-                      AuthActions.showChangePassword(context);
+                      AuthSignPassword.changePassword(context);
                     },
                     child: Text("Cambiar contraseña",
                         style: TextStyle(
