@@ -72,10 +72,10 @@ class _PreregFormState extends State<PreregForm> {
   Map<String, dynamic> resultTur;
 
   Map<String, dynamic> alumno;
-  List _especialidades = List();
-  List _semestres = List();
-  List _grupos = List();
-  List _turnos = List();
+  List _especialidades = [];
+  List _semestres = [];
+  List _grupos = [];
+  List _turnos = [];
   File foto;
   String foto1 = "";
   File voucher;
@@ -140,55 +140,61 @@ class _PreregFormState extends State<PreregForm> {
     if (_currentStep > 1) {
       goTo(_currentStep - 1);
     } else {
-       Navigator.push(
+      Navigator.push(
           context, MaterialPageRoute(builder: (context) => InitialScreen()));
       /* Navigator.popUntil(context, ModalRoute.withName('inicio')); */
     }
   }
 
   Future<bool> validateCurp(int step) async {
-    bool avanza = false;
-    Map<String, dynamic> result;
-
-    print('voy a validar');
     try {
-      result = await alumnoService.checkCurp(_curpAlumnoController.text);
-    } catch (error) {
-      print('estoy en catch');
-      print(error);
-    }
+      bool avanza = false;
+      Map<String, dynamic> result;
 
-    if (result['message'] != "SUCCESS") {
-      showAlertDialog(context, "Error",
-          "Ocurrió un error al conectarse al servidor", "error");
-      return avanza;
-    }
-
-    if(result['code'] == 201){
-     return avanza;
-    }
-    if (result['code'] == 200) {
-      alumno = result['data'];
-      setState(() {
-        _nombreAlumnoController.text = alumno['nombres'];
-        _apellidosAlumnoController.text = alumno['apellidos'];
-        /* alumno[0]['FOTO_USUARIO'] != null ? foto1 = "${AppConstants.backendPublicUrl}/uploads/preregistro/fotos/${alumno[0]['FOTO_USUARIO']}"
-        : foto1 = ""; */
-      });
-      if (alumno.length >= 1) {
-        avanza = true;
+      print('voy a validar');
+      try {
+        result = await alumnoService.checkCurp(_curpAlumnoController.text);
+      } catch (error) {
+        print('estoy en catch');
+        print(error);
       }
-    }
-    /* else {
+
+      if (result['message'] != "SUCCESS") {
+        showAlertDialog(context, "Error",
+            "Ocurrió un error al conectarse al servidor", "error");
+        return avanza;
+      }
+
+      if (result['code'] == 201) {
+        return avanza;
+      }
+      if (result['code'] == 200) {
+        alumno = result['data'];
+        setState(() {
+          _nombreAlumnoController.text = alumno['nombres'];
+          _apellidosAlumnoController.text = alumno['apellidos'];
+          /* alumno[0]['FOTO_USUARIO'] != null ? foto1 = "${AppConstants.backendPublicUrl}/uploads/preregistro/fotos/${alumno[0]['FOTO_USUARIO']}"
+        : foto1 = ""; */
+        });
+        if (alumno.length >= 1) {
+          avanza = true;
+        }
+      }
+      /* else {
       showAlertDialog(
           context, "Error", "Ocurrió un error al conectarse al servidor");
     } */
-    print('misVotos: $result');
-    /*  setState(() {
+      print('misVotos: $result');
+      /*  setState(() {
       _currentStep = result['data'] == 'SUCCESS' ? step : step - 1;
       _loading = false;
     }); */
-    return avanza;
+      return avanza;
+    } catch (e) {
+      print("error en validación de curp");
+      showAlertDialog(context, "error", e.toString());
+      return false;
+    }
   }
 
   goTo(int step) async {
@@ -219,19 +225,20 @@ class _PreregFormState extends State<PreregForm> {
             /* message =
                 "El CURP ingresado no cuenta con registro de pago . Favor de descargar el formato de pago y una vez realizado el deposito enviar foto del voucher original con el nombre y curp del alumno por WhatsApp al 5520779800";
             */
-            message = "No se encontró el alumno con la C.U.R.P. ingresada, en caso de que sea correcto por favor comunicarse al 5520779800 para darlo de alta en el sistema";
-;
+            message =
+                "No se encontró el alumno con la C.U.R.P. ingresada, en caso de que sea correcto por favor comunicarse al 5520779800 para darlo de alta en el sistema";
+            ;
           }
           print("puedo avanzar ? : $avanzar");
         }
         break;
       case 2:
         {
-          if(avanzar != true){
-          title = "¡Atención!";
-          message = "Alumnos de nuevo ingreso, deberán escoger la especialidad 'COMPONENTE BÁSICO Y PROPEDEUTICO'";
-          showAlertDialog(context, title, message, "warning", false);
-
+          if (avanzar != true) {
+            title = "¡Atención!";
+            message =
+                "Alumnos de nuevo ingreso, deberán escoger la especialidad 'COMPONENTE BÁSICO Y PROPEDEUTICO'";
+            showAlertDialog(context, title, message, "warning", false);
           }
           avanzar = true;
         }
@@ -283,7 +290,9 @@ class _PreregFormState extends State<PreregForm> {
         }
         break;
     }
-    avanzar == false ? showAlertDialog(context, title, message, "error", false) : null;
+    avanzar == false
+        ? showAlertDialog(context, title, message, "error", false)
+        : null;
     /* if (avanzar == false && mostrarFormPago == true) {
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => PaymentPage()));
@@ -314,7 +323,8 @@ class _PreregFormState extends State<PreregForm> {
     var firma = await _signController.toPngBytes();
     var data = Image.memory(firma);
 
-    final finishStep = await alumnoService.finish(_alumno, voucher, foto, firma);
+    final finishStep =
+        await alumnoService.finish(_alumno, voucher, foto, firma);
     final resultMessage = finishStep['message'];
     final resultCode = finishStep['code'];
     if (resultCode == 200) {
@@ -354,18 +364,25 @@ class _PreregFormState extends State<PreregForm> {
                   controlsBuilder: (BuildContext context,
                       {VoidCallback onStepContinue,
                       VoidCallback onStepCancel}) {
-                    return Row(
+                    return Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        RaisedButton(
-                          color: AppColors.morenaColor,
-                          onPressed: onStepContinue,
-                          child: const Text(
-                            'Continuar',
-                            style: TextStyle(color: Colors.white),
+                        SizedBox(
+                          height: 30,
+                        ),
+                        Container(
+                          height: 60,
+                          width: 200,
+                          child: MaterialButton(
+                            color: AppColors.morenaColor,
+                            onPressed: onStepContinue,
+                            child: const Text(
+                              'Continuar',
+                              style: TextStyle(color: Colors.white),
+                            ),
                           ),
                         ),
-                        RaisedButton(
+                        MaterialButton(
                           onPressed: onStepCancel,
                           child: const Text('Atrás'),
                         ),
@@ -446,23 +463,24 @@ class _PreregFormState extends State<PreregForm> {
                 enabled: false,
               ),
               DropdownButtonFormField(
-                isExpanded: true,
-                validator: (value) => validators.selectSelected(value),
-                hint: Text("Seleccione un Sexo"),
-                onChanged: (newValue) {
-                  setState(() {
-                    sexoSeleccionado = newValue;
-                  });
-                },
-                items: [
-                  DropdownMenuItem(
+                  isExpanded: true,
+                  validator: (value) => validators.selectSelected(value),
+                  hint: Text("Seleccione un Sexo"),
+                  onChanged: (newValue) {
+                    setState(() {
+                      sexoSeleccionado = newValue;
+                    });
+                  },
+                  items: [
+                    DropdownMenuItem(
                       value: "H",
-                      child: Text("HOMBRE"),),
-                  DropdownMenuItem(
+                      child: Text("HOMBRE"),
+                    ),
+                    DropdownMenuItem(
                       value: "M",
-                      child: Text("MUJER"),),
-                ]
-              ),
+                      child: Text("MUJER"),
+                    ),
+                  ]),
               TextFormField(
                 validator: (value) =>
                     validators.validateEmail(value), //notEmptyField(value),
@@ -504,7 +522,7 @@ class _PreregFormState extends State<PreregForm> {
               TextFormField(
                 inputFormatters: [TextoMayusculas()],
                 controller: _matriculaAlumnoControler,
-                decoration: InputDecoration( 
+                decoration: InputDecoration(
                     labelText: 'Número de Control  (opcional)', hintText: ''),
               ),
               DropdownButtonFormField(
@@ -604,6 +622,9 @@ class _PreregFormState extends State<PreregForm> {
                     minWidth: 10,
                     onPressed: () {
                       _tomarVoucher();
+                      setState(() {
+                        _loading = true;
+                      });
                     },
                     shape: RoundedRectangleBorder(
                         borderRadius: new BorderRadius.circular(22)),
@@ -624,6 +645,7 @@ class _PreregFormState extends State<PreregForm> {
           ),
         ));
   }
+
   Step _foto() {
     return Step(
         isActive: _currentStep >= 4,
@@ -643,6 +665,9 @@ class _PreregFormState extends State<PreregForm> {
                     minWidth: 10,
                     onPressed: () {
                       _tomarFoto();
+                      setState(() {
+                        _loading = true;
+                      });
                     },
                     shape: RoundedRectangleBorder(
                         borderRadius: new BorderRadius.circular(22)),
@@ -734,7 +759,6 @@ class _PreregFormState extends State<PreregForm> {
     );
   }
 
-
   Future<bool> procesarFirma() async {
     if (_signController.isNotEmpty) {
       return true;
@@ -807,6 +831,4 @@ class _PreregFormState extends State<PreregForm> {
         ? Image.asset('assets/img/no-image-voucher.png')
         : Image.network(voucher1);
   }
-
-
 }
