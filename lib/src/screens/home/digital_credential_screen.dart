@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 import 'dart:io';
 import 'dart:async';
-
+import 'package:intl/intl.dart'; // for date format
 import 'package:cetis32_app_registro/src/constants/constants.dart';
 import 'package:cetis32_app_registro/src/models/user_model.dart';
 import 'package:cetis32_app_registro/src/screens/home/render_crendetial_screen.dart';
@@ -450,16 +450,30 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
   }
 
   Widget _firmaAlumno() {
+    DateFormat df = DateFormat('dd-MM-yyyy');
+    int fecha = widget.register.fecha_registro.millisecondsSinceEpoch;
+    var fch1 = df.format(new DateTime.fromMillisecondsSinceEpoch(fecha));
+    //var fecha_emision = fecha.split(" ")[0];
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         Container(
           width: 100,
-          height: 90,
+          height: 100,
           //color: Colors.amber,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Text(
+                fch1.toString() != null ? fch1.toString() : '',
+                style: TextStyle(
+                    color: AppColors.morenaColor, fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
         ),
         _networkImageWidget(
-            60, 200, widget.register.firmaDrive, false, true, 15.0)
+            50, 200, widget.register.firmaDrive, false, true, 15.0)
         /* Container(
           width: 200,
           height: 60,

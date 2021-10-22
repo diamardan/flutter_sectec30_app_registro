@@ -1,4 +1,5 @@
 import 'package:cetis32_app_registro/src/models/subscription_model.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class User {
   final String id;
@@ -22,6 +23,7 @@ class Registration {
   String sex;
   String password;
   String fotoUsuarioDrive;
+  Timestamp fecha_registro;
   int idbio;
   String qrDrive;
   String firmaDrive;
@@ -54,6 +56,7 @@ class Registration {
     this.firmaDrive,
     this.subscribedTo,
     this.fcmToken,
+    this.fecha_registro,
   });
 
   factory Registration.fromJson(Map<String, dynamic> json) => Registration(
@@ -74,6 +77,7 @@ class Registration {
         idbio: json["idbio"],
         qrDrive: json["qr_drive"],
         firmaDrive: json["firma_drive"],
+        fecha_registro: json["fecha_registro"],
         subscribedTo: json["subscribed_to"] == null
             ? null
             : Subscription.fromJson(json["subscribed_to"]),
@@ -107,5 +111,6 @@ class Registration {
         "firmaDrive": firmaDrive,
         "subscribed_to": subscribedTo,
         "fcm_token": fcmToken,
+        "fecha_registro": fecha_registro
       };
 }
