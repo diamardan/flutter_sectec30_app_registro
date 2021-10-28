@@ -45,8 +45,8 @@ class AuthSignIn {
       try {
         await authenticationService.signInAnonymously();
 
-        createState(context, registration, AuthnMethodEnum.EMAIL_PASSWORD);
-        createPersistence(registration, AuthnMethodEnum.EMAIL_PASSWORD);
+        createState(context, registration, AuthnMethodEnum.QR_CAMERA);
+        createPersistence(registration, AuthnMethodEnum.QR_CAMERA);
       } catch (error) {
         return response["code"] = AuthResponseStatus.AUTH_ERROR;
       }
@@ -87,8 +87,8 @@ class AuthSignIn {
 
     await authenticationService.signInAnonymously();
 
-    createState(context, registration, AuthnMethodEnum.EMAIL_PASSWORD);
-    createPersistence(registration, AuthnMethodEnum.EMAIL_PASSWORD);
+    createState(context, registration, AuthnMethodEnum.QR_FILE);
+    createPersistence(registration, AuthnMethodEnum.QR_FILE);
 
     //return response["code"] = LoginResponseStatus.AUTH_ERROR;
 

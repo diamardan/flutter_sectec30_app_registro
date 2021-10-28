@@ -13,6 +13,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:cetis32_app_registro/src/models/notification_model.dart'
     as NotificationModel;
 import 'package:cetis32_app_registro/src/services/MessagingService.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> _messageHandler(RemoteMessage message) async {
   print('background message ${message.notification.body}');
@@ -22,15 +23,17 @@ Future<void> _messageHandler(RemoteMessage message) async {
   AndroidNotification android = message.notification?.android;
 
   if (notification != null && android != null) {
-    NotificationModel.Notification myNotification =
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var userId = prefs.getString("registration_id");
+    NotificationModel.Notification appNotification =
         NotificationModel.Notification(
             title: notification.title,
             message: notification.body,
             receivedDate: DateTime.now(),
             sentDate: message.sentTime,
-            sender: message.senderId,
+            senderName: message.data["sender"],
             read: false);
-    MessagingService().save(myNotification);
+    MessagingService().save(userId, appNotification);
   }
 }
 

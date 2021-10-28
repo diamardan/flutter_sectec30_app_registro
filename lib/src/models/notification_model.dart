@@ -5,7 +5,8 @@ class Notification {
   String message;
   DateTime receivedDate;
   DateTime sentDate;
-  String sender;
+  String senderName;
+  String receiverId;
   bool read;
 
   Notification(
@@ -13,7 +14,7 @@ class Notification {
       this.message,
       this.receivedDate,
       this.sentDate,
-      this.sender,
+      this.senderName,
       this.read});
 
   factory Notification.fromJson(Map<String, dynamic> json) {
@@ -22,7 +23,7 @@ class Notification {
       message: json["message"],
       receivedDate: json["received_date"].toDate(),
       sentDate: json["sent_date"].toDate(),
-      sender: json["sender"],
+      senderName: json["sender_name"],
       read: json["read"],
     );
   }
@@ -32,7 +33,7 @@ class Notification {
         "message": message,
         "received_date": receivedDate,
         "sent_date": sentDate,
-        "sender": sender,
+        "sender_name": senderName,
         "read": read,
       };
 }

@@ -88,19 +88,26 @@ class _RequestPasswordScreenState extends State<RequestPasswordScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
+            appBar: AppBar(
+              backgroundColor: Colors.white,
+              foregroundColor: Colors.black87,
+              title: Text("ACTIVAR CUENTA"),
+              titleTextStyle: TextStyle(color: Colors.black87),
+            ),
             //resizeToAvoidBottomInset: false,
             body: ModalProgressHUD(
-      inAsyncCall: loading,
-      child: SingleChildScrollView(
-          child: Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height -
-                  MediaQuery.of(context).padding.top,
-              //decoration: BoxDecoration(color: Color(0Xcdcdcdff)),
-              child: Center(
-                child: _content(),
-              ))),
-    )));
+              inAsyncCall: loading,
+              child: SingleChildScrollView(
+                  child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height -
+                          MediaQuery.of(context).padding.top -
+                          kToolbarHeight,
+                      //decoration: BoxDecoration(color: Color(0Xcdcdcdff)),
+                      child: Center(
+                        child: _content(),
+                      ))),
+            )));
   }
 
   _content() {
@@ -116,20 +123,13 @@ class _RequestPasswordScreenState extends State<RequestPasswordScreen> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(
-              "ACTIVAR CUENTA",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontWeight: FontWeight.w700,
-                  color: AppColors.morenaLightColor),
-            ),
             SizedBox(
               height: 10,
             ),
             Icon(
-              Icons.alternate_email_sharp,
-              size: 50,
-              color: AppColors.secondary.withOpacity(0.4),
+              Icons.account_circle,
+              size: 70,
+              color: AppColors.secondary,
             ),
             SizedBox(
               height: 20,
@@ -165,10 +165,12 @@ class _RequestPasswordScreenState extends State<RequestPasswordScreen> {
         key: _formKey,
         child: Column(children: [
           Text(
-            "Introduce el correo electrónico que registraste ",
+            "Introduce el correo electrónico que registraste: ",
             textAlign: TextAlign.center,
             style: TextStyle(
-                fontWeight: FontWeight.w600, color: AppColors.secondary),
+                fontWeight: FontWeight.w400,
+                color: Colors.black87,
+                fontSize: 18),
           ),
           SizedBox(
             height: 10,
@@ -180,7 +182,7 @@ class _RequestPasswordScreenState extends State<RequestPasswordScreen> {
           Text(
             "Activaremos tu cuenta y te enviaremos un correo electrónico con tu contraseña",
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 12),
+            style: TextStyle(fontSize: 14, color: AppColors.textFieldLabel),
           ),
           SizedBox(
             height: 30,
@@ -189,10 +191,13 @@ class _RequestPasswordScreenState extends State<RequestPasswordScreen> {
             onPressed: _email != "" && enabledSendButton == true
                 ? _createAccount
                 : null,
-            child: Text("ENVIAR CORREO"),
+            child: Text(
+              "ENVIAR CORREO ELECTRÓNICO",
+              textAlign: TextAlign.center,
+            ),
             style: ElevatedButton.styleFrom(
                 primary: AppColors.morenaLightColor.withOpacity(0.9),
-                padding: EdgeInsets.symmetric(horizontal: 25, vertical: 15),
+                padding: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
                 textStyle:
                     TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
           ),
@@ -201,14 +206,19 @@ class _RequestPasswordScreenState extends State<RequestPasswordScreen> {
 
   _emailTextField() {
     return Container(
-        height: !emailError ? 50 : 60,
+        height: !emailError ? 64 : 84,
         child: TextFormField(
           keyboardType: TextInputType.emailAddress,
           maxLength: 50,
           decoration: InputDecoration(
               //contentPadding: const EdgeInsets.all(8.0),
+              focusedBorder: OutlineInputBorder(
+                borderSide: const BorderSide(
+                    color: AppColors.morenaLightColor, width: 2.0),
+                borderRadius: BorderRadius.circular(20.0),
+              ),
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10.0),
+                borderRadius: BorderRadius.circular(20.0),
               ),
               filled: true,
               fillColor: Colors.white,

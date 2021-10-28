@@ -77,8 +77,11 @@ class AuthenticationService {
       "Content-type": "application/json; charset=UTF-8"
     };
     http.Response response;
-    String json =
-        jsonEncode(<String, String>{"email": email, "password": password});
+    String json = jsonEncode(<String, String>{
+      "school": school,
+      "email": email,
+      "password": password
+    });
     try {
       response = await http.post(uri, headers: headers, body: json);
     } on SocketException {
@@ -96,8 +99,11 @@ class AuthenticationService {
       "Content-type": "application/json; charset=UTF-8"
     };
     http.Response response;
-    String json =
-        jsonEncode(<String, String>{"email": email, "password": password});
+    String json = jsonEncode(<String, String>{
+      "school": school,
+      "email": email,
+      "password": password
+    });
     try {
       response = await http.post(uri, headers: headers, body: json);
     } on SocketException {

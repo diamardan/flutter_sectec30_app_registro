@@ -59,15 +59,16 @@ class _MyDataViewState extends State<MyDataView> {
     return SafeArea(
         child: Scaffold(
       appBar: AppBar(
-        title: Text("MIS DATOS"),
-        centerTitle: true,
+        title: Text("Mis datos"),
         backgroundColor: AppColors.morenaLightColor,
       ),
       body: SingleChildScrollView(
           child: Stack(children: [
         Container(
             height: MediaQuery.of(context).size.height -
-                MediaQuery.of(context).padding.top,
+                MediaQuery.of(context).padding.top -
+                kToolbarHeight -
+                kBottomNavigationBarHeight,
             decoration: BoxDecoration(
                 image: DecorationImage(
                     fit: BoxFit.fill,
@@ -90,59 +91,79 @@ class _MyDataViewState extends State<MyDataView> {
                 height: 460,
                 child: SingleChildScrollView(
                     child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                       Text(
                         "${registration.name ?? "No disponible"} ${registration.surnames ?? "No disponible"}",
                         textAlign: TextAlign.center,
                         style: TextStyle(fontSize: 16),
                       ),
+                      Divider(
+                        height: 5,
+                        color: Colors.grey,
+                      ),
                       SizedBox(height: 20),
-                      Text("Matrícula"),
+                      Text(
+                        "Matrícula",
+                        style: TextStyle(color: Colors.black45),
+                      ),
                       Text(registration.registrationCode ?? "No disponible"),
                       SizedBox(height: 20),
-                      Text("CURP"),
+                      Text("CURP", style: TextStyle(color: Colors.black45)),
                       Text(registration.curp ?? "No disponible"),
                       SizedBox(height: 20),
-                      Text("Grado"),
+                      Text("Grado", style: TextStyle(color: Colors.black45)),
                       Text(registration.grade ?? "No disponible"),
                       SizedBox(height: 20),
-                      Text("Grupo"),
+                      Text("Grupo", style: TextStyle(color: Colors.black45)),
                       Text(registration.group ?? "No disponible"),
                       SizedBox(height: 20),
-                      Text("Turno"),
+                      Text("Turno", style: TextStyle(color: Colors.black45)),
                       Text(registration.turn ?? "No disponible"),
                       SizedBox(height: 20),
-                      Text("Correo"),
+                      Text("Correo", style: TextStyle(color: Colors.black45)),
                       Text(registration.email ?? "No disponible"),
                       SizedBox(height: 20),
-                      Text("Celular"),
+                      Text("Celular", style: TextStyle(color: Colors.black45)),
                       Text(registration.cellphone ?? "No disponible"),
                     ]))),
+            SizedBox(height: 20),
             showCnangePassword == true
-                ? OutlinedButton(
+                ? Container(
+                    color: Colors.white70,
+                    width: 260,
+                    height: 40,
+                    padding: EdgeInsets.all(0),
+                    child: OutlinedButton(
+                        onPressed: () {
+                          AuthSignPassword.changePassword(context);
+                        },
+                        child: Text("Cambiar contraseña",
+                            style: TextStyle(
+                                fontSize: 13,
+                                color: AppColors.morenaLightColor
+                                    .withOpacity(0.7)))))
+                : Container(),
+            SizedBox(height: 5),
+            Container(
+                color: Colors.white70,
+                width: 260,
+                height: 40,
+                padding: EdgeInsets.all(0),
+                child: OutlinedButton(
                     onPressed: () {
-                      AuthSignPassword.changePassword(context);
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  DigitalCredentialScreen(registration)));
+                      //AuthActions.showChangePassword(context);
                     },
-                    child: Text("Cambiar contraseña",
+                    child: Text("Credencial digital",
                         style: TextStyle(
                             fontSize: 13,
                             color:
-                                AppColors.morenaLightColor.withOpacity(0.7))))
-                : Container(),
-            OutlinedButton(
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              DigitalCredentialScreen(registration)));
-                  //AuthActions.showChangePassword(context);
-                },
-                child: Text("Credencial digital",
-                    style: TextStyle(
-                        fontSize: 13,
-                        color: AppColors.morenaLightColor.withOpacity(0.7))))
+                                AppColors.morenaLightColor.withOpacity(0.7)))))
           ]),
         )
       ])),

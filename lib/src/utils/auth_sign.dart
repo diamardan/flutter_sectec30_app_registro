@@ -51,35 +51,55 @@ class AuthSign {
         return AlertDialog(
           title: Text(
             "Cerrar Sesión",
-            style: TextStyle(color: AppColors.morenaLightColor),
+            //style: TextStyle(color: AppColors.morenaLightColor),
           ),
-          content: Text("¿Desea continuar con esta acción?"),
-          backgroundColor: Colors.white.withOpacity(0.7),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                Icons.logout_outlined,
+                size: 70,
+                color: AppColors.secondary,
+              ),
+              Text(
+                "¿DESEAS CONTINUAR CON ESTA ACCIÓN?",
+                textAlign: TextAlign.center,
+              )
+            ],
+          ),
+          backgroundColor: Colors.white,
           elevation: 3,
           actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context, true);
-              },
-              child: Text("Cancelarr", style: TextStyle(color: Colors.black45)),
-            ),
-            TextButton(
-              onPressed: () async {
-                // auth with firebase
-                final FirebaseAuth _auth = FirebaseAuth.instance;
-                try {
-                  Navigator.pop(context, false);
-                  await _auth.signOut();
-                  Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(builder: (context) => InitialScreen()),
-                      (route) => false);
-                } catch (error) {
-                  print(error);
-                }
-              },
-              child: Text("Salir", style: TextStyle(color: Colors.black45)),
-            ),
+            Container(
+                width: 120,
+                child: OutlinedButton(
+                  onPressed: () {
+                    Navigator.pop(context, true);
+                  },
+                  child: Text("Cancelar",
+                      style: TextStyle(color: Colors.black45, fontSize: 16)),
+                )),
+            Container(
+                width: 120,
+                child: OutlinedButton(
+                  onPressed: () async {
+                    // auth with firebase
+                    final FirebaseAuth _auth = FirebaseAuth.instance;
+                    try {
+                      Navigator.pop(context, false);
+                      await _auth.signOut();
+                      Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => InitialScreen()),
+                          (route) => false);
+                    } catch (error) {
+                      print(error);
+                    }
+                  },
+                  child: Text("Salir",
+                      style: TextStyle(color: Colors.black45, fontSize: 16)),
+                )),
           ],
         );
       },

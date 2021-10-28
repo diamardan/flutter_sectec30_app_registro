@@ -48,11 +48,13 @@ class MessagingService {
         .update({"subscribed_to": topics.toJson()});
   }
 
-  save(Notification notification) {
+  save(String docId, Notification notification) {
     firestore
         .collection("schools")
         .doc(school)
         .collection("notifications")
+        .doc(docId)
+        .collection("received_messages")
         .add(notification.toJson());
   }
 }
@@ -83,7 +85,8 @@ Subscription _convertToTopicsNaming(Registration reg) {
       careerTopic: career ?? "none",
       gradeTopic: grade ?? "none",
       groupTopic: group ?? "none",
-      turnTopic: turn ?? "none");
+      turnTopic: turn ?? "none",
+      schoolTopic: "cetis32");
 }
 
 String _replaceChars(word) {

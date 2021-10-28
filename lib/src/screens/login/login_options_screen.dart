@@ -25,14 +25,17 @@ class _LoginOptionsScreenState extends State<LoginOptionsScreen> {
 
   void _loginQrFromFile() async {
     setState(() => loading = true);
-    PickedFile _file;
+    XFile _file;
     try {
-      _file = await picker.getImage(source: ImageSource.gallery);
+      _file = await picker.pickImage(source: ImageSource.gallery);
     } catch (error) {
       print(error);
     }
     setState(() {
-      if (_file == null) return;
+      if (_file == null) {
+        loading = false;
+        return;
+      }
       imagePath = _file.path;
     });
 
@@ -91,7 +94,9 @@ class _LoginOptionsScreenState extends State<LoginOptionsScreen> {
       body: ModalProgressHUD(
           inAsyncCall: loading,
           child: Stack(children: <Widget>[
-            Center(child: _login_options(context)),
+            Column(
+              children: [_login_options(context), Container()],
+            ),
             WhatsappHelpBtn(context: context)
           ])),
     ));
@@ -101,15 +106,15 @@ class _LoginOptionsScreenState extends State<LoginOptionsScreen> {
   Widget _login_options(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Container(
-        padding: EdgeInsets.symmetric(vertical: 30, horizontal: 5),
+        padding: EdgeInsets.symmetric(vertical: 50, horizontal: 5),
         decoration: BoxDecoration(
           // border: Border.all(color: Colors.grey.withOpacity(0.7), width: 1.0),
           borderRadius: BorderRadius.all(Radius.circular(10)),
         ),
         child: Column(mainAxisSize: MainAxisSize.min, children: [
-          Image.asset('assets/img/cetis32logo.png',
-              height: 100, fit: BoxFit.contain),
-          SizedBox(height: 20),
+          /*    Image.asset('assets/img/cetis32logo.png',
+              height: 100, fit: BoxFit.contain),*/
+          SizedBox(height: 0),
           Container(
             width: 290,
             decoration: BoxDecoration(
@@ -120,9 +125,9 @@ class _LoginOptionsScreenState extends State<LoginOptionsScreen> {
               '¿COMO DESEAS INICIAR SESIÓN?',
               style: TextStyle(
                   fontSize: 16,
-                  fontWeight: FontWeight.w500,
+                  fontWeight: FontWeight.w400,
                   //fontStyle: FontStyle.italic,
-                  color: Color.fromRGBO(212, 154, 106, 1)),
+                  color: Colors.black54),
               textAlign: TextAlign.center,
             ),
           ),
@@ -136,7 +141,8 @@ class _LoginOptionsScreenState extends State<LoginOptionsScreen> {
               icon: Icon(Icons.qr_code, color: AppColors.morenaLightColor),
               label: Text(
                 "QR desde camara",
-                style: TextStyle(color: AppColors.morenaLightColor),
+                style:
+                    TextStyle(color: AppColors.morenaLightColor, fontSize: 16),
               ),
               onPressed: () {
                 _loginWithCamera(context);
@@ -154,7 +160,8 @@ class _LoginOptionsScreenState extends State<LoginOptionsScreen> {
                     Icon(Icons.upload_file, color: AppColors.morenaLightColor),
                 label: Text(
                   "QR desde archivo",
-                  style: TextStyle(color: AppColors.morenaLightColor),
+                  style: TextStyle(
+                      color: AppColors.morenaLightColor, fontSize: 16),
                 ),
                 onPressed: () {
                   _loginQrFromFile();
@@ -170,7 +177,8 @@ class _LoginOptionsScreenState extends State<LoginOptionsScreen> {
                 icon: Icon(Icons.email, color: AppColors.morenaLightColor),
                 label: Text(
                   "Correo Electrónico",
-                  style: TextStyle(color: AppColors.morenaLightColor),
+                  style: TextStyle(
+                      color: AppColors.morenaLightColor, fontSize: 16),
                 ),
                 onPressed: () {
                   Navigator.push(

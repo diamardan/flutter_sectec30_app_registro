@@ -8,6 +8,7 @@ import 'package:cetis32_app_registro/src/provider/user_provider.dart';
 import 'package:cetis32_app_registro/src/screens/home/my_data_view.dart';
 import 'package:cetis32_app_registro/src/services/MessagingService.dart';
 import 'package:cetis32_app_registro/src/utils/messaging.dart';
+import 'package:flutter/services.dart';
 import '../../services/RegistrationService.dart';
 import 'package:cetis32_app_registro/src/services/RegistrationService.dart';
 import 'package:cetis32_app_registro/src/utils/auth_sign.dart';
@@ -27,9 +28,7 @@ class _homeScreenState extends State<HomeScreen> {
   final RegistrationService registrationService = RegistrationService();
   final MessagingService messagingService = MessagingService();
   FirebaseMessaging messaging;
-  Registration _registration;
   int _viewIndex = 0;
-  User _user;
 
   @override
   void initState() {
@@ -39,7 +38,7 @@ class _homeScreenState extends State<HomeScreen> {
     super.initState();
   }
 
-  void _switchView(BuildContext context, int index) {
+  void _switchView(int index) {
     if (index == 2) {
       AuthSign.showConfimLogout(context);
       return;
@@ -52,41 +51,45 @@ class _homeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: _getView(),
-        bottomNavigationBar: _bottomNavBar(context),
-      ),
-    );
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+        value: SystemUiOverlayStyle(
+          statusBarColor: AppColors.morenaLightColor,
+        ),
+        child: Scaffold(
+          body: _getView(),
+          bottomNavigationBar: _bottomNavBar(context),
+        ));
   }
 
   _bottomNavBar(BuildContext context) {
     return BottomNavigationBar(
       items: [
-        BottomNavigationBarItem(icon: Icon(Icons.home_outlined), label: "Home"),
         BottomNavigationBarItem(
-            icon: Icon(Icons.account_box_outlined), label: "Mis datos"),
+            icon: Icon(
+              Icons.home_filled,
+            ),
+            label: "Home"),
+        BottomNavigationBarItem(
+            icon: Icon(Icons.account_box_rounded), label: "Mis datos"),
         BottomNavigationBarItem(
             icon: Icon(Icons.logout_outlined), label: "Salir"),
       ],
-      onTap: (index) => _switchView(context, index),
-      currentIndex: 0,
-      fixedColor: Colors.green[800],
+      currentIndex: _viewIndex,
+      selectedItemColor: AppColors.morenaLightColor,
+      unselectedItemColor: Colors.grey,
       iconSize: 30,
+      onTap: _switchView,
     );
   }
 
   Widget _getView() {
     Widget view;
-    String title;
     switch (_viewIndex) {
       case 0:
         view = _home();
-        title = "Mis QRs";
         break;
       case 1:
         view = MyDataView();
-        title = "Mis visitas";
         break;
     }
     return view;
@@ -96,7 +99,16 @@ class _homeScreenState extends State<HomeScreen> {
     return Scaffold(
         appBar: AppBar(
           title: Text("BIENVENIDO A CETIS 32"),
-          centerTitle: true,
+          titleTextStyle: TextStyle(fontSize: 18),
+          centerTitle: false,
+          leading: Padding(
+            padding: EdgeInsets.fromLTRB(20, 5, 0, 10),
+            child: Image.asset(
+              'assets/img/logo-3.png',
+              color: Colors.white,
+              width: 10,
+            ),
+          ),
           backgroundColor: AppColors.morenaLightColor,
         ),
         body: Stack(children: [
@@ -124,7 +136,8 @@ class _homeScreenState extends State<HomeScreen> {
                     children: [
                       Text("SELECCIONA UNA OPCIÓN",
                           textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 20)),
+                          style: TextStyle(
+                              fontSize: 16, color: AppColors.textFieldLabel)),
                       SizedBox(
                         height: 20,
                       ),
@@ -143,7 +156,7 @@ class _homeScreenState extends State<HomeScreen> {
                                             .withOpacity(0.6)),
                                     Text("Accesos",
                                         style: TextStyle(
-                                            fontSize: 14,
+                                            fontSize: 15,
                                             color: AppColors.morenaLightColor
                                                 .withOpacity(0.6)
                                                 .withBlue(20))),
@@ -166,7 +179,7 @@ class _homeScreenState extends State<HomeScreen> {
                                     Text("Asistencias",
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
-                                            fontSize: 13,
+                                            fontSize: 15,
                                             color: AppColors.morenaLightColor
                                                 .withOpacity(0.6)))
                                   ])))
@@ -195,7 +208,7 @@ class _homeScreenState extends State<HomeScreen> {
                                       "Notificaciones",
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
-                                          fontSize: 11,
+                                          fontSize: 11.5,
                                           color: AppColors.morenaLightColor
                                               .withOpacity(0.6)),
                                     )
@@ -215,6 +228,7 @@ class _homeScreenState extends State<HomeScreen> {
                                             .withOpacity(0.6)),
                                     Text("Protocolos",
                                         style: TextStyle(
+                                            fontSize: 14,
                                             color: AppColors.morenaLightColor
                                                 .withOpacity(0.6)))
                                   ])))

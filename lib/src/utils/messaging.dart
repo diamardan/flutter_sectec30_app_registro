@@ -16,11 +16,10 @@ class AppMessaging {
 
   static initializeNotifications(BuildContext context) {
     Registration _registration;
-    User _user;
 
     UserProvider userProvider =
         Provider.of<UserProvider>(context, listen: false);
-    _user = userProvider.getUser;
+
     _registration = userProvider.getRegistration;
 
     messaging = FirebaseMessaging.instance;
@@ -28,7 +27,7 @@ class AppMessaging {
     print(_registration.toString());
     if (_registration.fcmToken == null) {
       messaging.getToken().then((value) {
-        messagingService.setFCMToken(_user.id, value);
+        messagingService.setFCMToken(userProvider.getUser.id, value);
         setListeners(context);
         messagingService.suscribeToTopics(_registration);
       });
@@ -37,6 +36,9 @@ class AppMessaging {
   }
 
   static setListeners(BuildContext context) {
+    UserProvider userProvider =
+        Provider.of<UserProvider>(context, listen: false);
+
     Future<dynamic> onSelectNotification(payload) async {
       // implement the navigation logic
       if (payload == "go-to-notification") {
@@ -55,15 +57,16 @@ class AppMessaging {
       // If `onMessage` is triggered with a notification, construct our own
       // local notification to show to users using the created channel.
       if (notification != null && android != null) {
-        NotificationModel.Notification myNotification =
+        NotificationModel.Notification appNotification =
             NotificationModel.Notification(
                 title: notification.title,
                 message: notification.body,
                 receivedDate: DateTime.now(),
                 sentDate: message.sentTime,
-                sender: message.senderId,
+                senderName: message.data["sender"],
                 read: false);
-        messagingService.save(myNotification);
+
+        messagingService.save(userProvider.getUser.id, appNotification);
 
         AndroidInitializationSettings android =
             AndroidInitializationSettings("@mipmap/launch");

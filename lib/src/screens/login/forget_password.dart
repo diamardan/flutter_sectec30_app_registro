@@ -62,11 +62,18 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
     return SafeArea(
         child: Scaffold(
       //resizeToAvoidBottomInset: false,
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.black87,
+        title: Text("RESTABLECER CONTRASEÑA"),
+        titleTextStyle: TextStyle(fontSize: 14, color: Colors.black87),
+      ),
       body: SingleChildScrollView(
           child: Container(
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height -
-                  MediaQuery.of(context).padding.top,
+                  MediaQuery.of(context).padding.top -
+                  kToolbarHeight,
               //decoration: BoxDecoration(color: Color(0Xcdcdcdff)),
               child: Center(
                   child: ModalProgressHUD(
@@ -88,24 +95,17 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
           borderRadius: BorderRadius.all(Radius.circular(10)),
         ),
         width: 280,
-        height: 560,
+        height: 500,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(
-              "RESTABLECER CONTRASEÑA",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontWeight: FontWeight.w700,
-                  color: AppColors.morenaLightColor),
-            ),
             SizedBox(
               height: 10,
             ),
             Icon(
-              Icons.alternate_email_sharp,
-              size: 50,
-              color: AppColors.secondary.withOpacity(0.4),
+              Icons.email_outlined,
+              size: 70,
+              color: AppColors.secondary,
             ),
             SizedBox(
               height: 20,
@@ -129,9 +129,6 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                             color: AppColors.morenaLightColor)),
                   )
                 : Container(),
-            SizedBox(
-              height: 20,
-            ),
           ],
         )));
   }
@@ -141,25 +138,27 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
         key: _formKey,
         child: Column(children: [
           Text(
-            "Introduce tu correo electrónico activado",
+            "Introduce tu correo electrónico activado:",
             textAlign: TextAlign.center,
             style: TextStyle(
-                fontWeight: FontWeight.w600, color: AppColors.secondary),
+                fontWeight: FontWeight.w400,
+                color: Colors.black87,
+                fontSize: 18),
           ),
           SizedBox(
             height: 10,
           ),
           _emailTextField(),
           SizedBox(
-            height: 20,
+            height: 30,
           ),
           Text(
             "Te enviaremos un correo electrónico con un enlace para restablecer tu contraseña.",
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 12),
+            style: TextStyle(fontSize: 14, color: AppColors.textFieldLabel),
           ),
           SizedBox(
-            height: 30,
+            height: 40,
           ),
           ElevatedButton(
             onPressed: _email != ""
@@ -167,25 +166,33 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                     _recoveryPassword();
                   }
                 : null,
-            child: Text("ENVIAR CORREO ELECTRÓNICO"),
+            child: Text(
+              "ENVIAR CORREO ELECTRÓNICO",
+              textAlign: TextAlign.center,
+            ),
             style: ElevatedButton.styleFrom(
                 primary: AppColors.morenaLightColor.withOpacity(0.9),
-                padding: EdgeInsets.symmetric(horizontal: 5, vertical: 15),
+                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                 textStyle:
-                    TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+                    TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
           ),
         ]));
   }
 
   _emailTextField() {
     return Container(
-        height: !emailError ? 50 : 60,
+        height: !emailError ? 64 : 84,
         child: TextFormField(
           keyboardType: TextInputType.emailAddress,
           decoration: InputDecoration(
               //contentPadding: const EdgeInsets.all(8.0),
+              focusedBorder: OutlineInputBorder(
+                borderSide: const BorderSide(
+                    color: AppColors.morenaLightColor, width: 2.0),
+                borderRadius: BorderRadius.circular(20.0),
+              ),
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10.0),
+                borderRadius: BorderRadius.circular(20.0),
               ),
               filled: true,
               fillColor: Colors.white,

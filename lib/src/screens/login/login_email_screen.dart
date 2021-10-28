@@ -73,85 +73,98 @@ class _LoginMailScreenState extends State<LoginMailScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
+            appBar: AppBar(
+              backgroundColor: Colors.white,
+              foregroundColor: Colors.black87,
+              elevation: 1.0,
+              title: Text(
+                "INICIAR SESIÓN",
+                textAlign: TextAlign.center,
+                style: TextStyle(fontWeight: FontWeight.w500, fontSize: 18),
+              ),
+            ),
             body: ModalProgressHUD(
                 inAsyncCall: loading,
                 child: SingleChildScrollView(
-                    child: Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height -
-                      MediaQuery.of(context).padding.top,
-                  //decoration: BoxDecoration(color: Color(0Xcdcdcdff)),
-                  child: Center(
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height -
+                        MediaQuery.of(context).padding.top -
+                        kToolbarHeight,
+                    //decoration: BoxDecoration(color: Color(0Xcdcdcdff)),
                     child: Column(
                         mainAxisSize: MainAxisSize.min,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          _form(),
-                          SizedBox(
-                            height: 20,
+                          Container(
+                            color: Color.fromRGBO(245, 245, 245, 1),
+                            width: double.infinity,
+                            height: 450,
+                            child: _form(),
                           ),
-                          _notHavePassword()
+                          Expanded(child: _notHavePassword()),
+                          SizedBox(
+                            height: 10,
+                          ),
                         ]),
                   ),
-                )))));
+                ))));
   }
 
   _form() {
     return (Container(
-      padding: EdgeInsets.symmetric(vertical: 20, horizontal: 25),
-      decoration: BoxDecoration(
-        color: AppColors.secondary.withOpacity(0.05),
-        border: Border.all(color: Colors.grey.withOpacity(0.7), width: 1.0),
-        borderRadius: BorderRadius.all(Radius.circular(10)),
-      ),
-      width: 280,
-      height: 500,
+      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+      color: Colors.white,
       child: Form(
         key: _formKey,
         child: Column(
           children: [
-            Icon(
-              Icons.account_circle_outlined,
-              size: 50,
-              color: AppColors.secondary.withOpacity(0.4),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Text(
-              "INICIAR SESIÓN EN CETIS 32",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  color: AppColors.morenaLightColor,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 18),
-            ),
-            SizedBox(
-              height: 20,
-            ),
+            Expanded(child: Container()),
             Align(
-                alignment: Alignment.centerLeft,
+                alignment: Alignment.center,
                 child: Text(
-                  "Correo electrónico",
+                  "CORREO ELECTRÓNICO: *",
                   style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400,
-                  ),
+                      fontSize: 15,
+                      fontWeight: FontWeight.w400,
+                      color: AppColors.textFieldLabel),
                 )),
-            SizedBox(height: 10),
+            SizedBox(height: 4),
             _emailTextField(),
             SizedBox(
-              height: 20,
+              height: 0,
             ),
-            Row(children: [
-              Expanded(child: Text("Contraseña")),
-            ]),
+            Align(
+              alignment: Alignment.center,
+              child: Text(
+                "CONTRASEÑA: *",
+                style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w400,
+                    color: AppColors.textFieldLabel),
+              ),
+            ),
             SizedBox(
-              height: 10,
+              height: 4,
             ),
             _passwordTextField(),
             SizedBox(
-              height: 14,
+              height: 5,
+            ),
+            //SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: _signIn,
+              child: Text("ENTRAR"),
+              style: ElevatedButton.styleFrom(
+                  elevation: 0,
+                  fixedSize: Size(200, 45),
+                  primary: AppColors.morenaLightColor,
+                  padding: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
+                  textStyle:
+                      TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+            ),
+            SizedBox(
+              height: 30,
             ),
             InkWell(
                 onTap: () {
@@ -169,22 +182,8 @@ class _LoginMailScreenState extends State<LoginMailScreen> {
                     },
                     child: Text(
                       "¿Olvidaste tu contraseña?",
-                      style: TextStyle(color: Colors.blue),
+                      style: TextStyle(color: Colors.blue, fontSize: 14),
                     ))),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _signIn,
-              child: Text("ENTRAR"),
-              style: ElevatedButton.styleFrom(
-                  fixedSize: Size(260, 40),
-                  primary: AppColors.morenaLightColor,
-                  padding: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
-                  textStyle:
-                      TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
-            ),
-            SizedBox(
-              height: 20,
-            ),
           ],
         ),
       ),
@@ -193,16 +192,21 @@ class _LoginMailScreenState extends State<LoginMailScreen> {
 
   _emailTextField() {
     return Container(
-        height: !_emailError ? 40 : 60,
+        height: !_emailError ? 64 : 84,
         child: TextFormField(
           controller: emailController,
           keyboardType: TextInputType.emailAddress,
           decoration: InputDecoration(
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10.0),
+            focusedBorder: OutlineInputBorder(
+              borderSide: const BorderSide(
+                  color: AppColors.morenaLightColor, width: 2.0),
+              borderRadius: BorderRadius.circular(20.0),
             ),
-            filled: true,
-            fillColor: Colors.white,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(20.0),
+            ),
+            // filled: true,
+            //fillColor: Color.fromRGBO(255, 248, 248, 1),
             contentPadding:
                 EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
             hintText: "",
@@ -230,7 +234,7 @@ class _LoginMailScreenState extends State<LoginMailScreen> {
 
   _passwordTextField() {
     return Container(
-        height: !_passwordError ? 40 : 60,
+        height: !_passwordError ? 64 : 84,
         child: Stack(
           children: [
             TextFormField(
@@ -238,8 +242,13 @@ class _LoginMailScreenState extends State<LoginMailScreen> {
               keyboardType: TextInputType.visiblePassword,
               obscureText: !_passwordVisible,
               decoration: InputDecoration(
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: const BorderSide(
+                        color: AppColors.morenaLightColor, width: 2.0),
+                    borderRadius: BorderRadius.circular(20.0),
+                  ),
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0),
+                    borderRadius: BorderRadius.circular(20.0),
                   ),
                   filled: true,
                   fillColor: Colors.white,
@@ -274,25 +283,27 @@ class _LoginMailScreenState extends State<LoginMailScreen> {
   }
 
   _notHavePassword() {
-    return Column(children: [
-      Text(
-        "Si no cuentas con contraseña",
-        style: TextStyle(fontSize: 16),
-      ),
-      Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-        Text("puedes ", style: TextStyle(fontSize: 16)),
-        InkWell(
-            onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => RequestPasswordScreen()));
-            },
-            child: Text(
-              "solicitarla aquí",
-              style: TextStyle(color: Colors.blue, fontSize: 16),
-            ))
-      ])
-    ]);
+    return Align(
+        alignment: Alignment.bottomCenter,
+        child: Column(mainAxisSize: MainAxisSize.min, children: [
+          Text(
+            "Si no cuentas con contraseña",
+            style: TextStyle(fontSize: 15),
+          ),
+          Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+            Text("puedes ", style: TextStyle(fontSize: 15)),
+            InkWell(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => RequestPasswordScreen()));
+                },
+                child: Text(
+                  "solicitarla aquí",
+                  style: TextStyle(color: Colors.blue, fontSize: 15),
+                ))
+          ])
+        ]));
   }
 }
