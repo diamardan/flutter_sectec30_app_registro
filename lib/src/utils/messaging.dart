@@ -24,7 +24,6 @@ class AppMessaging {
 
     messaging = FirebaseMessaging.instance;
 
-    print(_registration.toString());
     if (_registration.fcmToken == null) {
       messaging.getToken().then((value) {
         messagingService.setFCMToken(userProvider.getUser.id, value);

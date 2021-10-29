@@ -77,6 +77,16 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                           ? Text('No disponible')
                           : Text(notification.title),
                       subtitle: Text(notification.message),
+                      trailing: notification.receivedDate == null
+                          ? Text('-')
+                          : 
+                           Column(children: [
+                             
+                             Text("${notification.receivedDate.hour.toString().padLeft(2,'0')}-${notification.receivedDate.minute.toString().padLeft(2,'0')}"
+                             ),
+                           
+                           
+                           Text("${notification.receivedDate.day.toString().padLeft(2,'0')}-${notification.receivedDate.month.toString().padLeft(2,'0')}-${notification.receivedDate.year.toString()}")]),
                     ))
               ]);
             },
@@ -87,7 +97,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                 .collection("notifications")
                 .doc(user.id)
                 .collection("received_messages")
-                .orderBy("sent_date"),
+                .orderBy("sent_date", descending: true),
             // to fetch real-time data
             isLive: true,
           ),

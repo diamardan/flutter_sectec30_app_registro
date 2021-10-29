@@ -98,7 +98,7 @@ class _homeScreenState extends State<HomeScreen> {
   _home() {
     return Scaffold(
         appBar: AppBar(
-          title: Text("BIENVENIDO A CETIS 32"),
+          title: Text("Bienvenido a CETIS 32"),
           titleTextStyle: TextStyle(fontSize: 18),
           centerTitle: false,
           leading: Padding(

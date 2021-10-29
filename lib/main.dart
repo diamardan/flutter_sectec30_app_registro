@@ -23,6 +23,8 @@ Future<void> _messageHandler(RemoteMessage message) async {
   AndroidNotification android = message.notification?.android;
 
   if (notification != null && android != null) {
+    await Firebase.initializeApp();
+    
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var userId = prefs.getString("registration_id");
     NotificationModel.Notification appNotification =

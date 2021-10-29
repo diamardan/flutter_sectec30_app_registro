@@ -58,11 +58,11 @@ class AuthSign {
             children: [
               Icon(
                 Icons.logout_outlined,
-                size: 70,
-                color: AppColors.secondary,
+                size: 60,
+                color: AppColors.morenaLightColor.withOpacity(0.5),
               ),
               Text(
-                "¿DESEAS CONTINUAR CON ESTA ACCIÓN?",
+                "¿Deseas continuar?",
                 textAlign: TextAlign.center,
               )
             ],
