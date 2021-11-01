@@ -451,7 +451,9 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
 
   Widget _firmaAlumno() {
     DateFormat df = DateFormat('dd-MM-yyyy');
-    int fecha = widget.register.fecha_registro.millisecondsSinceEpoch;
+    int fecha = widget.register.fecha_registro != null
+        ? widget.register.fecha_registro.millisecondsSinceEpoch
+        : DateTime.now().millisecondsSinceEpoch;
     var fch1 = df.format(new DateTime.fromMillisecondsSinceEpoch(fecha));
     //var fecha_emision = fecha.split(" ")[0];
     return Row(

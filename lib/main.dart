@@ -24,7 +24,7 @@ Future<void> _messageHandler(RemoteMessage message) async {
 
   if (notification != null && android != null) {
     await Firebase.initializeApp();
-    
+
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var userId = prefs.getString("registration_id");
     NotificationModel.Notification appNotification =
@@ -80,6 +80,7 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   // DeepLinkBloc _bloc = DeepLinkBloc();
+  final ThemeData theme = ThemeData();
   @override
   Widget build(BuildContext context) {
 /*DeepLinkBloc _bloc = DeepLinkBloc();
@@ -94,9 +95,11 @@ class MyApp extends StatelessWidget {
             title: 'CETIS 32 APP REGISTRO',
             debugShowCheckedModeBanner: false,
             routes: getApplicationRoutes(context),
-            theme: ThemeData(
-                primaryColor: AppColors.morenaColor,
-                scaffoldBackgroundColor: Color(0Xffffffff)),
+            theme: theme.copyWith(
+                colorScheme: theme.colorScheme.copyWith(
+              primary: AppColors.morenaColor,
+              //secondary: AppColors.secondaryColor,
+            )),
             /* initialRoute: 'wrapper', */
             home: Wrapper()));
   }

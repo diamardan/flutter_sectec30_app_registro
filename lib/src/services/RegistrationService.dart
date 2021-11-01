@@ -1,8 +1,9 @@
+import 'package:cetis32_app_registro/src/constants/constants.dart';
 import 'package:cetis32_app_registro/src/models/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cetis32_app_registro/src/services/SharedService.dart';
 
-const school = "cetis32";
+const school = AppConstants.fsCollectionName;
 
 class RegistrationService {
   checkCurp(String curp) async {
