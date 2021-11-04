@@ -750,9 +750,20 @@ class _PreregFormState extends State<PreregForm> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           CircularProgressIndicator(
-            backgroundColor: Color.fromRGBO(236, 186, 17, 1),
-            valueColor: AlwaysStoppedAnimation(Colors.green),
+            backgroundColor: Theme.of(context).colorScheme.primary,
+            valueColor:
+                AlwaysStoppedAnimation(Theme.of(context).colorScheme.secondary),
             strokeWidth: 5,
+          ),
+          Padding(
+            padding: const EdgeInsets.all(28.0),
+            child: Text.rich(
+              TextSpan(
+                  text:
+                      'Estámos cargando la información, éste proceso puede tardar unos minutos, favor de esperar.'),
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 25),
+            ),
           )
         ],
       ),
@@ -780,6 +791,7 @@ class _PreregFormState extends State<PreregForm> {
 
     setState(() {
       foto1 = "confoto";
+      _loading = false;
       //foto = File(pickedFile.path);
     });
   }
@@ -813,6 +825,7 @@ class _PreregFormState extends State<PreregForm> {
 
     setState(() {
       voucher1 = "conVouhcer";
+      _loading = false;
       //foto = File(pickedFile.path);
     });
   }

@@ -1,3 +1,4 @@
+import 'package:cetis32_app_registro/src/constants/constants.dart';
 import 'package:cetis32_app_registro/src/models/notification_model.dart';
 import 'package:cetis32_app_registro/src/models/subscription_model.dart';
 import 'package:cetis32_app_registro/src/models/user_model.dart';
@@ -7,7 +8,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class MessagingService {
   FirebaseMessaging messaging = FirebaseMessaging.instance;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
-  final school = "cetis32";
+  final school = AppConstants.fsCollectionName;
 
   suscribeToTopics(Registration reg) {
     Subscription subscription = _convertToTopicsNaming(reg);

@@ -98,7 +98,7 @@ class MyApp extends StatelessWidget {
             theme: theme.copyWith(
                 colorScheme: theme.colorScheme.copyWith(
               primary: AppColors.morenaColor,
-              //secondary: AppColors.secondaryColor,
+              secondary: Colors.blue,
             )),
             /* initialRoute: 'wrapper', */
             home: Wrapper()));
