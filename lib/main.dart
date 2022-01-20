@@ -1,18 +1,16 @@
 import 'package:cetis32_app_registro/src/constants/constants.dart';
-import 'package:cetis32_app_registro/src/provider/user_provider.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:cetis32_app_registro/src/routes/routes.dart';
-
-import 'package:cetis32_app_registro/src/screens/login/wrapper_auth.dart';
-//import 'package:cetis32_app_registro/src/bloc/deep_link_bloc.dart';
-import 'package:provider/provider.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:cetis32_app_registro/src/models/notification_model.dart'
     as NotificationModel;
+import 'package:cetis32_app_registro/src/provider/user_provider.dart';
+import 'package:cetis32_app_registro/src/routes/routes.dart';
+import 'package:cetis32_app_registro/src/screens/login/wrapper_auth.dart';
 import 'package:cetis32_app_registro/src/services/MessagingService.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+//import 'package:cetis32_app_registro/src/bloc/deep_link_bloc.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> _messageHandler(RemoteMessage message) async {
@@ -24,7 +22,7 @@ Future<void> _messageHandler(RemoteMessage message) async {
 
   if (notification != null && android != null) {
     await Firebase.initializeApp();
-    
+
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var userId = prefs.getString("registration_id");
     NotificationModel.Notification appNotification =
@@ -34,6 +32,7 @@ Future<void> _messageHandler(RemoteMessage message) async {
             receivedDate: DateTime.now(),
             sentDate: message.sentTime,
             senderName: message.data["sender"],
+            messageId: message.data["messageId"],
             read: false);
     MessagingService().save(userId, appNotification);
   }

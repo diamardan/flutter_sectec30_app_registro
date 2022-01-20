@@ -1,13 +1,12 @@
+import 'package:cetis32_app_registro/main.dart';
+import 'package:cetis32_app_registro/src/models/notification_model.dart'
+    as NotificationModel;
 import 'package:cetis32_app_registro/src/models/user_model.dart';
 import 'package:cetis32_app_registro/src/provider/user_provider.dart';
 import 'package:cetis32_app_registro/src/services/MessagingService.dart';
-import 'package:cetis32_app_registro/src/services/RegistrationService.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:cetis32_app_registro/src/models/notification_model.dart'
-    as NotificationModel;
-import 'package:cetis32_app_registro/main.dart';
 import 'package:provider/provider.dart';
 
 class AppMessaging {
@@ -63,6 +62,7 @@ class AppMessaging {
                 receivedDate: DateTime.now(),
                 sentDate: message.sentTime,
                 senderName: message.data["sender"],
+                messageId: message.data["messageId"],
                 read: false);
 
         messagingService.save(userProvider.getUser.id, appNotification);
