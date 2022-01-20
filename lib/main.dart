@@ -79,6 +79,7 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   // DeepLinkBloc _bloc = DeepLinkBloc();
+  final ThemeData theme = ThemeData();
   @override
   Widget build(BuildContext context) {
 /*DeepLinkBloc _bloc = DeepLinkBloc();
@@ -93,9 +94,11 @@ class MyApp extends StatelessWidget {
             title: 'CETIS 32 APP REGISTRO',
             debugShowCheckedModeBanner: false,
             routes: getApplicationRoutes(context),
-            theme: ThemeData(
-                primaryColor: AppColors.morenaColor,
-                scaffoldBackgroundColor: Color(0Xffffffff)),
+            theme: theme.copyWith(
+                colorScheme: theme.colorScheme.copyWith(
+              primary: AppColors.morenaColor,
+              secondary: Colors.blue,
+            )),
             /* initialRoute: 'wrapper', */
             home: Wrapper()));
   }
