@@ -58,7 +58,7 @@ class _RequestPasswordScreenState extends State<RequestPasswordScreen> {
     if (!_formKey.currentState.validate()) return;
 
     var result = await AuthSign.signUpWithEmailAndPassword(_email);
-    switch (result['code']) {
+    switch (result) {
       case AuthResponseStatus.SUCCESS:
         NotifyUI.flushbar(context, "El correo electrónico ha sido enviado.");
         setState(() {
@@ -74,7 +74,7 @@ class _RequestPasswordScreenState extends State<RequestPasswordScreen> {
         await NotifyUI.showError(context, "Error de activación de cuenta",
             "El correo proporcionado no fue encontrado. ");
         break;
-      case AuthResponseStatus.AUTH_ERROR:
+      case AuthResponseStatus.UNKNOW_ERROR:
         await NotifyUI.showError(
             context, "Error de activación de cuenta ", result['code']);
         break;

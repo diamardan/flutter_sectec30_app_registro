@@ -12,7 +12,6 @@ import 'package:flutter/services.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_code_tools/qr_code_tools.dart';
-import 'package:image_picker/image_picker.dart';
 
 class AuthSignIn {
   static RegistrationService registrationService = RegistrationService();
@@ -22,6 +21,9 @@ class AuthSignIn {
   // * * *  Sing in with code QR from Camera  * * *
 
   static withQrCamera(BuildContext context) async {
+    
+       
+
     var response = {};
     try {
       // scan qr
@@ -33,25 +35,25 @@ class AuthSignIn {
         return response["code"] = AuthResponseStatus.QR_INVALID;
 
       // check if qr is valid
-      Registration registration =
-          await registrationService.checkQr(futureString.rawContent);
+      response = await registrationService.checkQr(futureString.rawContent);
+      if (response["code"] == "failed_operation")
+        return AuthResponseStatus.UNKNOW_ERROR;
+
+      if (response["code"] == "qr_not_found")
+        return AuthResponseStatus.QR_NOT_FOUND;
+
+      Registration registration = response["registration"];
 
       if (registration == null) {
-        return response["code"] = AuthResponseStatus.QR_NOT_FOUND;
+        return AuthResponseStatus.QR_NOT_FOUND;
       }
 
-      // auth with firebase
+      await authenticationService.signInAnonymously();
 
-      try {
-        await authenticationService.signInAnonymously();
+      createState(context, registration, AuthnMethodEnum.QR_CAMERA);
+      createPersistence(registration, AuthnMethodEnum.QR_CAMERA);
 
-        createState(context, registration, AuthnMethodEnum.QR_CAMERA);
-        createPersistence(registration, AuthnMethodEnum.QR_CAMERA);
-      } catch (error) {
-        return response["code"] = AuthResponseStatus.AUTH_ERROR;
-      }
-
-      return response["code"] = AuthResponseStatus.SUCCESS;
+      return AuthResponseStatus.SUCCESS;
     } on PlatformException catch (e) {
       if (e.code == BarcodeScanner.cameraAccessDenied) {
         showDialogPermissions(context);
@@ -66,23 +68,23 @@ class AuthSignIn {
   // * * *  Sign in with code QR from file  * * *
 
   static fromQrFile(BuildContext context, String imagePath) async {
-    ImagePicker picker = ImagePicker();
     String qrData;
-    var response = {};
-
-    /* PickedFile _file = await picker.getImage(source: ImageSource.gallery);
-    
-    if (_file == null) return;*/
 
     qrData = await QrCodeToolsPlugin.decodeFrom(imagePath);
 
-    if (qrData == null || qrData == "")
-      return response["code"] = AuthResponseStatus.QR_INVALID;
+    if (qrData == null || qrData == "") return AuthResponseStatus.QR_INVALID;
 
-    Registration registration = await registrationService.checkQr(qrData);
+    Map<String, dynamic> response = await registrationService.checkQr(qrData);
+    if (response["code"] == "failed_operation")
+      return AuthResponseStatus.UNKNOW_ERROR;
+
+    if (response["code"] == "qr_not_found")
+      return AuthResponseStatus.QR_NOT_FOUND;
+
+    Registration registration = response["registration"];
 
     if (registration == null) {
-      return response["code"] = AuthResponseStatus.QR_NOT_FOUND;
+      return AuthResponseStatus.QR_NOT_FOUND;
     }
 
     await authenticationService.signInAnonymously();
@@ -90,40 +92,45 @@ class AuthSignIn {
     createState(context, registration, AuthnMethodEnum.QR_FILE);
     createPersistence(registration, AuthnMethodEnum.QR_FILE);
 
-    //return response["code"] = LoginResponseStatus.AUTH_ERROR;
-
-    return response["code"] = AuthResponseStatus.SUCCESS;
+    return AuthResponseStatus.SUCCESS;
   }
 
 // * * *  Sign in with email and password  * * *
   static withEmailAndPassword(
       BuildContext context, String email, String password) async {
-    Registration registration = await RegistrationService().checkEmail(email);
-    if (registration == null)
-      return {'code': AuthResponseStatus.EMAIL_NOT_FOUND};
+    Map<String, dynamic> response =
+        await RegistrationService().checkEmail(email);
+    if (response["code"] == "failed_operation")
+      return AuthResponseStatus.UNKNOW_ERROR;
+
+    if (response["code"] == "email_not_found")
+      return AuthResponseStatus.EMAIL_NOT_FOUND;
+
+    Registration registration = response["registration"];
+    if (registration == null) {
+      return AuthResponseStatus.EMAIL_NOT_FOUND;
+    }
 
     var result = await authenticationService.signInEmailAndPassword(
         email: email, password: password);
 
-    var response = {};
-    print(result['code']);
     switch (result['code']) {
       case "sign_in_success":
-        response['code'] = AuthResponseStatus.SUCCESS;
         createState(context, registration, AuthnMethodEnum.EMAIL_PASSWORD);
         createPersistence(registration, AuthnMethodEnum.EMAIL_PASSWORD);
+        return AuthResponseStatus.SUCCESS;
         break;
       case "user-not-found":
-        response['code'] = AuthResponseStatus.ACCOUNT_NOT_FOUND;
-        break;
+        return AuthResponseStatus.ACCOUNT_NOT_FOUND;
       case "wrong-password":
-        response['code'] = AuthResponseStatus.WRONG_PASSWORD;
+        return AuthResponseStatus.WRONG_PASSWORD;
+        break;
+      case "network-request-failed":
+        return AuthResponseStatus.CONNECTION_FAILED;
         break;
       default:
-        response['code'] = AuthResponseStatus.AUTH_ERROR;
-        break;
+        return AuthResponseStatus.UNKNOW_ERROR;
     }
-    return response;
   }
 
   // * * *  Utilities  * * *
