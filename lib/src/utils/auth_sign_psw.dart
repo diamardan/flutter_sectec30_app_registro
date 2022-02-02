@@ -1,13 +1,10 @@
 import 'package:cetis32_app_registro/src/models/user_model.dart';
 import 'package:cetis32_app_registro/src/provider/user_provider.dart';
-import 'package:cetis32_app_registro/src/screens/initial_screen.dart';
 import 'package:cetis32_app_registro/src/services/AuthenticationService.dart';
 import 'package:cetis32_app_registro/src/services/RegistrationService.dart';
 import 'package:cetis32_app_registro/src/utils/enums.dart';
 import 'package:cetis32_app_registro/src/utils/notify_ui.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:cetis32_app_registro/src/constants/constants.dart';
 import 'package:provider/provider.dart';
 
 class AuthSignPassword {
@@ -15,9 +12,18 @@ class AuthSignPassword {
 // * * *  Recovery password * * *
 
   static recoveryPassword(String email) async {
-    Registration registration = await RegistrationService().checkEmail(email);
-    if (registration == null)
-      return {'code': AuthResponseStatus.EMAIL_NOT_FOUND};
+  Map<String, dynamic> response =
+        await RegistrationService().checkEmail(email);
+    if (response["code"] == "failed_operation")
+      return AuthResponseStatus.UNKNOW_ERROR;
+
+    if (response["code"] == "email_not_found")
+      return AuthResponseStatus.EMAIL_NOT_FOUND;
+
+    Registration registration = response["registration"];
+    if (registration == null) {
+      return AuthResponseStatus.EMAIL_NOT_FOUND;
+    }
 
     var result = await authenticationService.signInEmailAndPassword(
         email: email, password: "xxxxxx");
@@ -30,7 +36,7 @@ class AuthSignPassword {
       case "wrong-password": //means user exists
         break;
       default:
-        return {"code": AuthResponseStatus.AUTH_ERROR};
+        return {"code": AuthResponseStatus.UNKNOW_ERROR};
         break;
     }
 

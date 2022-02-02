@@ -1,5 +1,5 @@
 import 'package:cetis32_app_registro/src/screens/home/home_sCreen.dart';
-import 'package:cetis32_app_registro/src/screens/login/forget_password.dart';
+import 'package:cetis32_app_registro/src/screens/login/recovery_password.dart';
 import 'package:cetis32_app_registro/src/screens/login/request_password.dart';
 import 'package:cetis32_app_registro/src/services/AuthenticationService.dart';
 import 'package:cetis32_app_registro/src/utils/auth_sign_in.dart';
@@ -47,8 +47,8 @@ class _LoginMailScreenState extends State<LoginMailScreen> {
     setState(() {
       loading = false;
     });
-
-    switch (result['code']) {
+    
+    switch (result) {
       case AuthResponseStatus.SUCCESS:
         FocusScope.of(context).requestFocus(FocusNode());
         Navigator.pushAndRemoveUntil(
@@ -59,12 +59,12 @@ class _LoginMailScreenState extends State<LoginMailScreen> {
       case AuthResponseStatus.EMAIL_NOT_FOUND:
       case AuthResponseStatus.ACCOUNT_NOT_FOUND:
       case AuthResponseStatus.WRONG_PASSWORD:
-        await NotifyUI.showError(context, "No se puede iniciar de sesión ",
+        await NotifyUI.showError(context, "No se pudo iniciar de sesión ",
             "El correo electrónico o contraseña son incorrectos.");
         break;
-      case AuthResponseStatus.AUTH_ERROR:
-        await NotifyUI.showError(context, "Error de inicio de sesión ",
-            "La autenticación genero un error interno.");
+      case AuthResponseStatus.UNKNOW_ERROR:
+        await NotifyUI.showError(
+            context, "No se pudo inicio de sesión ", "Error interno");
         break;
     }
   }
@@ -178,7 +178,7 @@ class _LoginMailScreenState extends State<LoginMailScreen> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => ForgetPasswordScreen()));
+                              builder: (context) => RecoveryPasswordScreen()));
                     },
                     child: Text(
                       "¿Olvidaste tu contraseña?",

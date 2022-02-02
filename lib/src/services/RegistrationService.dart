@@ -5,47 +5,60 @@ import 'package:cetis32_app_registro/src/services/SharedService.dart';
 
 const school = AppConstants.fsCollectionName;
 
+
 class RegistrationService {
   checkCurp(String curp) async {
     return SharedService().get(curp, "registrations");
   }
 
-  checkQr(String qrData) {
-    return FirebaseFirestore.instance
-        .collection("schools")
-        .doc(school)
-        .collection("registros")
-        .where("qr", isEqualTo: qrData)
-        .get()
-        .then((result) {
-      print(result);
+  Future<Map> checkQr(String qrData) async {
+    try {
+      var result = await FirebaseFirestore.instance
+          .collection("schools")
+          .doc(school)
+          .collection("registros")
+          .where("qr", isEqualTo: qrData)
+          .get();
 
       if (result.docs.isNotEmpty) {
         var data = result.docs.first.data();
         var registrationMap = {"id": result.docs.first.id, ...data};
         Registration registration = Registration.fromJson(registrationMap);
-        return registration;
+        return 
+        
+           {"code": "qr_found","registration":registration, "message": "qr found successful"  } ;
       } else
-        return null;
-    });
+        return {"code": "qr_not_found","registration": null, "message": "qr was not found"  };
+    } catch (e) {
+      
+      print(e);
+      return {"code": "failed_operation","registration": null, "message": "failed operation"  };
+    }
   }
 
-  Future<Registration> checkEmail(String email) {
-    return FirebaseFirestore.instance
-        .collection("schools")
-        .doc(school)
-        .collection("registros")
-        .where("correo", isEqualTo: email)
-        .get()
-        .then((result) {
+  Future<Map<String, dynamic>> checkEmail(String email) async {
+    try {
+      var result = await FirebaseFirestore.instance
+          .collection("schools")
+          .doc(school)
+          .collection("registros")
+          .where("correo", isEqualTo: email)
+          .get();
+
       if (result.docs.isNotEmpty) {
         var data = result.docs.first.data();
         var registrationMap = {"id": result.docs.first.id, ...data};
+        print(registrationMap);
         Registration registration = Registration.fromJson(registrationMap);
-        return registration;
+        return
+       {"code": "email_found","registration":registration, "message": "email found successful"  } ;
       } else
-        return null;
-    });
+        return {"code": "email_not_found","registration": null, "message": "email was not found"  };
+    } catch (e) {
+      
+      print(e);
+      return {"code": "failed_operation","registration": null, "message": "failed operation"  };
+    }
   }
 
   Future<Registration> get(String registrationId) {

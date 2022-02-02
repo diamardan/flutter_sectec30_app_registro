@@ -1,5 +1,3 @@
-import 'dart:io' show Platform;
-import 'dart:io';
 import 'package:cetis32_app_registro/src/constants/constants.dart';
 import 'package:cetis32_app_registro/src/screens/home/home_sCreen.dart';
 import 'package:cetis32_app_registro/src/screens/login/login_email_screen.dart';
@@ -55,8 +53,8 @@ class _LoginOptionsScreenState extends State<LoginOptionsScreen> {
       case AuthResponseStatus.QR_NOT_FOUND:
         await NotifyUI.showError(context, 'Aviso', 'El usuario no existe');
         break;
-      case AuthResponseStatus.AUTH_ERROR:
-        await NotifyUI.showError(context, 'Aviso', 'Error Fb-Auth');
+      case AuthResponseStatus.UNKNOW_ERROR:
+        await NotifyUI.showError(context, 'Aviso', 'Error desconocido');
         break;
     }
   }
@@ -65,7 +63,6 @@ class _LoginOptionsScreenState extends State<LoginOptionsScreen> {
     setState(() => loading = true);
     var response = await AuthSignIn.withQrCamera(context);
     setState(() => loading = false);
-    print("reponse");
     print(response);
     switch (response) {
       case AuthResponseStatus.SUCCESS:
@@ -77,8 +74,8 @@ class _LoginOptionsScreenState extends State<LoginOptionsScreen> {
       case AuthResponseStatus.QR_NOT_FOUND:
         await NotifyUI.showError(context, 'Aviso', 'El usuario no existe.');
         break;
-      case AuthResponseStatus.AUTH_ERROR:
-        await NotifyUI.showError(context, 'Aviso', 'Error Fb-Auth');
+      case AuthResponseStatus.UNKNOW_ERROR:
+        await NotifyUI.showError(context, 'Aviso', 'Error desconocido');
         break;
     }
   }
@@ -104,7 +101,7 @@ class _LoginOptionsScreenState extends State<LoginOptionsScreen> {
 
   // ignore: non_constant_identifier_names
   Widget _login_options(BuildContext context) {
-    final size = MediaQuery.of(context).size;
+   
     return Container(
         padding: EdgeInsets.symmetric(vertical: 50, horizontal: 5),
         decoration: BoxDecoration(
