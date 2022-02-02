@@ -18,6 +18,7 @@ import 'package:cetis32_app_registro/src/services/TurnosService.dart';
 import 'package:cetis32_app_registro/src/utils/txtFormater.dart';
 import 'package:cetis32_app_registro/src/utils/validator.dart';
 import 'package:signature/signature.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class PreregForm extends StatefulWidget {
   PreregForm({Key key}) : super(key: key);
@@ -621,10 +622,16 @@ class _PreregFormState extends State<PreregForm> {
                     padding: EdgeInsets.all(0),
                     minWidth: 10,
                     onPressed: () {
-                      _tomarVoucher();
-                      setState(() {
-                        _loading = true;
-                      });
+                      showMaterialModalBottomSheet(
+                        expand: false,
+                        useRootNavigator: true,
+                        context: context,
+                        builder: (_) => _loadImageOptions("voucher"),
+                      );
+                      //_tomarVoucher();
+                      /* setState(() {
+                        _loading = false;
+                      }); */
                     },
                     shape: RoundedRectangleBorder(
                         borderRadius: new BorderRadius.circular(22)),
@@ -664,10 +671,15 @@ class _PreregFormState extends State<PreregForm> {
                     padding: EdgeInsets.all(0),
                     minWidth: 10,
                     onPressed: () {
-                      _tomarFoto();
-                      setState(() {
+                      showMaterialModalBottomSheet(
+                        expand: false,
+                        context: context,
+                        builder: (_) => _loadImageOptions("photo"),
+                      );
+                      /* _tomarFoto(); */
+                      /* setState(() {
                         _loading = true;
-                      });
+                      }); */
                     },
                     shape: RoundedRectangleBorder(
                         borderRadius: new BorderRadius.circular(22)),
@@ -777,10 +789,10 @@ class _PreregFormState extends State<PreregForm> {
     return false;
   }
 
-  _tomarFoto() async {
+  _tomarFoto(ImageSource source) async {
     final _picker = ImagePicker();
 
-    final pickedFile = await _picker.getImage(source: ImageSource.camera);
+    final pickedFile = await _picker.getImage(source: source);
     //foto = await ImagePicker.pickImage(source: ImageSource.camera);
     //
     foto = File(pickedFile.path);
@@ -811,10 +823,10 @@ class _PreregFormState extends State<PreregForm> {
         : Image.network(foto1);
   }
 
-  _tomarVoucher() async {
+  _tomarVoucher(ImageSource source) async {
     final _picker = ImagePicker();
 
-    final pickedFile = await _picker.getImage(source: ImageSource.camera);
+    final pickedFile = await _picker.getImage(source: source);
     //foto = await ImagePicker.pickImage(source: ImageSource.camera);
     //
     voucher = File(pickedFile.path);
@@ -843,5 +855,50 @@ class _PreregFormState extends State<PreregForm> {
     return voucher1 == ""
         ? Image.asset('assets/img/no-image-voucher.png')
         : Image.network(voucher1);
+  }
+
+  Widget _loadImageOptions(String kind) {
+    int tapDo = 0;
+    ImageSource source;
+    switch (kind) {
+      case "voucher":
+        tapDo = 1;
+        break;
+
+      case "photo":
+        tapDo = 0;
+        break;
+    }
+    print(tapDo);
+    return Container(
+      height: 150,
+      padding: EdgeInsets.all(0),
+      child: ListView(
+        children: [
+          ListTile(
+              title: Text("Desde Camara"),
+              onTap: () {
+                tapDo == 1
+                    ? _tomarVoucher(ImageSource.camera)
+                    : _tomarFoto(ImageSource.camera);
+                setState(() {
+                  _loading = true;
+                });
+                Navigator.pop(context);
+              }),
+          ListTile(
+              title: Text("Desde almacenamiento"),
+              onTap: () {
+                tapDo == 1
+                    ? _tomarVoucher(ImageSource.gallery)
+                    : _tomarFoto(ImageSource.gallery);
+                setState(() {
+                  _loading = true;
+                });
+                Navigator.pop(context);
+              }),
+        ],
+      ),
+    );
   }
 }

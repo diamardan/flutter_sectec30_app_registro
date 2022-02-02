@@ -1,3 +1,4 @@
+import 'package:cetis32_app_registro/src/screens/accesses_screen.dart';
 import 'package:cetis32_app_registro/src/screens/home/digital_credential_screen.dart';
 import 'package:cetis32_app_registro/src/screens/notifications_screen.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +13,7 @@ Map<String, WidgetBuilder> getApplicationRoutes(BuildContext context) {
     'pagar': (BuildContext context) => PaymentPage(),
     'wrapper': (BuildContext context) => PaymentPage(),
     'notifications': (BuildContext context) => NotificationsScreen(),
+    'accesses': (BuildContext context) => AccessesScreen(),
     //'verCredencialDigital': (BuildContext context) => DigitalCredentialScreen(),
   };
 }

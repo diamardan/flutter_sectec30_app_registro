@@ -12,6 +12,8 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 //import 'package:cetis32_app_registro/src/bloc/deep_link_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:flutter/foundation.dart';
 
 Future<void> _messageHandler(RemoteMessage message) async {
   print('background message ${message.notification.body}');
@@ -73,7 +75,7 @@ void main() async {
 
   Future.delayed(const Duration(seconds: 3), () {
     print("10 segundos");
-    return runApp(MyApp());
+    initializeDateFormatting().then((_) => runApp(MyApp()));
   });
 }
 

@@ -148,7 +148,9 @@ class _homeScreenState extends State<HomeScreen> {
                               height: 150,
                               width: 135,
                               child: OutlineButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    Navigator.pushNamed(context, "accesses");
+                                  },
                                   child: Column(children: [
                                     Icon(Icons.account_box_outlined,
                                         size: 90,
@@ -168,9 +170,7 @@ class _homeScreenState extends State<HomeScreen> {
                               height: 150,
                               width: 145,
                               child: OutlineButton(
-                                  onPressed: () {
-                                    print("hola");
-                                  },
+                                  onPressed: () {},
                                   child: Column(children: [
                                     Icon(Icons.check_circle_outline_rounded,
                                         size: 90,
