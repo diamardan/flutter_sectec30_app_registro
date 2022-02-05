@@ -3,6 +3,7 @@ import 'package:cetis32_app_registro/src/screens/login/recovery_password.dart';
 import 'package:cetis32_app_registro/src/screens/login/request_password.dart';
 import 'package:cetis32_app_registro/src/services/AuthenticationService.dart';
 import 'package:cetis32_app_registro/src/utils/auth_sign_in.dart';
+import 'package:cetis32_app_registro/src/utils/Device.dart';
 import 'package:cetis32_app_registro/src/utils/enums.dart';
 import 'package:cetis32_app_registro/src/utils/notify_ui.dart';
 import 'package:cetis32_app_registro/src/utils/validator.dart';
@@ -31,6 +32,10 @@ class _LoginMailScreenState extends State<LoginMailScreen> {
   }
 
   _signIn() async {
+    Device device = await Device.create();
+    print(device.toJson());
+    
+
     _formKey.currentState.save();
 
     print(_formKey.currentState.validate());
@@ -47,7 +52,7 @@ class _LoginMailScreenState extends State<LoginMailScreen> {
     setState(() {
       loading = false;
     });
-    
+
     switch (result) {
       case AuthResponseStatus.SUCCESS:
         FocusScope.of(context).requestFocus(FocusNode());

@@ -1,38 +1,65 @@
 import 'package:cetis32_app_registro/src/constants/constants.dart';
 import 'package:cetis32_app_registro/src/models/user_model.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cetis32_app_registro/src/services/SharedService.dart';
+import 'package:cetis32_app_registro/src/utils/Device.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 const school = AppConstants.fsCollectionName;
 
-
 class RegistrationService {
+  final db = FirebaseFirestore.instance.collection("schools").doc(school);
+
   checkCurp(String curp) async {
     return SharedService().get(curp, "registrations");
   }
 
-  Future<Map> checkQr(String qrData) async {
+  Future<Map<String, dynamic>> checkQr(String qrData) async {
     try {
-      var result = await FirebaseFirestore.instance
-          .collection("schools")
-          .doc(school)
-          .collection("registros")
-          .where("qr", isEqualTo: qrData)
-          .get();
-
+      var result =
+          await db.collection("registros").where("qr", isEqualTo: qrData).get();
       if (result.docs.isNotEmpty) {
         var data = result.docs.first.data();
         var registrationMap = {"id": result.docs.first.id, ...data};
-        Registration registration = Registration.fromJson(registrationMap);
-        return 
-        
-           {"code": "qr_found","registration":registration, "message": "qr found successful"  } ;
+        Registration r = Registration.fromJson(registrationMap);
+
+        Device device = await Device.create();
+
+        result = await db
+            .collection("registros")
+            .doc(r.id)
+            .collection("devices")
+            .get();
+        final exists =
+            result.docs.any((doc) => doc.id == device.id ? true : false);
+        if ((!exists) && result.size == r.devicesMax)
+          return {
+            "code": "error_max_devices",
+            "registration": null,
+          };
+
+        if (!exists)
+          db
+              .collection("registros")
+              .doc(r.id)
+              .collection("devices")
+              .doc(device.id)
+              .set(device.toJson());
+
+        return {
+          "code": "qr_found",
+          "registration": r,
+        };
       } else
-        return {"code": "qr_not_found","registration": null, "message": "qr was not found"  };
+        return {
+          "code": "qr_not_found",
+          "registration": null,
+        };
     } catch (e) {
-      
       print(e);
-      return {"code": "failed_operation","registration": null, "message": "failed operation"  };
+      return {
+        "code": "failed_operation",
+        "registration": null,
+      };
     }
   }
 
@@ -50,14 +77,24 @@ class RegistrationService {
         var registrationMap = {"id": result.docs.first.id, ...data};
         print(registrationMap);
         Registration registration = Registration.fromJson(registrationMap);
-        return
-       {"code": "email_found","registration":registration, "message": "email found successful"  } ;
+        return {
+          "code": "email_found",
+          "registration": registration,
+          "message": "email found successful"
+        };
       } else
-        return {"code": "email_not_found","registration": null, "message": "email was not found"  };
+        return {
+          "code": "email_not_found",
+          "registration": null,
+          "message": "email was not found"
+        };
     } catch (e) {
-      
       print(e);
-      return {"code": "failed_operation","registration": null, "message": "failed operation"  };
+      return {
+        "code": "failed_operation",
+        "registration": null,
+        "message": "failed operation"
+      };
     }
   }
 

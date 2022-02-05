@@ -1,10 +1,10 @@
-
 enum Status { LOADING, COMPLETED, EMPTY, ERROR }
 
 enum AuthResponseStatus {
   SUCCESS,
   QR_INVALID,
   QR_NOT_FOUND,
+  MAX_DEVICES_ERROR,
   EMAIL_NOT_FOUND,
   EMAIL_ALREADY_EXISTS,
   ACCOUNT_NOT_FOUND,
@@ -18,4 +18,3 @@ class AuthnMethodEnum {
   static const QR_FILE = "qr_file";
   static const EMAIL_PASSWORD = "email_password";
 }
-

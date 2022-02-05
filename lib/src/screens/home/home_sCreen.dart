@@ -1,22 +1,16 @@
 import 'dart:ui';
-import 'package:cetis32_app_registro/main.dart';
+
 import 'package:cetis32_app_registro/src/constants/constants.dart';
-import 'package:cetis32_app_registro/src/models/user_model.dart';
-import 'package:cetis32_app_registro/src/models/notification_model.dart'
-    as NotificationModel;
-import 'package:cetis32_app_registro/src/provider/user_provider.dart';
 import 'package:cetis32_app_registro/src/screens/home/my_data_view.dart';
 import 'package:cetis32_app_registro/src/services/MessagingService.dart';
-import 'package:cetis32_app_registro/src/utils/messaging.dart';
-import 'package:flutter/services.dart';
-import '../../services/RegistrationService.dart';
 import 'package:cetis32_app_registro/src/services/RegistrationService.dart';
 import 'package:cetis32_app_registro/src/utils/auth_sign.dart';
+import 'package:cetis32_app_registro/src/utils/notifications.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter/services.dart';
+
+import '../../services/RegistrationService.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -32,8 +26,8 @@ class _homeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-    Future.delayed(Duration(seconds: 10),
-        () => AppMessaging.initializeNotifications(context));
+    Future.delayed(
+        Duration(seconds: 10), () => AppNotifications.initialize(context));
 
     super.initState();
   }

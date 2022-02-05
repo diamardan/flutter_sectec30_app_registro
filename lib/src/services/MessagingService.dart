@@ -2,8 +2,8 @@ import 'package:cetis32_app_registro/src/constants/constants.dart';
 import 'package:cetis32_app_registro/src/models/notification_model.dart';
 import 'package:cetis32_app_registro/src/models/subscription_model.dart';
 import 'package:cetis32_app_registro/src/models/user_model.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 class MessagingService {
   FirebaseMessaging messaging = FirebaseMessaging.instance;
@@ -31,13 +31,40 @@ class MessagingService {
     saveTopics(reg.id, subscription);
   }
 
-  Future<void> setFCMToken(String registrationId, String token) {
-    return FirebaseFirestore.instance
+  setFCMToken(String regId, String deviceId, String token) {
+    FirebaseFirestore.instance.runTransaction((transaction) async {
+      var deviceRef = FirebaseFirestore.instance
+          .collection("schools")
+          .doc(school)
+          .collection("registros")
+          .doc(regId)
+          .collection("devices")
+          .doc(deviceId);
+      transaction.update(deviceRef, {"fcm_token": token});
+      var regRef = FirebaseFirestore.instance
+          .collection("schools")
+          .doc(school)
+          .collection("registros")
+          .doc(regId);
+      transaction.update(regRef, {
+        "fcm_tokens": FieldValue.arrayUnion([token])
+      });
+    });
+  }
+
+  Future<bool> existsFCMToken(String regId, String deviceId) async {
+    var result = await FirebaseFirestore.instance
         .collection("schools")
         .doc(school)
         .collection("registros")
-        .doc(registrationId)
-        .update({"fcm_token": token});
+        .doc(regId)
+        .collection("devices")
+        .doc(deviceId)
+        .get();
+    if (result.data()["fcm_token"] != null)
+      return true;
+    else
+      return false;
   }
 
   Future<void> saveTopics(String docId, Subscription topics) {

@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:cetis32_app_registro/src/models/user_model.dart' as regUser;
+import 'package:cetis32_app_registro/src/utils/Device.dart';
 import 'package:cetis32_app_registro/src/utils/net_util.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
@@ -136,6 +138,32 @@ class AuthenticationService {
     } on FirebaseAuthException catch (e) {
       print(e.code);
       return {"code": e.code};
+    }
+  }
+
+  Future<bool> registerDevice( regUser.Registration r) async {
+    Device device = await Device.create();
+
+    final db = _firestore
+        .collection('schools')
+        .doc(school)
+        .collection("registros")
+        .doc(r.id)
+        .collection("devices");
+    try {
+      var result = await db.get();
+
+      final exists =
+          result.docs.any((doc) => doc.id == device.id ? true : false);
+      if (exists) return true;
+
+      if (result.size < r.devicesMax) {
+        db.doc(device.id).set(device.toJson());
+        return true;
+      }
+      return false;
+    } catch (e) {
+      return false;
     }
   }
 }

@@ -28,13 +28,9 @@ class Registration {
   String qrDrive;
   String firmaDrive;
   Subscription subscribedTo;
-  String fcmToken;
-
-  /*Registration({
-  String fotoUsuarioDrive;
-  int idbio;
-  String qrDrive;
-  String firmaDrive;*/
+  List fcmTokens;
+  List devices;
+  int devicesMax;
 
   Registration({
     this.id,
@@ -55,8 +51,10 @@ class Registration {
     this.qrDrive,
     this.firmaDrive,
     this.subscribedTo,
-    this.fcmToken,
     this.fecha_registro,
+    this.devicesMax,
+    this.fcmTokens,
+    this.devices,
   });
 
   factory Registration.fromJson(Map<String, dynamic> json) => Registration(
@@ -81,13 +79,31 @@ class Registration {
         subscribedTo: json["subscribed_to"] == null
             ? null
             : Subscription.fromJson(json["subscribed_to"]),
-        fcmToken: json["fcm_token"],
+        fcmTokens: json["fcm_tokens"],
+        devices: json["devices"],
+        devicesMax: json["devices_max"] ?? 3,
       );
 
   @override
   String toString() {
-    var strOutput =
-        " id $id\n name: $name \n surnames $surnames \n  curp: $curp \n email: $email \n cellphone: $cellphone \n  registrationCode: $registrationCode \n carrera: $career\n grade: $grade \n group: $group \n turn: $turn \n  sex: $sex \n  password: $password \n subscribedTo: $subscribedTo";
+    var strOutput = ''' id $id 
+            name: $name  
+            surnames $surnames   
+            curp: $curp  
+            email: $email  
+            cellphone: $cellphone   
+            registrationCode: $registrationCode  
+            carrera: $career 
+            grade: $grade  
+            group: $group  
+            turn: $turn   
+            sex: $sex   
+            password: $password  
+            subscribedTo: $subscribedTo 
+            devicesMax: $devicesMax 
+            fcmTokens: ${fcmTokens.toString()},
+            devices: ${devices.toString()}
+              ''';
     return strOutput;
   }
 
@@ -110,12 +126,14 @@ class Registration {
         "qrDrive": qrDrive,
         "firmaDrive": firmaDrive,
         "subscribed_to": subscribedTo,
-        "fcm_token": fcmToken,
-        "fecha_registro": fecha_registro
+        "fcm_tokens": fcmTokens,
+        "devices": devices,
+        "fecha_registro": fecha_registro,
+        "devices_max": devicesMax,
       };
 
   void resetMessagingInfo() {
-    fcmToken = null;
+    fcmTokens = null;
     subscribedTo = null;
   }
 }

@@ -2,16 +2,16 @@ import 'package:barcode_scan2/barcode_scan2.dart';
 import 'package:cetis32_app_registro/src/models/subscription_model.dart';
 import 'package:cetis32_app_registro/src/models/user_model.dart';
 import 'package:cetis32_app_registro/src/provider/user_provider.dart';
-import 'package:cetis32_app_registro/src/services/RegistrationService.dart';
 import 'package:cetis32_app_registro/src/services/AuthenticationService.dart';
+import 'package:cetis32_app_registro/src/services/RegistrationService.dart';
 import 'package:cetis32_app_registro/src/utils/enums.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/services.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_code_tools/qr_code_tools.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthSignIn {
   static RegistrationService registrationService = RegistrationService();
@@ -21,39 +21,36 @@ class AuthSignIn {
   // * * *  Sing in with code QR from Camera  * * *
 
   static withQrCamera(BuildContext context) async {
-    
-       
-
-    var response = {};
     try {
       // scan qr
       var options = ScanOptions(
         restrictFormat: [BarcodeFormat.qr],
       );
       var futureString = await BarcodeScanner.scan(options: options);
-      if (futureString.rawContent == "")
-        return response["code"] = AuthResponseStatus.QR_INVALID;
+      if (futureString.rawContent == "") return AuthResponseStatus.QR_INVALID;
 
-      // check if qr is valid
-      response = await registrationService.checkQr(futureString.rawContent);
-      if (response["code"] == "failed_operation")
-        return AuthResponseStatus.UNKNOW_ERROR;
+      // validate qr
+      Map<String, dynamic> response =
+          await registrationService.checkQr(futureString.rawContent);
 
-      if (response["code"] == "qr_not_found")
-        return AuthResponseStatus.QR_NOT_FOUND;
+      print(response);
+      print(response);
+      switch (response["code"]) {
+        case "qr_found":
+          Registration registration = response["registration"];
+          await authenticationService.signInAnonymously();
+          createState(context, registration, AuthnMethodEnum.QR_CAMERA);
+          createPersistence(registration, AuthnMethodEnum.QR_CAMERA);
+          return AuthResponseStatus.SUCCESS;
 
-      Registration registration = response["registration"];
+        case "error_max_devices":
+          return AuthResponseStatus.MAX_DEVICES_ERROR;
 
-      if (registration == null) {
-        return AuthResponseStatus.QR_NOT_FOUND;
+        case "qr_not_found":
+          return AuthResponseStatus.QR_NOT_FOUND;
+        default:
+          return AuthResponseStatus.UNKNOW_ERROR;
       }
-
-      await authenticationService.signInAnonymously();
-
-      createState(context, registration, AuthnMethodEnum.QR_CAMERA);
-      createPersistence(registration, AuthnMethodEnum.QR_CAMERA);
-
-      return AuthResponseStatus.SUCCESS;
     } on PlatformException catch (e) {
       if (e.code == BarcodeScanner.cameraAccessDenied) {
         showDialogPermissions(context);
@@ -61,6 +58,7 @@ class AuthSignIn {
         print('Unknown error: $e');
       }
     } catch (e) {
+      print(e);
       //futureString = e.toString();
     }
   }
@@ -71,28 +69,25 @@ class AuthSignIn {
     String qrData;
 
     qrData = await QrCodeToolsPlugin.decodeFrom(imagePath);
-
     if (qrData == null || qrData == "") return AuthResponseStatus.QR_INVALID;
 
+    // validate qr
     Map<String, dynamic> response = await registrationService.checkQr(qrData);
-    if (response["code"] == "failed_operation")
-      return AuthResponseStatus.UNKNOW_ERROR;
+    switch (response["code"]) {
+      case "qr_found":
+        Registration registration = response["registration"];
+        await authenticationService.signInAnonymously();
 
-    if (response["code"] == "qr_not_found")
-      return AuthResponseStatus.QR_NOT_FOUND;
+        createState(context, registration, AuthnMethodEnum.QR_FILE);
+        createPersistence(registration, AuthnMethodEnum.QR_FILE);
 
-    Registration registration = response["registration"];
+        return AuthResponseStatus.SUCCESS;
+      case "qr_not_found":
+        return AuthResponseStatus.QR_NOT_FOUND;
 
-    if (registration == null) {
-      return AuthResponseStatus.QR_NOT_FOUND;
+      default:
+        return AuthResponseStatus.UNKNOW_ERROR;
     }
-
-    await authenticationService.signInAnonymously();
-
-    createState(context, registration, AuthnMethodEnum.QR_FILE);
-    createPersistence(registration, AuthnMethodEnum.QR_FILE);
-
-    return AuthResponseStatus.SUCCESS;
   }
 
 // * * *  Sign in with email and password  * * *
@@ -100,6 +95,7 @@ class AuthSignIn {
       BuildContext context, String email, String password) async {
     Map<String, dynamic> response =
         await RegistrationService().checkEmail(email);
+
     if (response["code"] == "failed_operation")
       return AuthResponseStatus.UNKNOW_ERROR;
 

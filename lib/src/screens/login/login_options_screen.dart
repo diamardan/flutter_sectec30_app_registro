@@ -1,13 +1,13 @@
 import 'package:cetis32_app_registro/src/constants/constants.dart';
 import 'package:cetis32_app_registro/src/screens/home/home_sCreen.dart';
 import 'package:cetis32_app_registro/src/screens/login/login_email_screen.dart';
-import 'package:cetis32_app_registro/src/utils/notify_ui.dart';
-import 'package:cetis32_app_registro/src/utils/enums.dart';
 import 'package:cetis32_app_registro/src/utils/auth_sign_in.dart';
+import 'package:cetis32_app_registro/src/utils/enums.dart';
+import 'package:cetis32_app_registro/src/utils/notify_ui.dart';
+import 'package:cetis32_app_registro/src/widgets/whatsapp_help_btn.dart';
+import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
-import 'package:flutter/material.dart';
-import 'package:cetis32_app_registro/src/widgets/whatsapp_help_btn.dart';
 
 class LoginOptionsScreen extends StatefulWidget {
   LoginOptionsScreen({Key key}) : super(key: key);
@@ -50,6 +50,10 @@ class _LoginOptionsScreenState extends State<LoginOptionsScreen> {
         await NotifyUI.showError(
             context, 'Aviso', 'No se encontró código qr o es inválido');
         break;
+      case AuthResponseStatus.MAX_DEVICES_ERROR:
+        await NotifyUI.showError(context, 'Aviso',
+            'Verifique el número de dispositivos de su licencia');
+        break;
       case AuthResponseStatus.QR_NOT_FOUND:
         await NotifyUI.showError(context, 'Aviso', 'El usuario no existe');
         break;
@@ -73,6 +77,10 @@ class _LoginOptionsScreenState extends State<LoginOptionsScreen> {
         break;
       case AuthResponseStatus.QR_NOT_FOUND:
         await NotifyUI.showError(context, 'Aviso', 'El usuario no existe.');
+        break;
+      case AuthResponseStatus.MAX_DEVICES_ERROR:
+        await NotifyUI.showError(context, 'Aviso',
+            'Verifique el número de dispositivos de su licencia');
         break;
       case AuthResponseStatus.UNKNOW_ERROR:
         await NotifyUI.showError(context, 'Aviso', 'Error desconocido');
@@ -101,7 +109,6 @@ class _LoginOptionsScreenState extends State<LoginOptionsScreen> {
 
   // ignore: non_constant_identifier_names
   Widget _login_options(BuildContext context) {
-   
     return Container(
         padding: EdgeInsets.symmetric(vertical: 50, horizontal: 5),
         decoration: BoxDecoration(
