@@ -1,6 +1,8 @@
 import 'dart:ui';
 
 import 'package:cetis32_app_registro/src/constants/constants.dart';
+import 'package:cetis32_app_registro/src/models/user_model.dart';
+import 'package:cetis32_app_registro/src/provider/user_provider.dart';
 import 'package:cetis32_app_registro/src/screens/home/my_data_view.dart';
 import 'package:cetis32_app_registro/src/services/MessagingService.dart';
 import 'package:cetis32_app_registro/src/services/RegistrationService.dart';
@@ -9,6 +11,8 @@ import 'package:cetis32_app_registro/src/utils/notifications.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:cetis32_app_registro/src/screens/accesses_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../services/RegistrationService.dart';
 
@@ -23,9 +27,30 @@ class _homeScreenState extends State<HomeScreen> {
   final MessagingService messagingService = MessagingService();
   FirebaseMessaging messaging;
   int _viewIndex = 0;
+  Registration registration = Registration();
+  UserProvider userProvider;
+  User user;
+
+  _getStudentData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (user == null) {
+      var id = prefs.getString("registration_id");
+      var authMethod = prefs.getString("auth_method");
+      user = User(id, authMethod);
+    }
+
+    Registration _registration = await registrationService.get(user.id);
+
+    if (registration != null) {
+      setState(() {
+        registration = _registration;
+      });
+    }
+  }
 
   @override
   void initState() {
+    _getStudentData();
     Future.delayed(
         Duration(seconds: 10), () => AppNotifications.initialize(context));
 
@@ -143,7 +168,11 @@ class _homeScreenState extends State<HomeScreen> {
                               width: 135,
                               child: OutlineButton(
                                   onPressed: () {
-                                    Navigator.pushNamed(context, "accesses");
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                AccessesScreen(registration)));
                                   },
                                   child: Column(children: [
                                     Icon(Icons.account_box_outlined,

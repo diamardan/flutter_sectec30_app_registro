@@ -13,7 +13,7 @@ Map<String, WidgetBuilder> getApplicationRoutes(BuildContext context) {
     'pagar': (BuildContext context) => PaymentPage(),
     'wrapper': (BuildContext context) => PaymentPage(),
     'notifications': (BuildContext context) => NotificationsScreen(),
-    'accesses': (BuildContext context) => AccessesScreen(),
+    /* 'accesses': (BuildContext context) => AccessesScreen(), */
     //'verCredencialDigital': (BuildContext context) => DigitalCredentialScreen(),
   };
 }
