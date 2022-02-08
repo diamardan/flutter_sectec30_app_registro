@@ -85,6 +85,24 @@ class MessagingService {
         .collection("received_messages")
         .add(notification.toJson());
   }
+
+  Future<Map<String, dynamic>> getMessage(String messageId) async {
+    try {
+      var result = await firestore
+          .collection("schools")
+          .doc(school)
+          .collection("fcm_messages")
+          .doc(messageId)
+          .get();
+      if (result.exists)
+        return result.data();
+      else
+        return null;
+    } catch (error) {
+      print(error);
+      return null;
+    }
+  }
 }
 // * * * * * * * * * * * * * * *
 

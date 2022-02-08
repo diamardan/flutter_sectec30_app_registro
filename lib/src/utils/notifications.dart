@@ -67,6 +67,8 @@ class AppNotifications {
                 sentDate: message.sentTime,
                 senderName: message.data["sender"],
                 messageId: message.data["messageId"],
+                haveAttachments:
+                    message.data["haveAttachments"] == "yes" ? true : false,
                 read: false);
 
         messagingService.save(userProvider.getUser.id, appNotification);

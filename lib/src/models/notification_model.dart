@@ -6,6 +6,7 @@ class Notification {
   String senderName;
   String messageId;
   String receiverId;
+  bool haveAttachments;
   bool read;
 
   Notification(
@@ -15,6 +16,7 @@ class Notification {
       this.sentDate,
       this.senderName,
       this.messageId,
+      this.haveAttachments,
       this.read});
 
   factory Notification.fromJson(Map<String, dynamic> json) {
@@ -25,6 +27,7 @@ class Notification {
       sentDate: json["sent_date"].toDate(),
       senderName: json["sender_name"],
       messageId: json["message_id"],
+      haveAttachments: json["have_attachments"],
       read: json["read"],
     );
   }
@@ -36,6 +39,7 @@ class Notification {
         "sent_date": sentDate,
         "sender_name": senderName,
         "message_id": messageId,
+        "have_attachments": haveAttachments,
         "read": read,
       };
 }
