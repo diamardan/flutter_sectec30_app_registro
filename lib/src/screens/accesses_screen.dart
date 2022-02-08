@@ -32,13 +32,15 @@ class _AccessesScreenState extends State<AccessesScreen> {
     super.initState();
   }
 
-  _getAccesses(String idbio) async {
+  Future<dynamic> List<Accesos> _getAccesses(String idbio) async {
     try {
       var result = await accesosService.getAllById(idbio);
+      return result;
     } catch (error) {
       print('estoy en catch');
       print(error);
     }
+    return;
   }
 
   CalendarFormat _calendarFormat = CalendarFormat.month;
@@ -98,7 +100,8 @@ class _AccessesScreenState extends State<AccessesScreen> {
         ), */
               SfCalendar(
         view: CalendarView.month,
-        dataSource: AccesosDataSource(_getDataSource()),
+        dataSource:
+            AccesosDataSource(_getAccesses(widget.register.idbio.toString())),
         // by default the month appointment display mode set as Indicator, we can
         // change the display mode as appointment using the appointment display
         // mode property
@@ -126,7 +129,7 @@ class _AccessesScreenState extends State<AccessesScreen> {
     return DateTime(parts[0], parts[1], parts[2]);
   } */
 
-  List<Accesos> _getDataSource() {
+  List<Accesos> _getDataSource()  {
     final List<Accesos> meetings = <Accesos>[];
     final DateTime today = DateTime.now();
     final DateTime startTime =
