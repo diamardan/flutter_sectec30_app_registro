@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:cetis32_app_registro/src/provider/user_provider.dart';
+import 'package:cetis32_app_registro/src/services/AccesosService.dart';
 import 'package:cetis32_app_registro/src/services/RegistrationService.dart';
 import 'package:cetis32_app_registro/src/utils/enums.dart';
 import 'package:flutter/material.dart';
@@ -19,10 +22,21 @@ class AccessesScreen extends StatefulWidget {
 _getEventsForDay(DateTime day) {}
 
 class _AccessesScreenState extends State<AccessesScreen> {
+  AccesosService accesosService = AccesosService();
   @override
   void initState() {
-    print(widget.register.idbio);
+    /* print(widget.register.idbio);
+    _getAccesses(widget.register.idbio.toString()); */
     super.initState();
+  }
+
+  _getAccesses(String idbio) async {
+    try {
+      var result = await accesosService.getAllById(idbio);
+    } catch (error) {
+      print('estoy en catch');
+      print(error);
+    }
   }
 
   CalendarFormat _calendarFormat = CalendarFormat.month;
@@ -65,6 +79,7 @@ class _AccessesScreenState extends State<AccessesScreen> {
               });
             }
           },
+          eventLoader: (day) => _getAccesses(widget.register.idbio.toString()),
           onFormatChanged: (format) {
             if (_calendarFormat != format) {
               // Call `setState()` when updating calendar format
@@ -80,5 +95,22 @@ class _AccessesScreenState extends State<AccessesScreen> {
         ),
       ),
     );
+  }
+
+  Map<DateTime, List> convertJsonToDateMap(String jsonSource) {
+    var json = jsonDecode(jsonSource);
+    var jsonEvents = json['Events'];
+    Map<DateTime, List<String>> events = {};
+    for (var event in jsonEvents) {
+      var date = parseDate(event['FECHA']);
+      events.putIfAbsent(date, () => <String>[]);
+      events[date].add(event['EVENTO']);
+    }
+    return events;
+  }
+
+  DateTime parseDate(String date) {
+    var parts = date.split('-').map(int.tryParse).toList();
+    return DateTime(parts[0], parts[1], parts[2]);
   }
 }
