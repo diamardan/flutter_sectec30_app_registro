@@ -3,8 +3,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
-class AccesosDataSource extends CalendarDataSource {
-  AccesosDataSource(List<Accesos> source) {
+class AccessDataSource extends CalendarDataSource {
+  AccessDataSource(List<Access> source) {
     appointments = source;
   }
 
@@ -34,75 +34,64 @@ class AccesosDataSource extends CalendarDataSource {
   }
 }
 
-class Accesos {
-  Accesos(this.eventName, this.from, this.to, this.background, this.isAllDay);
-
+class Access {
+  int presenceId;
+  DateTime date;
+  DateTime dateUTC;
   String eventName;
-  DateTime from;
-  DateTime to;
-  Color background;
-  bool isAllDay;
-} 
+  String email;
+  String userName;
+  String card;
+  int sentSMS;
+  int sentEmail;
+  String id;
+  String description;
+  String device;
 
-/* class Accesos {
-  int IDASISTENCIA;
-  DateTime FECHA;
-  DateTime FECHA_UTC;
-  String EVENTO;
-  String CORREO;
-  String NOMBRE;
-  String TARJETA;
-  int ENVIONSMS;
-  int ENVIOCORREO;
-  String ID;
-  String DESCRIPCIONUNO;
-  String DISPOSITIVO;
-
-  Accesos({
-    this.IDASISTENCIA,
-    this.FECHA,
-    this.FECHA_UTC,
-    this.EVENTO,
-    this.CORREO,
-    this.NOMBRE,
-    this.TARJETA,
-    this.ENVIONSMS,
-    this.ENVIOCORREO,
-    this.ID,
-    this.DESCRIPCIONUNO,
-    this.DISPOSITIVO,
+  Access({
+    this.presenceId,
+    this.date,
+    this.dateUTC,
+    this.eventName,
+    this.email,
+    this.userName,
+    this.card,
+    this.sentSMS,
+    this.sentEmail,
+    this.id,
+    this.description,
+    this.device,
   });
 
-  factory Accesos.fromJson(Map<String, dynamic> json) {
-    return Accesos(
-      IDASISTENCIA: json["IDASISTENCIA"],
-      FECHA: json["FECHA"].toDate(),
-      FECHA_UTC: json["FECHA_UTC"].toDate(),
-      EVENTO: json["EVENTO"],
-      CORREO: json["CORREO"],
-      NOMBRE: json["NOMBRE"],
-      TARJETA: json["TARJETA"],
-      ENVIONSMS: json["ENVIONSMS"],
-      ENVIOCORREO: json["ENVIOCORREO"],
-      ID: json["ID"],
-      DESCRIPCIONUNO: json["DESCRIPCIONUNO"],
-      DISPOSITIVO: json["DISPOSITIVO"],
+  factory Access.fromJson(Map<String, dynamic> json) {
+    return Access(
+      presenceId: json["IDASISTENCIA"],
+      date: DateTime.parse(json["FECHA"]),
+      //   dateUTC: DateTime.parse(json["FECHA_UTC"]),
+      eventName: json["EVENTO"],
+      email: json["CORREO"],
+      userName: json["NOMBRE"],
+      card: json["TARJETA"],
+      sentSMS: json["ENVIONSMS"],
+      sentEmail: json["ENVIOCORREO"],
+      id: json["ID"],
+      description: json["DESCRIPCIONUNO"],
+      device: json["DISPOSITIVO"],
     );
   }
 
   Map<String, dynamic> toJson() => {
-        "IDASISTENCIA": IDASISTENCIA,
-        "FECHA": FECHA,
-        "FECHA_UTC": FECHA_UTC,
-        "EVENTO": EVENTO,
-        "CORREO": CORREO,
-        "NOMBRE": NOMBRE,
-        "TARJETA": TARJETA,
-        "ENVIONSMS": ENVIONSMS,
-        "ENVIOCORREO": ENVIOCORREO,
-        "ID": ID,
-        "DESCRIPCIONUNO": DESCRIPCIONUNO,
-        "DISPOSITIVO": DISPOSITIVO,
+        "IDASISTENCIA": presenceId,
+        "FECHA": date,
+        "FECHA_UTC": dateUTC,
+        "EVENTO": eventName,
+        "CORREO": email,
+        "NOMBRE": userName,
+        "TARJETA": card,
+        "ENVIONSMS": sentSMS,
+        "ENVIOCORREO": sentEmail,
+        "ID": id,
+        "DESCRIPCIONUNO": description,
+        "DISPOSITIVO": device,
       };
 }
- */

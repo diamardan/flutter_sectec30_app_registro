@@ -1,4 +1,3 @@
-import 'package:cetis32_app_registro/src/screens/accesses_screen.dart';
 import 'package:cetis32_app_registro/src/screens/initial_screen.dart';
 import 'package:cetis32_app_registro/src/screens/notifications/attachments_screen.dart';
 import 'package:cetis32_app_registro/src/screens/notifications/notifications_screen.dart';
@@ -14,7 +13,7 @@ Map<String, WidgetBuilder> getApplicationRoutes(BuildContext context) {
     'wrapper': (BuildContext context) => PaymentPage(),
     'notifications': (BuildContext context) => NotificationsScreen(),
     'notifications-attachments': (BuildContext context) => AttachmentsScreen(),
-    'accesses': (BuildContext context) => AccessesScreen(),
+    // 'accesses': (BuildContext context) => AccessesScreen(),
     //'verCredencialDigital': (BuildContext context) => DigitalCredentialScreen(),
   };
 }

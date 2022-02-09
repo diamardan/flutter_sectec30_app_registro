@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:cetis32_app_registro/src/constants/constants.dart';
 import 'package:cetis32_app_registro/src/models/user_model.dart';
 import 'package:cetis32_app_registro/src/provider/user_provider.dart';
+import 'package:cetis32_app_registro/src/screens/access/access_screen.dart';
 import 'package:cetis32_app_registro/src/screens/home/my_data_view.dart';
 import 'package:cetis32_app_registro/src/services/MessagingService.dart';
 import 'package:cetis32_app_registro/src/services/RegistrationService.dart';
@@ -11,7 +12,6 @@ import 'package:cetis32_app_registro/src/utils/notifications.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:cetis32_app_registro/src/screens/accesses_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../services/RegistrationService.dart';
