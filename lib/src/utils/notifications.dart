@@ -27,7 +27,7 @@ class AppNotifications {
     Device device = await Device.create();
     final existsToken =
         await messagingService.existsFCMToken(_registration.id, device.id);
-    print("*************************************");
+
     print(existsToken);
     if (!existsToken) {
       messaging.getToken().then((token) {

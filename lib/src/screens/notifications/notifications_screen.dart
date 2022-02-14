@@ -7,6 +7,7 @@ import 'package:cetis32_app_registro/src/screens/notifications/attachments_scree
 import 'package:cetis32_app_registro/src/services/RegistrationService.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:paginate_firestore/paginate_firestore.dart';
 import 'package:provider/provider.dart';
 
@@ -44,8 +45,8 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
         appBar: AppBar(
             title: Text('Notificaciones'),
             centerTitle: true,
-            backgroundColor: Colors.white,
-            foregroundColor: Colors.black87),
+            backgroundColor: AppColors.morenaColor,
+            foregroundColor: Colors.white),
         body: Stack(children: [
           Container(
             color: Color(0XFFEAEAEA),
@@ -65,6 +66,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                 message = message.length > 100
                     ? message.substring(0, 99) + "..."
                     : message;
+
                 return Column(children: [
                   Container(
                     height: 20,
@@ -74,54 +76,26 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                     color: Colors.white,
                     child: Column(
                       children: [
-                        ListTile(
-                            leading: CircleAvatar(
-                              child: Icon(
-                                Icons.message_outlined,
-                                color: Colors.white,
-                              ),
-                              backgroundColor:
-                                  AppColors.morenaLightColor.withAlpha(100),
+                        _messageHeader(notification),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Color(0XFFE0E0E0).withOpacity(0.05),
+                            border: Border.all(
+                              width: 1,
+                              color: Colors.orange.withOpacity(0.4),
                             ),
-                            title: notification.title == null
-                                ? Text('No disponible')
-                                : Text(notification.title),
-                            subtitle: Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "${notification.receivedDate.day.toString().padLeft(2, '0')}-${notification.receivedDate.month.toString().padLeft(2, '0')}-${notification.receivedDate.year.toString()}",
-                                    style: TextStyle(fontSize: 12),
-                                  ),
-                                  Text(" "),
-                                  Text(
-                                    "${notification.receivedDate.hour.toString().padLeft(2, '0')}-${notification.receivedDate.minute.toString().padLeft(2, '0')}",
-                                    style: TextStyle(fontSize: 12),
-                                  ),
-                                ]),
-                            trailing: notification.haveAttachments == true
-                                ? OutlinedButton.icon(
-                                    onPressed: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (BuildContext context) =>
-                                                  AttachmentsScreen(
-                                                    messageId:
-                                                        notification.messageId,
-                                                  )));
-
-                                      /*   downloadMessageId =
-                                          notification.messageId;
-                                     */
-                                    },
-                                    icon: Icon(Icons.attach_file),
-                                    label: Text("Archivos"))
-                                : SizedBox(
-                                    width: 10,
-                                  )),
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(20, 0, 20, 10),
+                            shape: BoxShape.rectangle,
+                            borderRadius: const BorderRadius.all(
+                              Radius.circular(10.0),
+                            ),
+                          ),
+                          width: double.infinity,
+                          margin:
+                              EdgeInsets.only(left: 15, right: 15, bottom: 15),
+                          padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
                           child: GestureDetector(
                               onTap: () {
                                 showMessage(context, notification);
@@ -151,6 +125,58 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
         ]));
   }
 
+  _messageHeader(NotificationModel.Notification notification) {
+    var dateTime =
+        DateFormat("dd-MM-y HH:mm").format(notification.receivedDate);
+    return Row(children: [
+      Expanded(
+          child: Container(
+              margin: EdgeInsets.only(left: 10, top: 10, right: 10),
+              decoration: BoxDecoration(
+                //  color: Colors.orange.shade50,
+                //  border: Border.all(width: 0.5, color: Color(0XFFABABAB)),
+                shape: BoxShape.rectangle,
+                borderRadius: const BorderRadius.all(
+                  Radius.circular(5.0),
+                ),
+              ),
+              child: ListTile(
+                  dense: true,
+                  leading: CircleAvatar(
+                    child: Icon(
+                      Icons.message_outlined,
+                      color: Colors.white,
+                    ),
+                    backgroundColor: Colors.orange.withOpacity(0.4),
+                  ),
+                  title: notification.title == null
+                      ? Text('No disponible')
+                      : Text(notification.title),
+                  subtitle: Text(
+                    dateTime,
+                    style: TextStyle(fontSize: 12),
+                  )))),
+      Container(
+          padding: EdgeInsets.only(right: 15),
+          child: notification.haveAttachments == true
+              ? OutlinedButton.icon(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                AttachmentsScreen(
+                                  messageId: notification.messageId,
+                                )));
+                  },
+                  icon: Icon(Icons.attach_file),
+                  label: Text("Archivos"))
+              : SizedBox(
+                  width: 10,
+                ))
+    ]);
+  }
+
   Future<void> showMessage(
       BuildContext context, NotificationModel.Notification notification) {
     return showDialog<void>(
@@ -158,11 +184,19 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
       builder: (BuildContext context) {
         return StatefulBuilder(builder: (context, setState) {
           return AlertDialog(
-              contentPadding: EdgeInsets.fromLTRB(10, 20, 10, 10),
+              contentPadding: EdgeInsets.fromLTRB(10, 0, 10, 10),
               content: Container(
                   // height: 500,
                   child: Column(
                 children: [
+                  Align(
+                    alignment: Alignment.topRight,
+                    child: IconButton(
+                      padding: EdgeInsets.all(0),
+                      icon: Icon(Icons.clear),
+                      onPressed: () => {Navigator.of(context).pop()},
+                    ),
+                  ),
                   Expanded(
                       child: message(notification.title, notification.message)),
                   SizedBox(

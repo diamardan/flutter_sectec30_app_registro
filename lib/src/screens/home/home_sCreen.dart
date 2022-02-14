@@ -155,8 +155,8 @@ class _homeScreenState extends State<HomeScreen> {
                     children: [
                       Text("SELECCIONA UNA OPCIÓN",
                           textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontSize: 16, color: AppColors.textFieldLabel)),
+                          style:
+                              TextStyle(fontSize: 16, color: Colors.black54)),
                       SizedBox(
                         height: 20,
                       ),
@@ -164,8 +164,8 @@ class _homeScreenState extends State<HomeScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Container(
-                              height: 150,
-                              width: 135,
+                              height: 120,
+                              width: 250,
                               child: OutlineButton(
                                   onPressed: () {
                                     Navigator.push(
@@ -174,22 +174,23 @@ class _homeScreenState extends State<HomeScreen> {
                                             builder: (context) =>
                                                 AccessesScreen(registration)));
                                   },
-                                  child: Column(children: [
+                                  child: Row(children: [
                                     Icon(Icons.account_box_outlined,
-                                        size: 90,
+                                        size: 60,
                                         color: AppColors.morenaLightColor
                                             .withOpacity(0.6)),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
                                     Text("Accesos",
                                         style: TextStyle(
-                                            fontSize: 15,
+                                            fontSize: 20,
                                             color: AppColors.morenaLightColor
                                                 .withOpacity(0.6)
                                                 .withBlue(20))),
                                   ]))),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Container(
+
+                          /*  Container(
                               height: 150,
                               width: 145,
                               child: OutlineButton(
@@ -205,7 +206,7 @@ class _homeScreenState extends State<HomeScreen> {
                                             fontSize: 15,
                                             color: AppColors.morenaLightColor
                                                 .withOpacity(0.6)))
-                                  ])))
+                                  ])))*/
                         ],
                       ),
                       SizedBox(
@@ -215,31 +216,32 @@ class _homeScreenState extends State<HomeScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Container(
-                              height: 140,
-                              width: 130,
+                              height: 120,
+                              width: 250,
                               child: OutlineButton(
                                   onPressed: () {
                                     Navigator.pushNamed(
                                         context, "notifications");
                                   },
-                                  child: Column(children: [
-                                    Icon(Icons.add_alert_outlined,
-                                        size: 100,
+                                  child: Row(children: [
+                                    Icon(Icons.circle_notifications_outlined,
+                                        size: 60,
                                         color: AppColors.morenaLightColor
                                             .withOpacity(0.6)),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
                                     Text(
                                       "Notificaciones",
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
-                                          fontSize: 11.5,
+                                          fontSize: 17,
                                           color: AppColors.morenaLightColor
                                               .withOpacity(0.6)),
                                     )
                                   ]))),
-                          SizedBox(
-                            width: 20,
-                          ),
-                          Container(
+
+                          /*    Container(
                               height: 140,
                               width: 130,
                               child: OutlineButton(
@@ -254,7 +256,7 @@ class _homeScreenState extends State<HomeScreen> {
                                             fontSize: 14,
                                             color: AppColors.morenaLightColor
                                                 .withOpacity(0.6)))
-                                  ])))
+                                  ])))*/
                         ],
                       )
                     ],

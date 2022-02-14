@@ -1,10 +1,10 @@
+import 'package:cetis32_app_registro/src/constants/constants.dart';
 import 'package:cetis32_app_registro/src/utils/auth_sign_psw.dart';
 import 'package:cetis32_app_registro/src/utils/enums.dart';
 import 'package:cetis32_app_registro/src/utils/notify_ui.dart';
-import 'package:flutter/material.dart';
-import 'package:cetis32_app_registro/src/constants/constants.dart';
-import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:cetis32_app_registro/src/utils/validator.dart';
+import 'package:flutter/material.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 class RecoveryPasswordScreen extends StatefulWidget {
   _RecoveryPasswordScreenState createState() => _RecoveryPasswordScreenState();
@@ -88,12 +88,7 @@ class _RecoveryPasswordScreenState extends State<RecoveryPasswordScreen> {
   _content() {
     return (Container(
         padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-        decoration: BoxDecoration(
-          color: AppColors.secondary.withOpacity(0.05),
-          border: Border.all(color: Colors.grey.withOpacity(0.7), width: 1.0),
-          borderRadius: BorderRadius.all(Radius.circular(10)),
-        ),
-        width: 280,
+        width: 320,
         height: 500,
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -104,7 +99,7 @@ class _RecoveryPasswordScreenState extends State<RecoveryPasswordScreen> {
             Icon(
               Icons.email_outlined,
               size: 70,
-              color: AppColors.secondary,
+              color: Color(0XFFACACAC),
             ),
             SizedBox(
               height: 20,
@@ -137,12 +132,12 @@ class _RecoveryPasswordScreenState extends State<RecoveryPasswordScreen> {
         key: _formKey,
         child: Column(children: [
           Text(
-            "Introduce tu correo electrónico activado:",
+            "Introduce tu correo electrónico:",
             textAlign: TextAlign.center,
             style: TextStyle(
                 fontWeight: FontWeight.w400,
                 color: Colors.black87,
-                fontSize: 18),
+                fontSize: 16),
           ),
           SizedBox(
             height: 10,
@@ -151,14 +146,6 @@ class _RecoveryPasswordScreenState extends State<RecoveryPasswordScreen> {
           SizedBox(
             height: 30,
           ),
-          Text(
-            "Te enviaremos un correo electrónico con un enlace para restablecer tu contraseña.",
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 14, color: AppColors.textFieldLabel),
-          ),
-          SizedBox(
-            height: 40,
-          ),
           ElevatedButton(
             onPressed: _email != ""
                 ? () async {
@@ -166,7 +153,7 @@ class _RecoveryPasswordScreenState extends State<RecoveryPasswordScreen> {
                   }
                 : null,
             child: Text(
-              "ENVIAR CORREO ELECTRÓNICO",
+              "  ENVIAR CORREO  ",
               textAlign: TextAlign.center,
             ),
             style: ElevatedButton.styleFrom(
@@ -174,6 +161,17 @@ class _RecoveryPasswordScreenState extends State<RecoveryPasswordScreen> {
                 padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                 textStyle:
                     TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          Text(
+            "Te enviaremos un correo electrónico con un enlace para restablecer tu contraseña.",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                fontSize: 13,
+                fontStyle: FontStyle.italic,
+                color: AppColors.textFieldLabel),
           ),
         ]));
   }

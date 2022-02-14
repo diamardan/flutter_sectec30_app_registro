@@ -1,13 +1,13 @@
+import 'dart:math';
+
 import 'package:cetis32_app_registro/src/models/user_model.dart';
 import 'package:cetis32_app_registro/src/screens/initial_screen.dart';
-import 'package:cetis32_app_registro/src/services/RegistrationService.dart';
 import 'package:cetis32_app_registro/src/services/AuthenticationService.dart';
+import 'package:cetis32_app_registro/src/services/RegistrationService.dart';
 import 'package:cetis32_app_registro/src/utils/enums.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:cetis32_app_registro/src/constants/constants.dart';
-import 'dart:math';
 
 class AuthSign {
   static RegistrationService registrationService = RegistrationService();
@@ -33,14 +33,14 @@ class AuthSign {
 
     Map<String, String> result = await authenticationService
         .signUpEmailAndPassword(email: email, password: password);
-    
+
     switch (result['code']) {
       case "sign_up_success":
         await authenticationService.sendPassword(email, password);
         await authenticationService.savePassword(registration.id, password);
         return AuthResponseStatus.SUCCESS;
       case "email-already-in-use":
-        return  AuthResponseStatus.EMAIL_ALREADY_EXISTS;
+        return AuthResponseStatus.EMAIL_ALREADY_EXISTS;
       default:
         return AuthResponseStatus.UNKNOW_ERROR;
     }
@@ -61,11 +61,11 @@ class AuthSign {
             children: [
               Icon(
                 Icons.logout_outlined,
-                size: 60,
-                color: AppColors.morenaLightColor.withOpacity(0.5),
+                size: 50,
+                color: Colors.orange.withOpacity(0.5),
               ),
               Text(
-                "¿Deseas continuar?",
+                "¿Abandonar la sesión?",
                 textAlign: TextAlign.center,
               )
             ],

@@ -21,30 +21,6 @@ class RegistrationService {
         var data = result.docs.first.data();
         var registrationMap = {"id": result.docs.first.id, ...data};
         Registration r = Registration.fromJson(registrationMap);
-
-        Device device = await Device.create();
-
-        result = await db
-            .collection("registros")
-            .doc(r.id)
-            .collection("devices")
-            .get();
-        final exists =
-            result.docs.any((doc) => doc.id == device.id ? true : false);
-        if ((!exists) && result.size == r.devicesMax)
-          return {
-            "code": "error_max_devices",
-            "registration": null,
-          };
-
-        if (!exists)
-          db
-              .collection("registros")
-              .doc(r.id)
-              .collection("devices")
-              .doc(device.id)
-              .set(device.toJson());
-
         return {
           "code": "qr_found",
           "registration": r,
@@ -95,6 +71,38 @@ class RegistrationService {
         "registration": null,
         "message": "failed operation"
       };
+    }
+  }
+
+  registerDevice(String regId, int devMax) async {
+    Device device = await Device.create();
+
+    register() {
+      return db
+          .collection("registros")
+          .doc(regId)
+          .collection("devices")
+          .doc(device.id)
+          .set(device.toJson());
+    }
+
+    var result =
+        await db.collection("registros").doc(regId).collection("devices").get();
+
+    if (result.size > 0) {
+      final exists =
+          result.docs.any((doc) => doc.id == device.id ? true : false);
+
+      if (exists)
+        return "registered_device";
+      else if (result.size < devMax) {
+        await register();
+        return "registered_device";
+      }
+      if ((result.size == devMax)) return "error_max_devices";
+    } else {
+      await register();
+      return "registered_device";
     }
   }
 

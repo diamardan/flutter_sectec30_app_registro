@@ -12,7 +12,7 @@ class AuthSignPassword {
 // * * *  Recovery password * * *
 
   static recoveryPassword(String email) async {
-  Map<String, dynamic> response =
+    Map<String, dynamic> response =
         await RegistrationService().checkEmail(email);
     if (response["code"] == "failed_operation")
       return AuthResponseStatus.UNKNOW_ERROR;
@@ -155,6 +155,7 @@ class _ChangePasswordDialogState extends State<ChangePasswordDialog> {
         ),
         ElevatedButton(
           child: Text('Aceptar'),
+          style: ElevatedButton.styleFrom(primary: Colors.black54),
           onPressed: () async {
             _formKey.currentState.save();
             if (!_formKey.currentState.validate()) return;

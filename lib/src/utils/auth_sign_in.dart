@@ -33,18 +33,18 @@ class AuthSignIn {
       Map<String, dynamic> response =
           await registrationService.checkQr(futureString.rawContent);
 
-      print(response);
-      print(response);
       switch (response["code"]) {
         case "qr_found":
-          Registration registration = response["registration"];
-          await authenticationService.signInAnonymously();
-          createState(context, registration, AuthnMethodEnum.QR_CAMERA);
-          createPersistence(registration, AuthnMethodEnum.QR_CAMERA);
-          return AuthResponseStatus.SUCCESS;
+          Registration r = response["registration"];
 
-        case "error_max_devices":
-          return AuthResponseStatus.MAX_DEVICES_ERROR;
+          var result = registrationService.registerDevice(r.id, r.devicesMax);
+          if (result == "error_max_devices")
+            return AuthResponseStatus.MAX_DEVICES_ERROR;
+
+          await authenticationService.signInAnonymously();
+          createState(context, r, AuthnMethodEnum.QR_CAMERA);
+          createPersistence(r, AuthnMethodEnum.QR_CAMERA);
+          return AuthResponseStatus.SUCCESS;
 
         case "qr_not_found":
           return AuthResponseStatus.QR_NOT_FOUND;
@@ -59,7 +59,7 @@ class AuthSignIn {
       }
     } catch (e) {
       print(e);
-      //futureString = e.toString();
+      return AuthResponseStatus.UNKNOW_ERROR;
     }
   }
 
@@ -75,11 +75,16 @@ class AuthSignIn {
     Map<String, dynamic> response = await registrationService.checkQr(qrData);
     switch (response["code"]) {
       case "qr_found":
-        Registration registration = response["registration"];
+        Registration r = response["registration"];
+
+        var result = registrationService.registerDevice(r.id, r.devicesMax);
+        if (result == "error_max_devices")
+          return AuthResponseStatus.MAX_DEVICES_ERROR;
+
         await authenticationService.signInAnonymously();
 
-        createState(context, registration, AuthnMethodEnum.QR_FILE);
-        createPersistence(registration, AuthnMethodEnum.QR_FILE);
+        createState(context, r, AuthnMethodEnum.QR_FILE);
+        createPersistence(r, AuthnMethodEnum.QR_FILE);
 
         return AuthResponseStatus.SUCCESS;
       case "qr_not_found":
@@ -106,6 +111,9 @@ class AuthSignIn {
     if (registration == null) {
       return AuthResponseStatus.EMAIL_NOT_FOUND;
     }
+    var res = registrationService.registerDevice(
+        registration.id, registration.devicesMax);
+    if (res == "error_max_devices") return AuthResponseStatus.MAX_DEVICES_ERROR;
 
     var result = await authenticationService.signInEmailAndPassword(
         email: email, password: password);

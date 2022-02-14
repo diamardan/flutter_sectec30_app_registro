@@ -1,9 +1,8 @@
 import 'package:cetis32_app_registro/src/constants/constants.dart';
 import 'package:cetis32_app_registro/src/models/user_model.dart';
 import 'package:cetis32_app_registro/src/provider/user_provider.dart';
-import 'package:cetis32_app_registro/src/services/RegistrationService.dart';
 import 'package:cetis32_app_registro/src/screens/home/digital_credential_screen.dart';
-import 'package:cetis32_app_registro/src/utils/auth_sign.dart';
+import 'package:cetis32_app_registro/src/services/RegistrationService.dart';
 import 'package:cetis32_app_registro/src/utils/auth_sign_psw.dart';
 import 'package:cetis32_app_registro/src/utils/enums.dart';
 import 'package:flutter/material.dart';
@@ -83,7 +82,8 @@ class _MyDataViewState extends State<MyDataView> {
                 decoration: BoxDecoration(
                   color: Colors.white.withOpacity(0.7),
                   border: Border.all(
-                      color: AppColors.morenaLightColor.withOpacity(0.7),
+                      color: Colors.orange.withOpacity(
+                          0.4), //AppColors.morenaLightColor.withOpacity(0.7),
                       width: 1.0),
                   borderRadius: BorderRadius.all(Radius.circular(10)),
                 ),

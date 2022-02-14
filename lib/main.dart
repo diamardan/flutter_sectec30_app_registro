@@ -8,6 +8,7 @@ import 'package:cetis32_app_registro/src/services/MessagingService.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:intl/date_symbol_data_local.dart';
 //import 'package:cetis32_app_registro/src/bloc/deep_link_bloc.dart';
@@ -74,6 +75,9 @@ void main() async {
     sound: true,
   );
 
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+  ]);
   Future.delayed(const Duration(seconds: 3), () {
     print("10 segundos");
     initializeDateFormatting().then((_) => runApp(MyApp()));

@@ -1,14 +1,13 @@
+import 'package:cetis32_app_registro/src/constants/constants.dart';
 import 'package:cetis32_app_registro/src/screens/home/home_sCreen.dart';
 import 'package:cetis32_app_registro/src/screens/login/recovery_password.dart';
 import 'package:cetis32_app_registro/src/screens/login/request_password.dart';
-import 'package:cetis32_app_registro/src/services/AuthenticationService.dart';
-import 'package:cetis32_app_registro/src/utils/auth_sign_in.dart';
 import 'package:cetis32_app_registro/src/utils/Device.dart';
+import 'package:cetis32_app_registro/src/utils/auth_sign_in.dart';
 import 'package:cetis32_app_registro/src/utils/enums.dart';
 import 'package:cetis32_app_registro/src/utils/notify_ui.dart';
 import 'package:cetis32_app_registro/src/utils/validator.dart';
 import 'package:flutter/material.dart';
-import 'package:cetis32_app_registro/src/constants/constants.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 class LoginMailScreen extends StatefulWidget {
@@ -23,6 +22,7 @@ class _LoginMailScreenState extends State<LoginMailScreen> {
   bool _emailError = false;
   bool _passwordError = false;
   bool _passwordVisible = false;
+  final FocusNode passwordFocus = FocusNode();
 
   @override
   void dispose() {
@@ -34,7 +34,6 @@ class _LoginMailScreenState extends State<LoginMailScreen> {
   _signIn() async {
     Device device = await Device.create();
     print(device.toJson());
-    
 
     _formKey.currentState.save();
 
@@ -97,34 +96,27 @@ class _LoginMailScreenState extends State<LoginMailScreen> {
                         MediaQuery.of(context).padding.top -
                         kToolbarHeight,
                     //decoration: BoxDecoration(color: Color(0Xcdcdcdff)),
-                    child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            color: Color.fromRGBO(245, 245, 245, 1),
-                            width: double.infinity,
-                            height: 450,
-                            child: _form(),
-                          ),
-                          Expanded(child: _notHavePassword()),
-                          SizedBox(
-                            height: 10,
-                          ),
-                        ]),
+                    color: Colors.white,
+                    child: Center(
+                      child: Container(
+                        width: double.infinity,
+                        height: 350,
+                        child: _form(),
+                      ),
+                    ),
+                    // Expanded(child: _notHavePassword()),
                   ),
                 ))));
   }
 
   _form() {
     return (Container(
-      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 30),
       color: Colors.white,
       child: Form(
         key: _formKey,
         child: Column(
           children: [
-            Expanded(child: Container()),
             Align(
                 alignment: Alignment.center,
                 child: Text(
@@ -216,6 +208,7 @@ class _LoginMailScreenState extends State<LoginMailScreen> {
                 EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
             hintText: "",
           ),
+          onFieldSubmitted: (value) => passwordFocus.requestFocus(),
           validator: (value) {
             var error = "";
             if (value.trim() == "") {
@@ -245,6 +238,7 @@ class _LoginMailScreenState extends State<LoginMailScreen> {
             TextFormField(
               controller: passwordController,
               keyboardType: TextInputType.visiblePassword,
+              focusNode: passwordFocus,
               obscureText: !_passwordVisible,
               decoration: InputDecoration(
                   focusedBorder: OutlineInputBorder(
@@ -258,6 +252,7 @@ class _LoginMailScreenState extends State<LoginMailScreen> {
                   filled: true,
                   fillColor: Colors.white,
                   contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 1)),
+              onFieldSubmitted: (value) => _signIn(),
               validator: (value) {
                 if (value.trim() == "") {
                   setState(() {

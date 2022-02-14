@@ -99,9 +99,8 @@ class _LoginOptionsScreenState extends State<LoginOptionsScreen> {
       body: ModalProgressHUD(
           inAsyncCall: loading,
           child: Stack(children: <Widget>[
-            Column(
-              children: [_login_options(context), Container()],
-            ),
+            _login_options(context),
+            Container(),
             WhatsappHelpBtn(context: context)
           ])),
     ));
@@ -109,16 +108,11 @@ class _LoginOptionsScreenState extends State<LoginOptionsScreen> {
 
   // ignore: non_constant_identifier_names
   Widget _login_options(BuildContext context) {
-    return Container(
-        padding: EdgeInsets.symmetric(vertical: 50, horizontal: 5),
-        decoration: BoxDecoration(
-          // border: Border.all(color: Colors.grey.withOpacity(0.7), width: 1.0),
-          borderRadius: BorderRadius.all(Radius.circular(10)),
-        ),
-        child: Column(mainAxisSize: MainAxisSize.min, children: [
-          /*    Image.asset('assets/img/cetis32logo.png',
-              height: 100, fit: BoxFit.contain),*/
-          SizedBox(height: 0),
+    return Center(
+        child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
           Container(
             width: 290,
             decoration: BoxDecoration(
@@ -126,11 +120,11 @@ class _LoginOptionsScreenState extends State<LoginOptionsScreen> {
                 borderRadius: BorderRadius.all(Radius.circular(5))),
             padding: EdgeInsets.symmetric(horizontal: 9, vertical: 5),
             child: Text(
-              '¿COMO DESEAS INICIAR SESIÓN?',
+              '¿Cómo deseas iniciar sesión?',
               style: TextStyle(
-                  fontSize: 16,
+                  fontSize: 18,
                   fontWeight: FontWeight.w400,
-                  //fontStyle: FontStyle.italic,
+                  fontStyle: FontStyle.italic,
                   color: Colors.black54),
               textAlign: TextAlign.center,
             ),
