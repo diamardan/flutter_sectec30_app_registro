@@ -37,8 +37,9 @@ class AuthSignIn {
         case "qr_found":
           Registration r = response["registration"];
 
-          var result = registrationService.registerDevice(r.id, r.devicesMax);
-          if (result == "error_max_devices")
+          var res =
+              await registrationService.registerDevice(r.id, r.devicesMax);
+          if (res == "error_max_devices")
             return AuthResponseStatus.MAX_DEVICES_ERROR;
 
           await authenticationService.signInAnonymously();
@@ -77,8 +78,9 @@ class AuthSignIn {
       case "qr_found":
         Registration r = response["registration"];
 
-        var result = registrationService.registerDevice(r.id, r.devicesMax);
-        if (result == "error_max_devices")
+        String res =
+            await registrationService.registerDevice(r.id, r.devicesMax);
+        if (res == "error_max_devices")
           return AuthResponseStatus.MAX_DEVICES_ERROR;
 
         await authenticationService.signInAnonymously();
