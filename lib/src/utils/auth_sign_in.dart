@@ -111,7 +111,7 @@ class AuthSignIn {
     if (registration == null) {
       return AuthResponseStatus.EMAIL_NOT_FOUND;
     }
-    var res = registrationService.registerDevice(
+    String res = await registrationService.registerDevice(
         registration.id, registration.devicesMax);
     if (res == "error_max_devices") return AuthResponseStatus.MAX_DEVICES_ERROR;
 

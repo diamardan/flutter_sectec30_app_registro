@@ -74,7 +74,7 @@ class RegistrationService {
     }
   }
 
-  registerDevice(String regId, int devMax) async {
+  Future<String> registerDevice(String regId, int devMax) async {
     Device device = await Device.create();
 
     register() {
@@ -92,7 +92,8 @@ class RegistrationService {
     if (result.size > 0) {
       final exists =
           result.docs.any((doc) => doc.id == device.id ? true : false);
-
+      print("existe");
+      print(exists);
       if (exists)
         return "registered_device";
       else if (result.size < devMax) {

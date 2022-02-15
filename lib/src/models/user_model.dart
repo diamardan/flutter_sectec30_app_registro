@@ -102,7 +102,9 @@ class Registration {
             subscribedTo: $subscribedTo 
             devicesMax: $devicesMax 
             fcmTokens: ${fcmTokens.toString()},
-            devices: ${devices.toString()}
+            devices: ${devices.toString()},
+            idbio: $idbio
+    
               ''';
     return strOutput;
   }

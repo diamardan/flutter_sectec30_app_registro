@@ -22,7 +22,7 @@ class AppNotifications {
     MessagingService messagingService = MessagingService();
 
     setListeners(context); // < - * *
-
+    print(_registration.toString());
     // verify if token exists
     Device device = await Device.create();
     final existsToken =
