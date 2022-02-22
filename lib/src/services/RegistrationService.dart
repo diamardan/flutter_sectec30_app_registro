@@ -13,65 +13,31 @@ class RegistrationService {
     return SharedService().get(curp, "registrations");
   }
 
-  Future<Map<String, dynamic>> checkQr(String qrData) async {
-    try {
-      var result =
-          await db.collection("registros").where("qr", isEqualTo: qrData).get();
-      if (result.docs.isNotEmpty) {
-        var data = result.docs.first.data();
-        var registrationMap = {"id": result.docs.first.id, ...data};
-        Registration r = Registration.fromJson(registrationMap);
-        return {
-          "code": "qr_found",
-          "registration": r,
-        };
-      } else
-        return {
-          "code": "qr_not_found",
-          "registration": null,
-        };
-    } catch (e) {
-      print(e);
-      return {
-        "code": "failed_operation",
-        "registration": null,
-      };
-    }
+  Future<Registration> checkQr(String qrData) async {
+    var result =
+        await db.collection("registros").where("qr", isEqualTo: qrData).get();
+
+    if (result.docs.isNotEmpty) {
+      var data = result.docs.first.data();
+      return Registration.fromJson({"id": result.docs.first.id, ...data});
+    } else
+      return null;
   }
 
-  Future<Map<String, dynamic>> checkEmail(String email) async {
-    try {
-      var result = await FirebaseFirestore.instance
-          .collection("schools")
-          .doc(school)
-          .collection("registros")
-          .where("correo", isEqualTo: email)
-          .get();
+  Future<Registration> checkEmail(String email) async {
+    var result = await FirebaseFirestore.instance
+        .collection("schools")
+        .doc(school)
+        .collection("registros")
+        .where("correo", isEqualTo: email)
+        .get();
 
-      if (result.docs.isNotEmpty) {
-        var data = result.docs.first.data();
-        var registrationMap = {"id": result.docs.first.id, ...data};
-        print(registrationMap);
-        Registration registration = Registration.fromJson(registrationMap);
-        return {
-          "code": "email_found",
-          "registration": registration,
-          "message": "email found successful"
-        };
-      } else
-        return {
-          "code": "email_not_found",
-          "registration": null,
-          "message": "email was not found"
-        };
-    } catch (e) {
-      print(e);
-      return {
-        "code": "failed_operation",
-        "registration": null,
-        "message": "failed operation"
-      };
-    }
+    if (result.docs.isNotEmpty) {
+      var data = result.docs.first.data();
+      var registrationMap = {"id": result.docs.first.id, ...data};
+      return Registration.fromJson(registrationMap);
+    } else
+      return null;
   }
 
   Future<String> registerDevice(String regId, int devMax) async {
@@ -92,8 +58,7 @@ class RegistrationService {
     if (result.size > 0) {
       final exists =
           result.docs.any((doc) => doc.id == device.id ? true : false);
-      print("existe");
-      print(exists);
+
       if (exists)
         return "registered_device";
       else if (result.size < devMax) {

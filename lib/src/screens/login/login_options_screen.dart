@@ -1,13 +1,13 @@
 import 'package:cetis32_app_registro/src/constants/constants.dart';
+import 'package:cetis32_app_registro/src/controllers/SignIn/SignInQRController.dart';
 import 'package:cetis32_app_registro/src/screens/home/home_sCreen.dart';
 import 'package:cetis32_app_registro/src/screens/login/login_email_screen.dart';
-import 'package:cetis32_app_registro/src/utils/auth_sign_in.dart';
-import 'package:cetis32_app_registro/src/utils/enums.dart';
 import 'package:cetis32_app_registro/src/utils/notify_ui.dart';
 import 'package:cetis32_app_registro/src/widgets/whatsapp_help_btn.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class LoginOptionsScreen extends StatefulWidget {
   LoginOptionsScreen({Key key}) : super(key: key);
@@ -18,73 +18,66 @@ class LoginOptionsScreen extends StatefulWidget {
 
 class _LoginOptionsScreenState extends State<LoginOptionsScreen> {
   bool loading = false;
-  String imagePath;
-  final picker = ImagePicker();
+  final SignInQRController signInController = SignInQRController();
+  String messageTitle = 'Estatus de inicio de sesión';
+  setLoading(bool value) {
+    setState(() {
+      loading = value;
+    });
+  }
 
   void _loginQrFromFile() async {
-    setState(() => loading = true);
-    XFile _file;
+    setLoading(true);
+    final picker = ImagePicker();
     try {
-      _file = await picker.pickImage(source: ImageSource.gallery);
-    } catch (error) {
-      print(error);
-    }
-    setState(() {
+      XFile _file = await picker.pickImage(source: ImageSource.gallery);
       if (_file == null) {
-        loading = false;
+        setLoading(false);
         return;
       }
-      imagePath = _file.path;
-    });
 
-    var response = await AuthSignIn.fromQrFile(context, imagePath);
-    setState(() => loading = false);
-    switch (response) {
-      case AuthResponseStatus.SUCCESS:
+      String qrText = await signInController.decodeImage(_file.path);
+      if (qrText == null || qrText == "") {
+        setLoading(false);
+        NotifyUI.showError(
+            context, messageTitle, 'No se encontró código qr o es inválido');
+      }
+
+      Map<String, dynamic> response =
+          await signInController.authenticate(_file.path);
+      setLoading(false);
+      if (response["code"] == "success") {
+        signInController.setStateAndPersistence(
+            context, response["data"], "qr");
         Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(builder: (context) => HomeScreen()),
             (route) => false);
-        break;
-      case AuthResponseStatus.QR_INVALID:
-        await NotifyUI.showError(
-            context, 'Aviso', 'No se encontró código qr o es inválido');
-        break;
-      case AuthResponseStatus.MAX_DEVICES_ERROR:
-        await NotifyUI.showError(context, 'Aviso',
-            'Verifique el número de dispositivos de su licencia');
-        break;
-      case AuthResponseStatus.QR_NOT_FOUND:
-        await NotifyUI.showError(context, 'Aviso', 'El usuario no existe');
-        break;
-      case AuthResponseStatus.UNKNOW_ERROR:
-        await NotifyUI.showError(context, 'Aviso', 'Error desconocido');
-        break;
+      } else
+        await NotifyUI.showError(context, messageTitle, response["message"]);
+    } catch (error) {
+      await NotifyUI.showError(context, messageTitle, error.toString());
     }
   }
 
   _loginWithCamera(BuildContext context) async {
-    setState(() => loading = true);
-    var response = await AuthSignIn.withQrCamera(context);
-    setState(() => loading = false);
-    print(response);
-    switch (response) {
-      case AuthResponseStatus.SUCCESS:
+    try {
+      setLoading(true);
+      String qr = await signInController.scanQR();
+      Map<String, dynamic> response = await signInController.authenticate(qr);
+      setLoading(false);
+
+      if (response["code"] == "success") {
+        signInController.setStateAndPersistence(
+            context, response["data"], "qr");
         Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(builder: (context) => HomeScreen()),
             (route) => false);
-        break;
-      case AuthResponseStatus.QR_NOT_FOUND:
-        await NotifyUI.showError(context, 'Aviso', 'El usuario no existe.');
-        break;
-      case AuthResponseStatus.MAX_DEVICES_ERROR:
-        await NotifyUI.showError(context, 'Aviso',
-            'Verifique el número de dispositivos de su licencia');
-        break;
-      case AuthResponseStatus.UNKNOW_ERROR:
-        await NotifyUI.showError(context, 'Aviso', 'Error desconocido');
-        break;
+      } else
+        await NotifyUI.showError(context, messageTitle, response["message"]);
+    } catch (error) {
+      await NotifyUI.showError(context, messageTitle, error.toString());
     }
   }
 
@@ -189,5 +182,25 @@ class _LoginOptionsScreenState extends State<LoginOptionsScreen> {
             height: 30,
           ),
         ]));
+  }
+
+  showDialogPermissions(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('Sin acceso a Cámara'),
+            content:
+                Text('Permitir el acceso de la Cámara para poder escanear'),
+            actions: <Widget>[
+              TextButton(
+                child: Text('Ok'),
+                onPressed: () async {
+                  await openAppSettings();
+                },
+              )
+            ],
+          );
+        });
   }
 }

@@ -3,9 +3,17 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class User {
   final String id;
-  final String authMethod;
+  final String accessMethod;
+  User(this.id, this.accessMethod);
 
-  User(this.id, this.authMethod);
+  @override
+  String toString() {
+    var strOutput = ''' 
+            id $id 
+            accessMethod: $accessMethod
+              ''';
+    return strOutput;
+  }
 }
 
 class Registration {

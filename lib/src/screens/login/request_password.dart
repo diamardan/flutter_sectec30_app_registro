@@ -1,17 +1,13 @@
-import 'dart:io';
-
-import 'package:cetis32_app_registro/src/services/RegistrationService.dart';
-import 'package:cetis32_app_registro/src/services/AuthenticationService.dart';
-import 'package:cetis32_app_registro/src/utils/auth_sign.dart';
-import 'package:cetis32_app_registro/src/utils/auth_sign_in.dart';
-import 'package:cetis32_app_registro/src/utils/enums.dart';
-import 'package:cetis32_app_registro/src/utils/notify_ui.dart';
-import 'package:flutter/material.dart';
-import 'package:cetis32_app_registro/src/constants/constants.dart';
 import 'dart:math';
 
-import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:cetis32_app_registro/src/constants/constants.dart';
+import 'package:cetis32_app_registro/src/services/AuthenticationService.dart';
+import 'package:cetis32_app_registro/src/utils/auth_sign.dart';
+import 'package:cetis32_app_registro/src/utils/enums.dart';
+import 'package:cetis32_app_registro/src/utils/notify_ui.dart';
 import 'package:cetis32_app_registro/src/utils/validator.dart';
+import 'package:flutter/material.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 class RequestPasswordScreen extends StatefulWidget {
   _RequestPasswordScreenState createState() => _RequestPasswordScreenState();
@@ -70,11 +66,11 @@ class _RequestPasswordScreenState extends State<RequestPasswordScreen> {
         await NotifyUI.showError(context, "Error de activación de cuenta",
             "Ya existe una cuenta activa para este correo. ");
         break;
-      case AuthResponseStatus.EMAIL_NOT_FOUND:
+      case AuthResponseStatus.USER_NOT_FOUND:
         await NotifyUI.showError(context, "Error de activación de cuenta",
             "El correo proporcionado no fue encontrado. ");
         break;
-      case AuthResponseStatus.UNKNOW_ERROR:
+      case AuthResponseStatus.ANOTHER_ERROR:
         await NotifyUI.showError(
             context, "Error de activación de cuenta ", result['code']);
         break;

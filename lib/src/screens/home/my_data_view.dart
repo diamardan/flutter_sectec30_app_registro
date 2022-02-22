@@ -4,10 +4,8 @@ import 'package:cetis32_app_registro/src/provider/user_provider.dart';
 import 'package:cetis32_app_registro/src/screens/home/digital_credential_screen.dart';
 import 'package:cetis32_app_registro/src/services/RegistrationService.dart';
 import 'package:cetis32_app_registro/src/utils/auth_sign_psw.dart';
-import 'package:cetis32_app_registro/src/utils/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class MyDataView extends StatefulWidget {
   MyDataView({Key key}) : super(key: key);
@@ -19,44 +17,30 @@ class MyDataView extends StatefulWidget {
 class _MyDataViewState extends State<MyDataView> {
   UserProvider userProvider;
   User user;
-  Registration registration = Registration();
+  Registration registration;
   final RegistrationService registrationService = RegistrationService();
-  bool showCnangePassword = false;
 
   @override
   void initState() {
-    userProvider = Provider.of<UserProvider>(context, listen: false);
-    user = userProvider.getUser;
-
-    _getStudentData();
-
     super.initState();
   }
 
-  _getStudentData() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    if (user == null) {
-      var id = prefs.getString("registration_id");
-      var authMethod = prefs.getString("auth_method");
-      user = User(id, authMethod);
-    }
-    if (user.authMethod == AuthnMethodEnum.EMAIL_PASSWORD)
-      setState(() {
-        showCnangePassword = true;
-      });
-    Registration _registration = await registrationService.get(user.id);
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _getStudentData();
+  }
 
-    if (registration != null) {
-      setState(() {
-        registration = _registration;
-      });
-    }
+  _getStudentData() {
+    userProvider = Provider.of<UserProvider>(context, listen: true);
+    user = userProvider.getUser;
+    registration = userProvider.getRegistration;
+    print(user.toString());
   }
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-        child: Scaffold(
+    return Scaffold(
       appBar: AppBar(
         title: Text("Mis datos"),
         backgroundColor: AppColors.morenaLightColor,
@@ -89,46 +73,55 @@ class _MyDataViewState extends State<MyDataView> {
                 ),
                 width: 280,
                 height: 460,
-                child: SingleChildScrollView(
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                      Text(
-                        "${registration.name ?? "No disponible"} ${registration.surnames ?? "No disponible"}",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 16),
-                      ),
-                      Divider(
-                        height: 5,
-                        color: Colors.grey,
-                      ),
-                      SizedBox(height: 20),
-                      Text(
-                        "Matrícula",
-                        style: TextStyle(color: Colors.black45),
-                      ),
-                      Text(registration.registrationCode ?? "No disponible"),
-                      SizedBox(height: 20),
-                      Text("CURP", style: TextStyle(color: Colors.black45)),
-                      Text(registration.curp ?? "No disponible"),
-                      SizedBox(height: 20),
-                      Text("Grado", style: TextStyle(color: Colors.black45)),
-                      Text(registration.grade ?? "No disponible"),
-                      SizedBox(height: 20),
-                      Text("Grupo", style: TextStyle(color: Colors.black45)),
-                      Text(registration.group ?? "No disponible"),
-                      SizedBox(height: 20),
-                      Text("Turno", style: TextStyle(color: Colors.black45)),
-                      Text(registration.turn ?? "No disponible"),
-                      SizedBox(height: 20),
-                      Text("Correo", style: TextStyle(color: Colors.black45)),
-                      Text(registration.email ?? "No disponible"),
-                      SizedBox(height: 20),
-                      Text("Celular", style: TextStyle(color: Colors.black45)),
-                      Text(registration.cellphone ?? "No disponible"),
-                    ]))),
+                child: registration != null
+                    ? SingleChildScrollView(
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                            Text(
+                              "${registration.name ?? "No disponible"} ${registration.surnames ?? "No disponible"}",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(fontSize: 16),
+                            ),
+                            Divider(
+                              height: 5,
+                              color: Colors.grey,
+                            ),
+                            SizedBox(height: 20),
+                            Text(
+                              "Matrícula",
+                              style: TextStyle(color: Colors.black45),
+                            ),
+                            Text(registration.registrationCode ??
+                                "No disponible"),
+                            SizedBox(height: 20),
+                            Text("CURP",
+                                style: TextStyle(color: Colors.black45)),
+                            Text(registration.curp ?? "No disponible"),
+                            SizedBox(height: 20),
+                            Text("Grado",
+                                style: TextStyle(color: Colors.black45)),
+                            Text(registration.grade ?? "No disponible"),
+                            SizedBox(height: 20),
+                            Text("Grupo",
+                                style: TextStyle(color: Colors.black45)),
+                            Text(registration.group ?? "No disponible"),
+                            SizedBox(height: 20),
+                            Text("Turno",
+                                style: TextStyle(color: Colors.black45)),
+                            Text(registration.turn ?? "No disponible"),
+                            SizedBox(height: 20),
+                            Text("Correo",
+                                style: TextStyle(color: Colors.black45)),
+                            Text(registration.email ?? "No disponible"),
+                            SizedBox(height: 20),
+                            Text("Celular",
+                                style: TextStyle(color: Colors.black45)),
+                            Text(registration.cellphone ?? "No disponible"),
+                          ]))
+                    : Container()),
             SizedBox(height: 20),
-            showCnangePassword == true
+            user.accessMethod == "email"
                 ? Container(
                     color: Colors.white70,
                     width: 260,
@@ -167,6 +160,6 @@ class _MyDataViewState extends State<MyDataView> {
           ]),
         )
       ])),
-    ));
+    );
   }
 }

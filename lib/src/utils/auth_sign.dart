@@ -16,17 +16,10 @@ class AuthSign {
 
 // * * *  Sign up email and password  * * *
   static signUpWithEmailAndPassword(String email) async {
-    Map<String, dynamic> response =
-        await RegistrationService().checkEmail(email);
-    if (response["code"] == "failed_operation")
-      return AuthResponseStatus.UNKNOW_ERROR;
+    Registration registration = await RegistrationService().checkEmail(email);
 
-    if (response["code"] == "email_not_found")
-      return AuthResponseStatus.EMAIL_NOT_FOUND;
-
-    Registration registration = response["registration"];
     if (registration == null) {
-      return AuthResponseStatus.EMAIL_NOT_FOUND;
+      return AuthResponseStatus.USER_NOT_FOUND;
     }
 
     var password = generatePassword();
@@ -42,7 +35,7 @@ class AuthSign {
       case "email-already-in-use":
         return AuthResponseStatus.EMAIL_ALREADY_EXISTS;
       default:
-        return AuthResponseStatus.UNKNOW_ERROR;
+        return AuthResponseStatus.ANOTHER_ERROR;
     }
   }
 

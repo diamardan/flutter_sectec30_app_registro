@@ -27,18 +27,21 @@ Future<void> _messageHandler(RemoteMessage message) async {
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var userId = prefs.getString("registration_id");
-    NotificationModel.Notification appNotification =
+    NotificationModel.Notification _notification =
         NotificationModel.Notification(
+            serverMessageId: message.messageId,
             title: notification.title,
             message: notification.body,
             receivedDate: DateTime.now(),
             sentDate: message.sentTime,
+            origin: message.data["origin"],
             senderName: message.data["sender"],
             messageId: message.data["messageId"],
             haveAttachments:
                 message.data["haveAttachments"] == "yes" ? true : false,
+            inputMode: "background",
             read: false);
-    MessagingService().save(userId, appNotification);
+    MessagingService().save(userId, _notification);
   }
 }
 
@@ -78,6 +81,7 @@ void main() async {
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]);
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
   Future.delayed(const Duration(seconds: 3), () {
     print("10 segundos");
     initializeDateFormatting().then((_) => runApp(MyApp()));

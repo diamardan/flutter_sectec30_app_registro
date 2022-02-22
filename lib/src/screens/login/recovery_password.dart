@@ -42,8 +42,7 @@ class _RecoveryPasswordScreenState extends State<RecoveryPasswordScreen> {
             "El correo electrónico de restablecimiento de contraseña ha sido enviado");
         break;
 
-      case AuthResponseStatus.EMAIL_NOT_FOUND:
-      case AuthResponseStatus.ACCOUNT_NOT_FOUND:
+      case AuthResponseStatus.USER_NOT_FOUND:
         setState(() {
           loading = false;
         });

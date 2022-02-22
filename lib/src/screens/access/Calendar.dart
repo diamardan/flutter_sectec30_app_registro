@@ -2,15 +2,16 @@ import 'dart:collection';
 
 import 'package:cetis32_app_registro/src/models/acceses_model.dart';
 import 'package:cetis32_app_registro/src/models/user_model.dart';
+import 'package:cetis32_app_registro/src/provider/user_provider.dart';
 import 'package:cetis32_app_registro/src/services/AccessService.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class Calendar extends StatefulWidget {
-  const Calendar({Key key, this.reg}) : super(key: key);
-  final Registration reg;
+  const Calendar({Key key}) : super(key: key);
 
   @override
   _CalendarState createState() => _CalendarState();
@@ -34,10 +35,6 @@ class _CalendarState extends State<Calendar> {
     );
     _selectedDay = _focusedDay;
 
-    r = widget.reg;
-    print(r.toString());
-    _getAccess(r.idbio.toString());
-
     super.initState();
   }
 
@@ -47,17 +44,31 @@ class _CalendarState extends State<Calendar> {
     super.dispose();
   }
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    getUserData();
+  }
+
+  getUserData() async {
+    UserProvider userProvider =
+        Provider.of<UserProvider>(context, listen: true);
+    r = userProvider.getRegistration;
+    _getAccess(r.idbio.toString());
+  }
+
   _getAccess(String idBio) async {
-    try {
-      var result = await accesService.getAllById(idBio);
-      fillMap(result);
-      setState(() {
-        _loading = false;
-      });
-      _selectedEvents.value = _getAccessForDay(_focusedDay);
-    } catch (error) {
+    // try {
+    var result = await accesService.getAllById(idBio);
+    print(result);
+    fillMap(result);
+    setState(() {
+      _loading = false;
+    });
+    _selectedEvents.value = _getAccessForDay(_focusedDay);
+    /*} catch (error) {
       print(error);
-    }
+    }*/
     return;
   }
 

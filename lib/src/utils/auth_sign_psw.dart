@@ -12,35 +12,27 @@ class AuthSignPassword {
 // * * *  Recovery password * * *
 
   static recoveryPassword(String email) async {
-    Map<String, dynamic> response =
-        await RegistrationService().checkEmail(email);
-    if (response["code"] == "failed_operation")
-      return AuthResponseStatus.UNKNOW_ERROR;
+    Registration r = await RegistrationService().checkEmail(email);
 
-    if (response["code"] == "email_not_found")
-      return AuthResponseStatus.EMAIL_NOT_FOUND;
-
-    Registration registration = response["registration"];
-    if (registration == null) {
-      return AuthResponseStatus.EMAIL_NOT_FOUND;
+    if (r == null) {
+      return AuthResponseStatus.USER_NOT_FOUND;
     }
 
     var result = await authenticationService.signInEmailAndPassword(
         email: email, password: "xxxxxx");
 
-    print(result['code']);
     switch (result['code']) {
       case "user-not-found":
-        return {"code": AuthResponseStatus.ACCOUNT_NOT_FOUND};
+        return {"code": AuthResponseStatus.USER_NOT_FOUND};
         break;
       case "wrong-password": //means user exists
         break;
       default:
-        return {"code": AuthResponseStatus.UNKNOW_ERROR};
+        return {"code": AuthResponseStatus.ANOTHER_ERROR};
         break;
     }
 
-    await authenticationService.remindPassword(email, registration.password);
+    await authenticationService.remindPassword(email, r.password);
 
     return {'code': AuthResponseStatus.SUCCESS};
   }

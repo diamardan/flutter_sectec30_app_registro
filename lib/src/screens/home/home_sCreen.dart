@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:ui';
 
 import 'package:cetis32_app_registro/src/constants/constants.dart';
@@ -12,9 +13,29 @@ import 'package:cetis32_app_registro/src/utils/notifications.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
 
 import '../../services/RegistrationService.dart';
+
+class DisposableWidget {
+  List<StreamSubscription> _subscriptions = [];
+
+  void cancelSubscriptions() {
+    _subscriptions.forEach((subscription) {
+      subscription.cancel();
+    });
+  }
+
+  void addSubscription(StreamSubscription subscription) {
+    _subscriptions.add(subscription);
+  }
+}
+
+extension DisposableStreamSubscriton on StreamSubscription {
+  void canceledBy(DisposableWidget widget) {
+    widget.addSubscription(this);
+  }
+}
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -22,39 +43,42 @@ class HomeScreen extends StatefulWidget {
 }
 
 // ignore: camel_case_types
-class _homeScreenState extends State<HomeScreen> {
+class _homeScreenState extends State<HomeScreen> with DisposableWidget {
   final RegistrationService registrationService = RegistrationService();
   final MessagingService messagingService = MessagingService();
   FirebaseMessaging messaging;
   int _viewIndex = 0;
-  Registration registration = Registration();
+  Registration registration;
   UserProvider userProvider;
   User user;
 
-  _getStudentData() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    if (user == null) {
-      var id = prefs.getString("registration_id");
-      var authMethod = prefs.getString("auth_method");
-      user = User(id, authMethod);
-    }
+  @override
+  void initState() {
+    getUserData();
+    startNotifications();
+    super.initState();
+  }
 
-    Registration _registration = await registrationService.get(user.id);
-
-    if (registration != null) {
-      setState(() {
-        registration = _registration;
-      });
-    }
+  getUserData() {
+    UserProvider userProvider =
+        Provider.of<UserProvider>(context, listen: false);
+    registration = userProvider.getRegistration;
+    user = userProvider.getUser;
   }
 
   @override
-  void initState() {
-    _getStudentData();
-    Future.delayed(
-        Duration(seconds: 10), () => AppNotifications.initialize(context));
+  void dispose() {
+    cancelSubscriptions();
+    super.dispose();
+  }
 
-    super.initState();
+  startNotifications() {
+    Future.delayed(Duration(seconds: 10), () async {
+      var _subscriptions = await AppNotifications.initialize(context);
+      _subscriptions.forEach((s) {
+        s.canceledBy(this);
+      });
+    });
   }
 
   void _switchView(int index) {
@@ -70,14 +94,10 @@ class _homeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return AnnotatedRegion<SystemUiOverlayStyle>(
-        value: SystemUiOverlayStyle(
-          statusBarColor: AppColors.morenaLightColor,
-        ),
-        child: Scaffold(
-          body: _getView(),
-          bottomNavigationBar: _bottomNavBar(context),
-        ));
+    return Scaffold(
+      body: _getView(),
+      bottomNavigationBar: _bottomNavBar(context),
+    );
   }
 
   _bottomNavBar(BuildContext context) {
@@ -129,6 +149,7 @@ class _homeScreenState extends State<HomeScreen> {
             ),
           ),
           backgroundColor: AppColors.morenaLightColor,
+          systemOverlayStyle: SystemUiOverlayStyle.light,
         ),
         body: Stack(children: [
           Container(
@@ -172,7 +193,7 @@ class _homeScreenState extends State<HomeScreen> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                AccessesScreen(registration)));
+                                                AccessesScreen()));
                                   },
                                   child: Row(children: [
                                     Icon(Icons.account_box_outlined,

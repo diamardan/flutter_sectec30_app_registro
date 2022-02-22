@@ -1,10 +1,9 @@
 import 'package:cetis32_app_registro/src/constants/constants.dart';
+import 'package:cetis32_app_registro/src/controllers/SignIn/SignInEmailController.dart';
 import 'package:cetis32_app_registro/src/screens/home/home_sCreen.dart';
 import 'package:cetis32_app_registro/src/screens/login/recovery_password.dart';
 import 'package:cetis32_app_registro/src/screens/login/request_password.dart';
 import 'package:cetis32_app_registro/src/utils/Device.dart';
-import 'package:cetis32_app_registro/src/utils/auth_sign_in.dart';
-import 'package:cetis32_app_registro/src/utils/enums.dart';
 import 'package:cetis32_app_registro/src/utils/notify_ui.dart';
 import 'package:cetis32_app_registro/src/utils/validator.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +22,7 @@ class _LoginMailScreenState extends State<LoginMailScreen> {
   bool _passwordError = false;
   bool _passwordVisible = false;
   final FocusNode passwordFocus = FocusNode();
+  final SignInEmailController signInController = SignInEmailController();
 
   @override
   void dispose() {
@@ -31,9 +31,14 @@ class _LoginMailScreenState extends State<LoginMailScreen> {
     super.dispose();
   }
 
+  setLoading(bool value) {
+    setState(() {
+      loading = value;
+    });
+  }
+
   _signIn() async {
     Device device = await Device.create();
-    print(device.toJson());
 
     _formKey.currentState.save();
 
@@ -43,33 +48,26 @@ class _LoginMailScreenState extends State<LoginMailScreen> {
     var _email = emailController.text.trim();
     var _password = passwordController.text.trim();
 
-    setState(() {
-      loading = true;
-    });
-    var result =
-        await AuthSignIn.withEmailAndPassword(context, _email, _password);
-    setState(() {
-      loading = false;
-    });
-
-    switch (result) {
-      case AuthResponseStatus.SUCCESS:
+    try {
+      setLoading(true);
+      Map<String, dynamic> response =
+          await signInController.authenticate(_email, _password);
+      setLoading(false);
+      if (response["code"] == "sign_in_success") {
+        signInController.setStateAndPersistence(
+            context, response["data"], "email");
         FocusScope.of(context).requestFocus(FocusNode());
         Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(builder: (context) => HomeScreen()),
             (route) => false);
-        break;
-      case AuthResponseStatus.EMAIL_NOT_FOUND:
-      case AuthResponseStatus.ACCOUNT_NOT_FOUND:
-      case AuthResponseStatus.WRONG_PASSWORD:
-        await NotifyUI.showError(context, "No se pudo iniciar de sesión ",
-            "El correo electrónico o contraseña son incorrectos.");
-        break;
-      case AuthResponseStatus.UNKNOW_ERROR:
+      } else {
         await NotifyUI.showError(
-            context, "No se pudo inicio de sesión ", "Error interno");
-        break;
+            context, "Estatus de inicio de sesión", response["message"]);
+      }
+    } catch (e) {
+      await NotifyUI.showError(
+          context, "Estatus de inicio de sesión", e.toString());
     }
   }
 

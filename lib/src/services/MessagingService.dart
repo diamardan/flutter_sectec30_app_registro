@@ -80,10 +80,11 @@ class MessagingService {
     firestore
         .collection("schools")
         .doc(school)
-        .collection("notifications")
+        .collection("registros")
         .doc(docId)
-        .collection("received_messages")
-        .add(notification.toJson());
+        .collection("notifications")
+        .doc(notification.serverMessageId)
+        .set(notification.toJson());
   }
 
   Future<Map<String, dynamic>> getMessage(String messageId) async {

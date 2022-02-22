@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cetis32_app_registro/main.dart';
 import 'package:cetis32_app_registro/src/models/notification_model.dart'
     as NotificationModel;
@@ -14,14 +16,14 @@ class AppNotifications {
   static MessagingService messagingService = MessagingService();
   static FirebaseMessaging messaging;
 
-  static initialize(BuildContext context) async {
+  static Future<List<StreamSubscription>> initialize(
+      BuildContext context) async {
     messaging = FirebaseMessaging.instance;
     UserProvider userProvider =
         Provider.of<UserProvider>(context, listen: false);
     Registration _registration = userProvider.getRegistration;
     MessagingService messagingService = MessagingService();
-
-    setListeners(context); // < - * *
+    List<StreamSubscription> _suscriptions = setListeners(context); // < - * *
     print(_registration.toString());
     // verify if token exists
     Device device = await Device.create();
@@ -35,9 +37,10 @@ class AppNotifications {
         messagingService.suscribeToTopics(_registration);
       });
     }
+    return _suscriptions;
   }
 
-  static setListeners(BuildContext context) {
+  static List<StreamSubscription> setListeners(BuildContext context) {
     UserProvider userProvider =
         Provider.of<UserProvider>(context, listen: false);
 
@@ -49,7 +52,7 @@ class AppNotifications {
     }
 
     // App on foreground
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
+    var s1 = FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
       print("message recieved");
 
       RemoteNotification notification = message.notification;
@@ -59,19 +62,22 @@ class AppNotifications {
       // If `onMessage` is triggered with a notification, construct our own
       // local notification to show to users using the created channel.
       if (notification != null && android != null) {
-        NotificationModel.Notification appNotification =
+        NotificationModel.Notification _notification =
             NotificationModel.Notification(
+                serverMessageId: message.messageId,
                 title: notification.title,
                 message: notification.body,
                 receivedDate: DateTime.now(),
                 sentDate: message.sentTime,
                 senderName: message.data["sender"],
                 messageId: message.data["messageId"],
+                origin: message.data["origin"],
                 haveAttachments:
                     message.data["haveAttachments"] == "yes" ? true : false,
+                inputMode: "foreground",
                 read: false);
 
-        messagingService.save(userProvider.getUser.id, appNotification);
+        messagingService.save(userProvider.getUser.id, _notification);
 
         AndroidInitializationSettings android =
             AndroidInitializationSettings("@mipmap/launch");
@@ -93,10 +99,15 @@ class AppNotifications {
       }
     });
 
-    FirebaseMessaging.onMessageOpenedApp.listen((message) {
+    var s2 = FirebaseMessaging.onMessageOpenedApp.listen((message) {
       //click from user on notification when app is backgroud
       print('Message clicked!');
       Navigator.pushNamed(context, 'notifications');
     });
+    List<StreamSubscription> subscriptions = [];
+
+    subscriptions.add(s1);
+    subscriptions.add(s2);
+    return subscriptions;
   }
 }
