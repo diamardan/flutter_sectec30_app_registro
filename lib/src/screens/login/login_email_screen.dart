@@ -1,7 +1,7 @@
 import 'package:cetis32_app_registro/src/constants/constants.dart';
 import 'package:cetis32_app_registro/src/controllers/SignIn/SignInEmailController.dart';
 import 'package:cetis32_app_registro/src/screens/home/home_sCreen.dart';
-import 'package:cetis32_app_registro/src/screens/login/recovery_password.dart';
+import 'package:cetis32_app_registro/src/screens/login/recovery_screen.dart';
 import 'package:cetis32_app_registro/src/screens/login/request_password.dart';
 import 'package:cetis32_app_registro/src/utils/Device.dart';
 import 'package:cetis32_app_registro/src/utils/notify_ui.dart';

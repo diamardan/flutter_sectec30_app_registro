@@ -44,7 +44,7 @@ class _LoginOptionsScreenState extends State<LoginOptionsScreen> {
       }
 
       Map<String, dynamic> response =
-          await signInController.authenticate(_file.path);
+          await signInController.authenticate(qrText);
       setLoading(false);
       if (response["code"] == "success") {
         signInController.setStateAndPersistence(

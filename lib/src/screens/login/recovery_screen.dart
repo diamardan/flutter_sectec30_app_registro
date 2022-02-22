@@ -1,6 +1,5 @@
 import 'package:cetis32_app_registro/src/constants/constants.dart';
-import 'package:cetis32_app_registro/src/utils/auth_sign_psw.dart';
-import 'package:cetis32_app_registro/src/utils/enums.dart';
+import 'package:cetis32_app_registro/src/controllers/SignIn/SignInEmailController.dart';
 import 'package:cetis32_app_registro/src/utils/notify_ui.dart';
 import 'package:cetis32_app_registro/src/utils/validator.dart';
 import 'package:flutter/material.dart';
@@ -23,16 +22,20 @@ class _RecoveryPasswordScreenState extends State<RecoveryPasswordScreen> {
     super.dispose();
   }
 
-  _recoveryPassword() async {
+  setLoading(value) {
+    setState(() {
+      loading = value;
+    });
+  }
+
+  _recovery() async {
     _formKey.currentState.save();
     if (!_formKey.currentState.validate()) return;
-    setState(() {
-      loading = true;
-    });
-    var result = await AuthSignPassword.recoveryPassword(_email);
-
-    switch (result) {
-      case AuthResponseStatus.SUCCESS:
+    setLoading(true);
+    try {
+      var result = await SignInEmailController().recoveryPassword(_email);
+      setLoading(false);
+      if (result["code"] == "success") {
         setState(() {
           loading = false;
           enabledSendButton = false;
@@ -40,18 +43,18 @@ class _RecoveryPasswordScreenState extends State<RecoveryPasswordScreen> {
         });
         NotifyUI.flushbar(context,
             "El correo electrónico de restablecimiento de contraseña ha sido enviado");
-        break;
-
-      case AuthResponseStatus.USER_NOT_FOUND:
-        setState(() {
-          loading = false;
-        });
+      } else
         await NotifyUI.showError(
           context,
           "Error de recuperación de contraseña ",
-          "No existe una cuenta asociada a este correo electrónico.",
+          result["message"],
         );
-        break;
+    } catch (e) {
+      await NotifyUI.showError(
+        context,
+        "Error de recuperación de contraseña ",
+        e.toString(),
+      );
     }
   }
 
@@ -148,7 +151,7 @@ class _RecoveryPasswordScreenState extends State<RecoveryPasswordScreen> {
           ElevatedButton(
             onPressed: _email != ""
                 ? () async {
-                    _recoveryPassword();
+                    _recovery();
                   }
                 : null,
             child: Text(

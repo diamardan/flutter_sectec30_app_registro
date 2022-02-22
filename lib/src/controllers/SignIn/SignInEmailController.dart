@@ -33,4 +33,23 @@ class SignInEmailController extends SignInController {
         return {"code": code, "message": "No se identificó al usuario."};
     }
   }
+
+  Future<Map<String, String>> recoveryPassword(String email) async {
+    r = await RegistrationService().checkEmail(email);
+
+    if (r == null) {
+      return {"code": "user_not_found", "message": "Usuario no encontrado"};
+    }
+
+    var result = await authenticationService.signInEmailAndPassword(
+        email: email, password: "xxxxxx");
+
+    if (result['code'] == "wrong-password") //means user exists
+    {
+      await authenticationService.remindPassword(email, r.password);
+      return {'code': "success"};
+    } else {
+      return {"code": "error", "message": "Cuenta no identificada."};
+    }
+  }
 }

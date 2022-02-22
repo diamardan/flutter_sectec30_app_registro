@@ -1,7 +1,5 @@
-import 'package:cetis32_app_registro/src/models/user_model.dart';
 import 'package:cetis32_app_registro/src/provider/user_provider.dart';
 import 'package:cetis32_app_registro/src/services/AuthenticationService.dart';
-import 'package:cetis32_app_registro/src/services/RegistrationService.dart';
 import 'package:cetis32_app_registro/src/utils/enums.dart';
 import 'package:cetis32_app_registro/src/utils/notify_ui.dart';
 import 'package:flutter/material.dart';
@@ -10,32 +8,6 @@ import 'package:provider/provider.dart';
 class AuthSignPassword {
   static AuthenticationService authenticationService = AuthenticationService();
 // * * *  Recovery password * * *
-
-  static recoveryPassword(String email) async {
-    Registration r = await RegistrationService().checkEmail(email);
-
-    if (r == null) {
-      return AuthResponseStatus.USER_NOT_FOUND;
-    }
-
-    var result = await authenticationService.signInEmailAndPassword(
-        email: email, password: "xxxxxx");
-
-    switch (result['code']) {
-      case "user-not-found":
-        return {"code": AuthResponseStatus.USER_NOT_FOUND};
-        break;
-      case "wrong-password": //means user exists
-        break;
-      default:
-        return {"code": AuthResponseStatus.ANOTHER_ERROR};
-        break;
-    }
-
-    await authenticationService.remindPassword(email, r.password);
-
-    return {'code': AuthResponseStatus.SUCCESS};
-  }
 
   static changePassword(
     BuildContext context,
