@@ -1,24 +1,21 @@
-import 'dart:typed_data';
-import 'dart:io';
 import 'dart:async';
-import 'package:intl/intl.dart'; // for date format
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:cetis32_app_registro/src/constants/constants.dart';
 import 'package:cetis32_app_registro/src/models/user_model.dart';
-import 'package:cetis32_app_registro/src/screens/home/render_crendetial_screen.dart';
+import 'package:cetis32_app_registro/src/provider/user_provider.dart';
+import 'package:cetis32_app_registro/src/screens/credential/render_crendetial_screen.dart';
 import 'package:cetis32_app_registro/src/utils/imageUtil.dart';
 import 'package:cetis32_app_registro/src/utils/widget_to_image.dart';
 import 'package:ext_storage/ext_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:pdf/pdf.dart';
+import 'package:intl/intl.dart'; // for date format
 import 'package:pdf/widgets.dart' as pw;
 import 'package:permission_handler/permission_handler.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:provider/provider.dart';
 
 class DigitalCredentialScreen extends StatefulWidget {
-  final Registration register;
-  DigitalCredentialScreen(this.register, {Key key}) : super(key: key);
-
   @override
   _DigitalCredentialScreenState createState() =>
       _DigitalCredentialScreenState();
@@ -32,10 +29,23 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
   Uint8List bytes1;
   Uint8List bytes2;
   bool visibleButton;
+  Registration register;
 
   @override
   void initState() {
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _getStudentData();
+  }
+
+  _getStudentData() {
+    UserProvider userProvider =
+        Provider.of<UserProvider>(context, listen: true);
+    register = userProvider.getRegistration;
   }
 
   startTimeout() {
@@ -160,7 +170,7 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
           height: 174,
           width: 81,
         ),
-        _networkImageWidget(174, 148, widget.register.fotoUsuarioDrive),
+        _networkImageWidget(174, 148, register.fotoUsuarioDrive),
         Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -172,7 +182,7 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
               margin: EdgeInsets.only(top: 30),
               width: 80,
               child: Text(
-                widget.register.group != null ? widget.register.group : "",
+                register.group ?? "",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     fontSize: 40,
@@ -192,7 +202,7 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
 
   Widget _networkImageWidget(double height, double width, String image,
       [bool transparency, bool margin, double marginTop]) {
-    if (this.widget.register.fotoUsuarioDrive == null || image == "") {
+    if (register.fotoUsuarioDrive == null || image == "") {
       image = "1TvA4s1r-c2NpsPCRdHozdk8dk0xQ_riY";
     }
     return Container(
@@ -216,7 +226,7 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
               if (loadingProgress.cumulativeBytesLoaded /
                           loadingProgress.expectedTotalBytes ==
                       1.0 &&
-                  image == this.widget.register.fotoUsuarioDrive) {
+                  image == this.register.fotoUsuarioDrive) {
                 startTimeout();
               }
             } */
@@ -250,8 +260,8 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
           child: Column(
             children: [
               Text(
-                widget.register.idbio.toString() != null
-                    ? widget.register.idbio.toString()
+                register.idbio.toString() != null
+                    ? register.idbio.toString()
                     : "-",
                 style: TextStyle(color: AppColors.textoRojoCredencial),
               ),
@@ -271,7 +281,7 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
           child: Column(
             children: [
               Text(
-                widget.register.id != null ? widget.register.id : '-',
+                register.id ?? '-',
                 style: TextStyle(color: AppColors.textoRojoCredencial),
               ),
               SizedBox(
@@ -293,7 +303,7 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
           child: Column(
             children: [
               Text(
-                widget.register.grade != null ? widget.register.grade : "-",
+                register.grade != null ? register.grade : "-",
                 style: TextStyle(color: AppColors.textoRojoCredencial),
               ),
               Text(
@@ -323,8 +333,7 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
             height: 30,
             child: FittedBox(
               fit: BoxFit.fitWidth,
-              child: Text(
-                  widget.register.name != null ? widget.register.name : "-",
+              child: Text(register.name != null ? register.name : "-",
                   style: TextStyle(
                       fontSize: 50,
                       fontWeight: FontWeight.bold,
@@ -335,10 +344,7 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
             height: 30,
             child: FittedBox(
               fit: BoxFit.fitWidth,
-              child: Text(
-                  widget.register.surnames != null
-                      ? widget.register.surnames
-                      : "-",
+              child: Text(register.surnames != null ? register.surnames : "-",
                   style: TextStyle(
                       fontWeight: FontWeight.bold, color: Colors.white)),
             ),
@@ -372,8 +378,7 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
             height: 20,
             child: FittedBox(
               fit: BoxFit.fitWidth,
-              child: Text(
-                  widget.register.career != null ? widget.register.career : "-",
+              child: Text(register.career != null ? register.career : "-",
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: AppColors.textoRojoCredencial)),
@@ -390,7 +395,7 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
       child: Column(
         children: <Widget>[
           Text(
-            'No. CONTROL   ${widget.register.registrationCode != "" ? widget.register.registrationCode : "NO CAPTURADO"}',
+            'No. CONTROL   ${register.registrationCode != "" ? register.registrationCode : "NO CAPTURADO"}',
             style: TextStyle(color: AppColors.textoRojoCredencial),
           ),
           Image.asset(
@@ -411,7 +416,7 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
       height: 30,
       width: double.infinity,
       child: Text(
-        widget.register.turn != null ? widget.register.turn : "-",
+        register.turn != null ? register.turn : "-",
         textAlign: TextAlign.right,
         style: TextStyle(
             fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
@@ -437,9 +442,9 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
               SizedBox(
                 height: 35,
               ),
-              _networkImageWidget(110, 110, widget.register.qrDrive)
+              _networkImageWidget(110, 110, register.qrDrive)
               /* Image.network(
-                'https://drive.google.com/uc?export=view&id=${widget.register.qrDrive}',
+                'https://drive.google.com/uc?export=view&id=${register.qrDrive}',
                 height: 110,
               ), */
             ],
@@ -451,8 +456,8 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
 
   Widget _firmaAlumno() {
     DateFormat df = DateFormat('dd-MM-yyyy');
-    int fecha = widget.register.fecha_registro != null
-        ? widget.register.fecha_registro.millisecondsSinceEpoch
+    int fecha = register.fecha_registro != null
+        ? register.fecha_registro.millisecondsSinceEpoch
         : DateTime.now().millisecondsSinceEpoch;
     var fch1 = df.format(new DateTime.fromMillisecondsSinceEpoch(fecha));
     //var fecha_emision = fecha.split(" ")[0];
@@ -474,15 +479,14 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
             ],
           ),
         ),
-        _networkImageWidget(
-            50, 200, widget.register.firmaDrive, false, true, 15.0)
+        _networkImageWidget(50, 200, register.firmaDrive, false, true, 15.0)
         /* Container(
           width: 200,
           height: 60,
           margin: EdgeInsets.fromLTRB(0, 15, 0, 0),
           //color: Colors.redAccent,
           child: Image.network(
-            'https://drive.google.com/uc?export=view&id=${widget.register.firmaDrive}',
+            'https://drive.google.com/uc?export=view&id=${register.firmaDrive}',
             height: 50,
             //fit: BoxFit.fitHeight,
           ),
@@ -494,9 +498,7 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
   Widget _fotoReverso() {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        _networkImageWidget(90, 80, widget.register.fotoUsuarioDrive, true)
-      ],
+      children: [_networkImageWidget(90, 80, register.fotoUsuarioDrive, true)],
     );
   }
 
@@ -547,11 +549,9 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
     // String tempPath = '/storage/emulated/0/Download';
     String tempPath = await ExtStorage.getExternalStoragePublicDirectory(
         ExtStorage.DIRECTORY_DOWNLOADS);
-    String apellidos = widget.register.surnames != null
-        ? widget.register.surnames
-        : "SIN APELLIDOS";
-    String nombre =
-        widget.register.name != null ? widget.register.name : "SIN NOMBRE";
+    String apellidos =
+        register.surnames != null ? register.surnames : "SIN APELLIDOS";
+    String nombre = register.name != null ? register.name : "SIN NOMBRE";
     //output.path;
     var pdfName = apellidos + " " + nombre + ".pdf";
     var filePath = tempPath + '/${pdfName.replaceAll(" ", "_")}';
@@ -577,9 +577,9 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
 }
 
 /* class DigitalCredentialScreen extends StatelessWidget {
-  final widget.register widget.register;
+  final register register;
   
-  const DigitalCredentialScreen(this.widget.register, {Key key}) : super(key: key);
+  const DigitalCredentialScreen(this.register, {Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -693,7 +693,7 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
           height: 174,
           width: 148,
           child: Image.network(
-            'https://drive.google.com/uc?export=view&id=${widget.register.fotoUsuarioDrive}',
+            'https://drive.google.com/uc?export=view&id=${register.fotoUsuarioDrive}',
             alignment: Alignment.center,
             fit: BoxFit.fill,
           ),
@@ -709,7 +709,7 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
               margin: EdgeInsets.only(top: 30),
               width: 80,
               child: Text(
-                widget.register.grupo != null ? widget.register.grupo : "",
+                register.grupo != null ? register.grupo : "",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     fontSize: 40,
@@ -737,8 +737,8 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
           child: Column(
             children: [
               Text(
-                widget.register.idbio.toString() != null
-                    ? widget.register.idbio.toString()
+                register.idbio.toString() != null
+                    ? register.idbio.toString()
                     : "-",
                 style: TextStyle(color: AppColors.textoRojoCredencial),
               ),
@@ -758,7 +758,7 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
           child: Column(
             children: [
               Text(
-                widget.register.id != null ? widget.register.id : '-',
+                register.id != null ? register.id : '-',
                 style: TextStyle(color: AppColors.textoRojoCredencial),
               ),
               SizedBox(
@@ -780,7 +780,7 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
           child: Column(
             children: [
               Text(
-                widget.register.grado != null ? widget.register.grado : "-",
+                register.grado != null ? register.grado : "-",
                 style: TextStyle(color: AppColors.textoRojoCredencial),
               ),
               Text(
@@ -810,7 +810,7 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
             height: 30,
             child: FittedBox(
               fit: BoxFit.fitWidth,
-              child: Text(widget.register.nombre != null ? widget.register.nombre : "-",
+              child: Text(register.nombre != null ? register.nombre : "-",
                   style: TextStyle(
                       fontSize: 50,
                       fontWeight: FontWeight.bold,
@@ -821,7 +821,7 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
             height: 30,
             child: FittedBox(
               fit: BoxFit.fitWidth,
-              child: Text(widget.register.apellidos != null ? widget.register.apellidos : "-",
+              child: Text(register.apellidos != null ? register.apellidos : "-",
                   style: TextStyle(
                       fontWeight: FontWeight.bold, color: Colors.white)),
             ),
@@ -855,7 +855,7 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
             height: 20,
             child: FittedBox(
               fit: BoxFit.fitWidth,
-              child: Text(widget.register.carrera != null ? widget.register.carrera : "-",
+              child: Text(register.carrera != null ? register.carrera : "-",
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: AppColors.textoRojoCredencial)),
@@ -872,7 +872,7 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
       child: Column(
         children: <Widget>[
           Text(
-            'No. CONTROL   ${widget.register.matricula != "" ? widget.register.matricula : "NO CAPTURADO"}',
+            'No. CONTROL   ${register.matricula != "" ? register.matricula : "NO CAPTURADO"}',
             style: TextStyle(color: AppColors.textoRojoCredencial),
           ),
           Image.asset(
@@ -893,7 +893,7 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
       height: 30,
       width: double.infinity,
       child: Text(
-        widget.register.turno != null ? widget.register.turno : "-",
+        register.turno != null ? register.turno : "-",
         textAlign: TextAlign.right,
         style: TextStyle(
             fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
@@ -920,7 +920,7 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
                 height: 35,
               ),
               Image.network(
-                'https://drive.google.com/uc?export=view&id=${widget.register.qrDrive}',
+                'https://drive.google.com/uc?export=view&id=${register.qrDrive}',
                 height: 110,
               ),
             ],
@@ -945,7 +945,7 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
           margin: EdgeInsets.fromLTRB(0, 15, 0, 0),
           //color: Colors.redAccent,
           child: Image.network(
-            'https://drive.google.com/uc?export=view&id=${widget.register.firmaDrive}',
+            'https://drive.google.com/uc?export=view&id=${register.firmaDrive}',
             height: 50,
             //fit: BoxFit.fitHeight,
           ),
@@ -964,7 +964,7 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
           height: 90,
           width: 80,
           child: Image.network(
-            'https://drive.google.com/uc?export=view&id=${widget.register.fotoUsuarioDrive}',
+            'https://drive.google.com/uc?export=view&id=${register.fotoUsuarioDrive}',
             color: const Color.fromRGBO(255, 255, 255, 0.5),
             colorBlendMode: BlendMode.modulate,
             alignment: Alignment.center,

@@ -7,19 +7,19 @@ class SignInEmailController extends SignInController {
     r = await RegistrationService().checkEmail(email);
     if (r == null)
       return {"code": "user_not_found", "message": "Usuario no encontrado"};
-
-    String res = await registrationService.registerDevice(r.id, r.devicesMax);
-    if (res == "error_max_devices")
-      return {
-        "code": res,
-        "message": "Verifique el número de dispositivos de tu licencia"
-      };
-
     var result = await authenticationService.signInEmailAndPassword(
         email: email, password: password);
+
     var code = result['code'];
     switch (code) {
       case "sign_in_success":
+        String res = await registerDevice(r);
+        if (res == "max_devices_registered")
+          return {
+            "code": res,
+            "message": "Verifique el número de dispositivos de tu licencia"
+          };
+        subscribeToTopics(r);
         return {"code": code, "data": r};
       case "user-not-found":
         return {

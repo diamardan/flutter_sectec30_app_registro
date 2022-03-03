@@ -4,7 +4,9 @@ import 'package:cetis32_app_registro/src/models/notification_model.dart'
 import 'package:cetis32_app_registro/src/provider/user_provider.dart';
 import 'package:cetis32_app_registro/src/routes/routes.dart';
 import 'package:cetis32_app_registro/src/screens/login/wrapper_auth.dart';
+import 'package:cetis32_app_registro/src/services/AuthenticationService.dart';
 import 'package:cetis32_app_registro/src/services/MessagingService.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -41,7 +43,7 @@ Future<void> _messageHandler(RemoteMessage message) async {
                 message.data["haveAttachments"] == "yes" ? true : false,
             inputMode: "background",
             read: false);
-    MessagingService().save(userId, _notification);
+    MessagingService().addNotification(userId, _notification);
   }
 }
 
@@ -99,8 +101,15 @@ class MyApp extends StatelessWidget {
                 dispose: (context, bloc) => bloc.dispose(),
                 child:*/
 
-    return ChangeNotifierProvider(
-        create: (context) => UserProvider(),
+    return MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (context) => UserProvider()),
+          StreamProvider<User>(
+            create: (_) => AuthenticationService().userState,
+            initialData: null,
+            //  updateShouldNotify: (u1, u2) => true,
+          ),
+        ],
         child: MaterialApp(
             title: 'CETIS 32 APP REGISTRO',
             debugShowCheckedModeBanner: false,

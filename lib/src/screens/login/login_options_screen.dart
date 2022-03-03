@@ -1,10 +1,11 @@
+import 'package:barcode_scan2/platform_wrapper.dart';
 import 'package:cetis32_app_registro/src/constants/constants.dart';
 import 'package:cetis32_app_registro/src/controllers/SignIn/SignInQRController.dart';
-import 'package:cetis32_app_registro/src/screens/home/home_sCreen.dart';
 import 'package:cetis32_app_registro/src/screens/login/login_email_screen.dart';
 import 'package:cetis32_app_registro/src/utils/notify_ui.dart';
 import 'package:cetis32_app_registro/src/widgets/whatsapp_help_btn.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -49,10 +50,6 @@ class _LoginOptionsScreenState extends State<LoginOptionsScreen> {
       if (response["code"] == "success") {
         signInController.setStateAndPersistence(
             context, response["data"], "qr");
-        Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(builder: (context) => HomeScreen()),
-            (route) => false);
       } else
         await NotifyUI.showError(context, messageTitle, response["message"]);
     } catch (error) {
@@ -70,14 +67,18 @@ class _LoginOptionsScreenState extends State<LoginOptionsScreen> {
       if (response["code"] == "success") {
         signInController.setStateAndPersistence(
             context, response["data"], "qr");
-        Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(builder: (context) => HomeScreen()),
-            (route) => false);
       } else
         await NotifyUI.showError(context, messageTitle, response["message"]);
+    } on PlatformException catch (e) {
+      if (e.code == BarcodeScanner.cameraAccessDenied) {
+        showDialogPermissions(context);
+      } else {
+        print('error: $e');
+      }
     } catch (error) {
-      await NotifyUI.showError(context, messageTitle, error.toString());
+      setLoading(false);
+      await NotifyUI.showError(
+          context, "Error de inicio de sesión", error.toString());
     }
   }
 
@@ -85,10 +86,10 @@ class _LoginOptionsScreenState extends State<LoginOptionsScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
-      appBar: AppBar(
+      /*  appBar: AppBar(
         backgroundColor: AppColors.morenaLightColor,
         title: Text("INICIAR SESIÓN"),
-      ),
+      ),*/
       body: ModalProgressHUD(
           inAsyncCall: loading,
           child: Stack(children: <Widget>[
@@ -175,7 +176,7 @@ class _LoginOptionsScreenState extends State<LoginOptionsScreen> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => LoginMailScreen()));
+                          builder: (context) => LoginEmailScreen()));
                 },
               )),
           SizedBox(

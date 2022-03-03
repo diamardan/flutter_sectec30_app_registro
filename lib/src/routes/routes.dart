@@ -1,4 +1,7 @@
+import 'package:cetis32_app_registro/src/screens/access/access_screen.dart';
+import 'package:cetis32_app_registro/src/screens/credential/digital_credential_screen.dart';
 import 'package:cetis32_app_registro/src/screens/initial_screen.dart';
+import 'package:cetis32_app_registro/src/screens/my_devices/my_devices_screen.dart';
 import 'package:cetis32_app_registro/src/screens/notifications/attachments_screen.dart';
 import 'package:cetis32_app_registro/src/screens/notifications/notifications_screen.dart';
 import 'package:cetis32_app_registro/src/screens/pago/payment_wrapper.dart';
@@ -11,9 +14,12 @@ Map<String, WidgetBuilder> getApplicationRoutes(BuildContext context) {
     'formPreregistro': (BuildContext context) => PreregForm(),
     'pagar': (BuildContext context) => PaymentPage(),
     'wrapper': (BuildContext context) => PaymentPage(),
+    'access': (BuildContext context) => AccessesScreen(),
     'notifications': (BuildContext context) => NotificationsScreen(),
     'notifications-attachments': (BuildContext context) => AttachmentsScreen(),
-    // 'accesses': (BuildContext context) => AccessesScreen(),
+    'credential': (BuildContext context) => DigitalCredentialScreen(),
+    'my-devices': (BuildContext context) => MyDevicesScreen(),
+
     //'verCredencialDigital': (BuildContext context) => DigitalCredentialScreen(),
   };
 }

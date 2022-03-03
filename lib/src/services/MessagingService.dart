@@ -10,8 +10,8 @@ class MessagingService {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   final school = AppConstants.fsCollectionName;
 
-  suscribeToTopics(Registration reg) {
-    Subscription subscription = _convertToTopicsNaming(reg);
+  subscribeToTopics(Registration r) {
+    Subscription subscription = Subscription.fromRegistration(r);
 
     //print(topicsNames.toString());
 
@@ -28,62 +28,58 @@ class MessagingService {
     messaging.subscribeToTopic(school);
 
     /* save topics on firestore */
-    saveTopics(reg.id, subscription);
+    setTopics(r.id, subscription.toList());
   }
 
-  setFCMToken(String regId, String deviceId, String token) {
-    FirebaseFirestore.instance.runTransaction((transaction) async {
-      var deviceRef = FirebaseFirestore.instance
-          .collection("schools")
-          .doc(school)
-          .collection("registros")
-          .doc(regId)
-          .collection("devices")
-          .doc(deviceId);
-      transaction.update(deviceRef, {"fcm_token": token});
-      var regRef = FirebaseFirestore.instance
-          .collection("schools")
-          .doc(school)
-          .collection("registros")
-          .doc(regId);
-      transaction.update(regRef, {
-        "fcm_tokens": FieldValue.arrayUnion([token])
-      });
-    });
+  unsubscribeFromTopics(Registration r) {
+    Subscription subscription = Subscription.fromRegistration(r);
+
+    //print(topicsNames.toString());
+
+    /* FCM subscriptions to topics */
+    if (subscription.careerTopic != "none")
+      messaging.unsubscribeFromTopic(subscription.careerTopic);
+    if (subscription.gradeTopic != "none")
+      messaging.unsubscribeFromTopic(subscription.gradeTopic);
+    if (subscription.groupTopic != "none")
+      messaging.unsubscribeFromTopic(subscription.groupTopic);
+    if (subscription.turnTopic != "none")
+      messaging.unsubscribeFromTopic(subscription.turnTopic);
+
+    messaging.unsubscribeFromTopic(school);
+
+    /* save topics on firestore */
+    unsetTopics(r.id);
   }
 
-  Future<bool> existsFCMToken(String regId, String deviceId) async {
-    var result = await FirebaseFirestore.instance
-        .collection("schools")
-        .doc(school)
-        .collection("registros")
-        .doc(regId)
-        .collection("devices")
-        .doc(deviceId)
-        .get();
-    if (result.data()["fcm_token"] != null)
-      return true;
-    else
-      return false;
-  }
-
-  Future<void> saveTopics(String docId, Subscription topics) {
+  Future<void> setTopics(String docId, List topics) {
+    print("topics:");
+    print(topics);
     return firestore
         .collection("schools")
         .doc(school)
         .collection("registros")
         .doc(docId)
-        .update({"subscribed_to": topics.toJson()});
+        .update({"fcm_topics": topics});
   }
 
-  save(String docId, Notification notification) {
+  Future<void> unsetTopics(String docId) {
+    return firestore
+        .collection("schools")
+        .doc(school)
+        .collection("registros")
+        .doc(docId)
+        .update({"fcm_topics": []});
+  }
+
+  addNotification(String docId, Notification notification) {
     firestore
         .collection("schools")
         .doc(school)
         .collection("registros")
         .doc(docId)
         .collection("notifications")
-        .doc(notification.serverMessageId)
+        .doc(notification.messageId)
         .set(notification.toJson());
   }
 
@@ -104,45 +100,4 @@ class MessagingService {
       return null;
     }
   }
-}
-// * * * * * * * * * * * * * * *
-
-/* * * * utils functions * * * */
-
-Subscription _convertToTopicsNaming(Registration reg) {
-  String career;
-  String grade;
-  String group;
-  String turn;
-
-  if (reg.career != null) career = _replaceChars(reg.career.toLowerCase());
-
-  if (reg.grade != null) {
-    grade = "grade-${reg.grade}";
-  }
-
-  if (reg.group != null) {
-    group = reg.group.toLowerCase();
-    group = "group-$group";
-  }
-
-  if (reg.turn != null) turn = _replaceChars(reg.turn.toLowerCase());
-
-  return Subscription(
-      careerTopic: career ?? "none",
-      gradeTopic: grade ?? "none",
-      groupTopic: group ?? "none",
-      turnTopic: turn ?? "none",
-      schoolTopic: "cetis32");
-}
-
-String _replaceChars(word) {
-  word = word.replaceAll(RegExp(' +'), "-");
-  word = word.replaceAll("á", "a");
-  word = word.replaceAll("é", "e");
-  word = word.replaceAll("í", "i");
-  word = word.replaceAll("ó", "o");
-  word = word.replaceAll("ú", "u");
-
-  return word;
 }

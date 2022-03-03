@@ -1,19 +1,18 @@
 import 'package:cetis32_app_registro/src/constants/constants.dart';
 import 'package:cetis32_app_registro/src/controllers/SignIn/SignInEmailController.dart';
-import 'package:cetis32_app_registro/src/screens/home/home_sCreen.dart';
+import 'package:cetis32_app_registro/src/screens/home/menu_screen.dart';
 import 'package:cetis32_app_registro/src/screens/login/recovery_screen.dart';
 import 'package:cetis32_app_registro/src/screens/login/request_password.dart';
-import 'package:cetis32_app_registro/src/utils/Device.dart';
 import 'package:cetis32_app_registro/src/utils/notify_ui.dart';
 import 'package:cetis32_app_registro/src/utils/validator.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
-class LoginMailScreen extends StatefulWidget {
-  _LoginMailScreenState createState() => _LoginMailScreenState();
+class LoginEmailScreen extends StatefulWidget {
+  _LoginEmailScreenState createState() => _LoginEmailScreenState();
 }
 
-class _LoginMailScreenState extends State<LoginMailScreen> {
+class _LoginEmailScreenState extends State<LoginEmailScreen> {
   bool loading = false;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
@@ -38,37 +37,37 @@ class _LoginMailScreenState extends State<LoginMailScreen> {
   }
 
   _signIn() async {
-    Device device = await Device.create();
-
     _formKey.currentState.save();
 
-    print(_formKey.currentState.validate());
+    _formKey.currentState.validate();
     if (!_formKey.currentState.validate()) return;
 
     var _email = emailController.text.trim();
     var _password = passwordController.text.trim();
 
-    try {
-      setLoading(true);
-      Map<String, dynamic> response =
-          await signInController.authenticate(_email, _password);
-      setLoading(false);
-      if (response["code"] == "sign_in_success") {
-        signInController.setStateAndPersistence(
-            context, response["data"], "email");
-        FocusScope.of(context).requestFocus(FocusNode());
-        Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(builder: (context) => HomeScreen()),
-            (route) => false);
-      } else {
-        await NotifyUI.showError(
-            context, "Estatus de inicio de sesión", response["message"]);
-      }
-    } catch (e) {
+    //  try {
+    setLoading(true);
+    Map<String, dynamic> response =
+        await signInController.authenticate(_email, _password);
+    setLoading(false);
+    if (response["code"] == "sign_in_success") {
+      signInController.setStateAndPersistence(
+          context, response["data"], "email");
+      FocusScope.of(context).requestFocus(FocusNode());
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => HomeScreen()),
+          (route) => false);
+    } else {
       await NotifyUI.showError(
-          context, "Estatus de inicio de sesión", e.toString());
+          context, "Estatus de inicio de sesión", response["message"]);
     }
+    /* } catch (e) {
+      print(e.toString());
+      setLoading(false);
+      await NotifyUI.showError(
+          context, "Error de inicio de sesión", e.toString());
+    }*/
   }
 
   @override

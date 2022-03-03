@@ -1,7 +1,6 @@
 import 'package:cetis32_app_registro/src/constants/constants.dart';
 import 'package:cetis32_app_registro/src/models/user_model.dart';
 import 'package:cetis32_app_registro/src/services/SharedService.dart';
-import 'package:cetis32_app_registro/src/utils/Device.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 const school = AppConstants.fsCollectionName;
@@ -40,38 +39,6 @@ class RegistrationService {
       return null;
   }
 
-  Future<String> registerDevice(String regId, int devMax) async {
-    Device device = await Device.create();
-
-    register() {
-      return db
-          .collection("registros")
-          .doc(regId)
-          .collection("devices")
-          .doc(device.id)
-          .set(device.toJson());
-    }
-
-    var result =
-        await db.collection("registros").doc(regId).collection("devices").get();
-
-    if (result.size > 0) {
-      final exists =
-          result.docs.any((doc) => doc.id == device.id ? true : false);
-
-      if (exists)
-        return "registered_device";
-      else if (result.size < devMax) {
-        await register();
-        return "registered_device";
-      }
-      if ((result.size == devMax)) return "error_max_devices";
-    } else {
-      await register();
-      return "registered_device";
-    }
-  }
-
   Future<Registration> get(String registrationId) {
     return FirebaseFirestore.instance
         .collection("schools")
@@ -88,5 +55,23 @@ class RegistrationService {
       } else
         return null;
     });
+  }
+
+  Future<void> addDevice(String regId, Map<String, String> device) {
+    db
+        .collection("registros")
+        .doc(regId)
+        .collection("devices")
+        .doc(device["]id"])
+        .set(device);
+  }
+
+  Future<void> removeDevice(String regId, String deviceId) {
+    db
+        .collection("registros")
+        .doc(regId)
+        .collection("devices")
+        .doc(deviceId)
+        .delete();
   }
 }

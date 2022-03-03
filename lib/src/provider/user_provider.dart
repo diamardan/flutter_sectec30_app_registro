@@ -20,11 +20,10 @@ class UserProvider with ChangeNotifier {
         String id = prefs.getString("registration_id");
         String access = prefs.getString("auth_method");
         setUser(id, access);
-        print("setting timer");
 
         RegistrationService().get(id).then((registration) {
-          print("ejecutando get registration");
           if (registration != null) setRegistration(registration);
+          notifyListeners();
         });
       }
     });
@@ -32,11 +31,9 @@ class UserProvider with ChangeNotifier {
 
   setUser(String id, String access) {
     _user = new User(id, access);
-    notifyListeners();
   }
 
   setRegistration(Registration reg) {
     _reg = reg;
-    notifyListeners();
   }
 }

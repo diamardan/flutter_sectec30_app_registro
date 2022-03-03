@@ -1,4 +1,3 @@
-import 'package:cetis32_app_registro/src/models/subscription_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class User {
@@ -35,10 +34,8 @@ class Registration {
   int idbio;
   String qrDrive;
   String firmaDrive;
-  Subscription subscribedTo;
-  List fcmTokens;
   List devices;
-  int devicesMax;
+  int maxDevicesAllowed;
 
   Registration({
     this.id,
@@ -58,10 +55,8 @@ class Registration {
     this.idbio,
     this.qrDrive,
     this.firmaDrive,
-    this.subscribedTo,
     this.fecha_registro,
-    this.devicesMax,
-    this.fcmTokens,
+    this.maxDevicesAllowed,
     this.devices,
   });
 
@@ -84,12 +79,8 @@ class Registration {
         qrDrive: json["qr_drive"],
         firmaDrive: json["firma_drive"],
         fecha_registro: json["fecha_registro"],
-        subscribedTo: json["subscribed_to"] == null
-            ? null
-            : Subscription.fromJson(json["subscribed_to"]),
-        fcmTokens: json["fcm_tokens"],
-        devices: json["devices"],
-        devicesMax: json["devices_max"] ?? 3,
+        devices: json["devices"] ?? [],
+        maxDevicesAllowed: json["max_devices_allowed"] ?? 3,
       );
 
   @override
@@ -107,12 +98,9 @@ class Registration {
             turn: $turn   
             sex: $sex   
             password: $password  
-            subscribedTo: $subscribedTo 
-            devicesMax: $devicesMax 
-            fcmTokens: ${fcmTokens.toString()},
+            max devices allowed: $maxDevicesAllowed 
             devices: ${devices.toString()},
             idbio: $idbio
-    
               ''';
     return strOutput;
   }
@@ -135,15 +123,8 @@ class Registration {
         "idbio": idbio,
         "qrDrive": qrDrive,
         "firmaDrive": firmaDrive,
-        "subscribed_to": subscribedTo,
-        "fcm_tokens": fcmTokens,
         "devices": devices,
         "fecha_registro": fecha_registro,
-        "devices_max": devicesMax,
+        "devices_max": maxDevicesAllowed,
       };
-
-  void resetMessagingInfo() {
-    fcmTokens = null;
-    subscribedTo = null;
-  }
 }
