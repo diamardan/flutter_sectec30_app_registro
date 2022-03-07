@@ -1,20 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class User {
-  final String id;
-  final String accessMethod;
-  User(this.id, this.accessMethod);
-
-  @override
-  String toString() {
-    var strOutput = ''' 
-            id $id 
-            accessMethod: $accessMethod
-              ''';
-    return strOutput;
-  }
-}
-
 class Registration {
   String id;
   String name;
@@ -36,29 +21,30 @@ class Registration {
   String firmaDrive;
   List devices;
   int maxDevicesAllowed;
+  String accessMethod;
 
-  Registration({
-    this.id,
-    this.name,
-    this.surnames,
-    this.curp,
-    this.email,
-    this.cellphone,
-    this.registrationCode,
-    this.career,
-    this.grade,
-    this.group,
-    this.turn,
-    this.sex,
-    this.password,
-    this.fotoUsuarioDrive,
-    this.idbio,
-    this.qrDrive,
-    this.firmaDrive,
-    this.fecha_registro,
-    this.maxDevicesAllowed,
-    this.devices,
-  });
+  Registration(
+      {this.id,
+      this.name,
+      this.surnames,
+      this.curp,
+      this.email,
+      this.cellphone,
+      this.registrationCode,
+      this.career,
+      this.grade,
+      this.group,
+      this.turn,
+      this.sex,
+      this.password,
+      this.fotoUsuarioDrive,
+      this.idbio,
+      this.qrDrive,
+      this.firmaDrive,
+      this.fecha_registro,
+      this.maxDevicesAllowed,
+      this.devices,
+      this.accessMethod});
 
   factory Registration.fromJson(Map<String, dynamic> json) => Registration(
         id: json["id"],

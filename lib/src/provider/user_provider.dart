@@ -7,11 +7,12 @@ import 'package:flutter/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserProvider with ChangeNotifier {
-  User _user;
   Registration _reg;
+  bool _loggingIn = false;
 
-  User get getUser => _user;
   Registration get getRegistration => _reg;
+
+  bool get isLoggingIn => _loggingIn;
 
   initUSer() {
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
@@ -19,21 +20,23 @@ class UserProvider with ChangeNotifier {
       if (prefs.containsKey("registration_id")) {
         String id = prefs.getString("registration_id");
         String access = prefs.getString("auth_method");
-        setUser(id, access);
+        print("id:" + id);
 
         RegistrationService().get(id).then((registration) {
+          registration.accessMethod = access;
           if (registration != null) setRegistration(registration);
-          notifyListeners();
         });
       }
     });
   }
 
-  setUser(String id, String access) {
-    _user = new User(id, access);
-  }
-
   setRegistration(Registration reg) {
     _reg = reg;
+    notifyListeners();
+  }
+
+  setLogging(value) {
+    _loggingIn = value;
+    notifyListeners();
   }
 }

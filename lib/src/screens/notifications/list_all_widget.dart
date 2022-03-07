@@ -19,7 +19,7 @@ class AllList extends StatefulWidget {
 
 class _AllListState extends State<AllList> {
   UserProvider userProvider;
-  User user;
+  Registration user;
 
   final RegistrationService registrationService = RegistrationService();
   bool _downloadingAttachments = false;
@@ -31,7 +31,7 @@ class _AllListState extends State<AllList> {
   @override
   void initState() {
     userProvider = Provider.of<UserProvider>(context, listen: false);
-    user = userProvider.getUser;
+    user = userProvider.getRegistration;
 
     super.initState();
   }
@@ -118,22 +118,23 @@ class _AllListState extends State<AllList> {
                   )))),
       Container(
           padding: EdgeInsets.only(right: 15),
-          child: notification.haveAttachments
-              ? OutlinedButton.icon(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (BuildContext context) =>
-                                AttachmentsScreen(
-                                  messageId: notification.messageId,
-                                )));
-                  },
-                  icon: Icon(Icons.attach_file),
-                  label: Text("Archivos"))
-              : SizedBox(
-                  width: 10,
-                ))
+          child:
+              notification.origin == "message" && notification.haveAttachments
+                  ? OutlinedButton.icon(
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                    AttachmentsScreen(
+                                      messageId: notification.messageId,
+                                    )));
+                      },
+                      icon: Icon(Icons.attach_file),
+                      label: Text("Archivos"))
+                  : SizedBox(
+                      width: 10,
+                    ))
     ]);
   }
 

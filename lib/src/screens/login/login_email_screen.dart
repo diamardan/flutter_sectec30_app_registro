@@ -1,6 +1,5 @@
 import 'package:cetis32_app_registro/src/constants/constants.dart';
 import 'package:cetis32_app_registro/src/controllers/SignIn/SignInEmailController.dart';
-import 'package:cetis32_app_registro/src/screens/home/menu_screen.dart';
 import 'package:cetis32_app_registro/src/screens/login/recovery_screen.dart';
 import 'package:cetis32_app_registro/src/screens/login/request_password.dart';
 import 'package:cetis32_app_registro/src/utils/notify_ui.dart';
@@ -37,6 +36,7 @@ class _LoginEmailScreenState extends State<LoginEmailScreen> {
   }
 
   _signIn() async {
+    FocusScope.of(context).requestFocus(FocusNode());
     _formKey.currentState.save();
 
     _formKey.currentState.validate();
@@ -45,29 +45,24 @@ class _LoginEmailScreenState extends State<LoginEmailScreen> {
     var _email = emailController.text.trim();
     var _password = passwordController.text.trim();
 
-    //  try {
-    setLoading(true);
-    Map<String, dynamic> response =
-        await signInController.authenticate(_email, _password);
-    setLoading(false);
-    if (response["code"] == "sign_in_success") {
-      signInController.setStateAndPersistence(
-          context, response["data"], "email");
-      FocusScope.of(context).requestFocus(FocusNode());
-      Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(builder: (context) => HomeScreen()),
-          (route) => false);
-    } else {
-      await NotifyUI.showError(
-          context, "Estatus de inicio de sesión", response["message"]);
-    }
-    /* } catch (e) {
+    try {
+      setLoading(true);
+      Map<String, dynamic> response =
+          await signInController.authenticate(context, _email, _password);
+
+      if (response["code"] == "sign_in_success") {
+      } else {
+        setLoading(false);
+        await NotifyUI.showError(
+            context, "Estatus de inicio de sesión", response["message"]);
+      }
+    } catch (e) {
+      print("error");
       print(e.toString());
       setLoading(false);
       await NotifyUI.showError(
           context, "Error de inicio de sesión", e.toString());
-    }*/
+    }
   }
 
   @override

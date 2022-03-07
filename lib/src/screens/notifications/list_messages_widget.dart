@@ -22,7 +22,7 @@ class NMessagesList extends StatefulWidget {
 
 class _NMessagesListState extends State<NMessagesList> {
   UserProvider userProvider;
-  User user;
+  Registration user;
 
   final RegistrationService registrationService = RegistrationService();
   bool _downloadingAttachments = false;
@@ -34,7 +34,7 @@ class _NMessagesListState extends State<NMessagesList> {
   @override
   void initState() {
     userProvider = Provider.of<UserProvider>(context, listen: false);
-    user = userProvider.getUser;
+    user = userProvider.getRegistration;
 
     origin = widget.origin;
     print("initState: $origin");
@@ -88,10 +88,13 @@ class _NMessagesListState extends State<NMessagesList> {
             SizedBox(
               height: 10,
             ),
-            _body(notification)
+            _body(notification),
           ],
         ),
-      )
+      ),
+      /*  Divider(
+        height: 1,
+      ),*/
     ]);
   }
 
@@ -118,7 +121,7 @@ class _NMessagesListState extends State<NMessagesList> {
                         Icons.message_outlined,
                         color: Colors.white,
                       ),
-                      backgroundColor: Colors.orange.withOpacity(0.4)),
+                      backgroundColor: Colors.orange.withOpacity(0.2)),
                   title: notification.title == null
                       ? Text('No disponible')
                       : Text(notification.title),
@@ -129,7 +132,7 @@ class _NMessagesListState extends State<NMessagesList> {
       Container(
           padding: EdgeInsets.only(right: 15),
           child: notification.haveAttachments
-              ? OutlinedButton.icon(
+              ? TextButton.icon(
                   onPressed: () {
                     Navigator.push(
                         context,
@@ -152,8 +155,8 @@ class _NMessagesListState extends State<NMessagesList> {
     message = message.length > 100 ? message.substring(0, 99) + "..." : message;
     return Container(
       decoration: BoxDecoration(
-        color: Color(0XFFE0E0E0).withOpacity(0.05),
-        border: Border.all(width: 1, color: Colors.orange.withOpacity(0.4)),
+        //    color: Colors.orange.withOpacity(0.05),
+        border: Border.all(width: 1, color: Colors.orange.withOpacity(0.2)),
         shape: BoxShape.rectangle,
         borderRadius: const BorderRadius.all(
           Radius.circular(10.0),

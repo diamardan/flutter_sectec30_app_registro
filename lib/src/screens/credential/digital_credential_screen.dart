@@ -53,17 +53,17 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
   }
 
   void handleTimeout() {
-    setState(() {
-      visibleButton = true;
-    });
+    if (mounted)
+      setState(() {
+        visibleButton = true;
+      });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("CREDENCIAL DIGITAL"),
-        centerTitle: true,
+        title: Text("Credencial inteligente"),
         backgroundColor: AppColors.morenaLightColor,
       ),
       floatingActionButton: Visibility(

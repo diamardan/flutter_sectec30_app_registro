@@ -1,11 +1,9 @@
-import 'package:barcode_scan2/platform_wrapper.dart';
 import 'package:cetis32_app_registro/src/constants/constants.dart';
 import 'package:cetis32_app_registro/src/controllers/SignIn/SignInQRController.dart';
 import 'package:cetis32_app_registro/src/screens/login/login_email_screen.dart';
 import 'package:cetis32_app_registro/src/utils/notify_ui.dart';
 import 'package:cetis32_app_registro/src/widgets/whatsapp_help_btn.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -29,6 +27,10 @@ class _LoginOptionsScreenState extends State<LoginOptionsScreen> {
 
   void _loginQrFromFile() async {
     setLoading(true);
+    print("LOGGIN ---------------");
+    /*  print(Provider.of<UserProvider>(context, listen: false)
+        .getRegistration
+        .toString());*/
     final picker = ImagePicker();
     try {
       XFile _file = await picker.pickImage(source: ImageSource.gallery);
@@ -46,30 +48,30 @@ class _LoginOptionsScreenState extends State<LoginOptionsScreen> {
 
       Map<String, dynamic> response =
           await signInController.authenticate(qrText);
-      setLoading(false);
-      if (response["code"] == "success") {
-        signInController.setStateAndPersistence(
-            context, response["data"], "qr");
+      print(response);
+      if (response["code"].toString() == "sign_in_success") {
       } else
-        await NotifyUI.showError(context, messageTitle, response["message"]);
+        setLoading(false);
+      await NotifyUI.showError(context, messageTitle, response["message"]);
     } catch (error) {
       await NotifyUI.showError(context, messageTitle, error.toString());
     }
   }
 
   _loginWithCamera(BuildContext context) async {
-    try {
-      setLoading(true);
-      String qr = await signInController.scanQR();
-      Map<String, dynamic> response = await signInController.authenticate(qr);
-      setLoading(false);
+    // try {
+    setLoading(true);
+    String qr = await signInController.scanQR();
+    print("logging");
 
-      if (response["code"] == "success") {
-        signInController.setStateAndPersistence(
-            context, response["data"], "qr");
-      } else
-        await NotifyUI.showError(context, messageTitle, response["message"]);
-    } on PlatformException catch (e) {
+    Map<String, dynamic> response = await signInController.authenticate(qr);
+
+    if (response["code"].toString() == "sign_in_success") {
+    } else {
+      setLoading(false);
+      await NotifyUI.showError(context, messageTitle, response["message"]);
+    }
+    /*  } on PlatformException catch (e) {
       if (e.code == BarcodeScanner.cameraAccessDenied) {
         showDialogPermissions(context);
       } else {
@@ -79,7 +81,7 @@ class _LoginOptionsScreenState extends State<LoginOptionsScreen> {
       setLoading(false);
       await NotifyUI.showError(
           context, "Error de inicio de sesión", error.toString());
-    }
+    }*/
   }
 
   @override
@@ -107,6 +109,12 @@ class _LoginOptionsScreenState extends State<LoginOptionsScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
             children: [
+          Image.asset(
+            'assets/img/logo-3.png',
+            color: AppColors.morenaColor,
+            width: 100,
+          ),
+          SizedBox(height: 30),
           Container(
             width: 290,
             decoration: BoxDecoration(

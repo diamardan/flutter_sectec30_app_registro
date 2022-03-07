@@ -54,7 +54,7 @@ class _ChangePasswordDialogState extends State<ChangePasswordDialog> {
 
   void success(String password) async {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
-    var id = userProvider.getUser.id;
+    var id = userProvider.getRegistration.id;
     Map<String, String> result =
         await authenticationService.savePassword(id, password);
     print(result.toString());

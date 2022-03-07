@@ -1,6 +1,7 @@
 import 'package:cetis32_app_registro/src/constants/constants.dart';
 import 'package:cetis32_app_registro/src/models/notification_model.dart'
     as NotificationModel;
+import 'package:cetis32_app_registro/src/provider/supscritions_provider.dart';
 import 'package:cetis32_app_registro/src/provider/user_provider.dart';
 import 'package:cetis32_app_registro/src/routes/routes.dart';
 import 'package:cetis32_app_registro/src/screens/login/wrapper_auth.dart';
@@ -103,6 +104,9 @@ class MyApp extends StatelessWidget {
 
     return MultiProvider(
         providers: [
+          Provider(
+            create: (context) => SubscriptionsProvider(),
+          ),
           ChangeNotifierProvider(create: (context) => UserProvider()),
           StreamProvider<User>(
             create: (_) => AuthenticationService().userState,

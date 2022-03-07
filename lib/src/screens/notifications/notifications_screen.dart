@@ -17,7 +17,7 @@ class NotificationsScreen extends StatefulWidget {
 
 class _NotificationsScreenState extends State<NotificationsScreen> {
   UserProvider userProvider;
-  User user;
+  Registration user;
 
   final RegistrationService registrationService = RegistrationService();
   bool _downloadingAttachments = false;
@@ -28,7 +28,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
   @override
   void initState() {
     userProvider = Provider.of<UserProvider>(context, listen: false);
-    user = userProvider.getUser;
+    user = userProvider.getRegistration;
     super.initState();
   }
 
@@ -42,12 +42,17 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-            title: Text('Notificaciones'),
-            centerTitle: true,
-            backgroundColor: AppColors.morenaColor,
-            foregroundColor: Colors.white),
+          title: Text('Notificaciones'),
+          backgroundColor: Color(0XFFFFFFFF),
+          foregroundColor: Colors.black,
+          toolbarHeight: 100,
+          elevation: 0,
+        ),
         body: Column(children: [
           filters(),
+          SizedBox(
+            height: 20,
+          ),
           Expanded(
               child: Container(
                   color: Color(0XFFEAEAEA), child: getNotificationList()))
@@ -58,7 +63,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
     return Container(
         color: Colors.white,
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          //  mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             OutlinedButton.icon(
                 icon: Icon(Icons.message_outlined, color: Colors.black54),
@@ -67,7 +72,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                 },
                 style: selectedOrigin == "message"
                     ? OutlinedButton.styleFrom(
-                        backgroundColor: Colors.orange.withOpacity(0.4))
+                        backgroundColor: Colors.orange.withOpacity(0.2))
                     : OutlinedButton.styleFrom(),
                 label: Text(
                   "Mensajes",
@@ -83,17 +88,17 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                 },
                 style: selectedOrigin == "access"
                     ? OutlinedButton.styleFrom(
-                        backgroundColor: Colors.green.withOpacity(0.4))
+                        backgroundColor: Colors.green.withOpacity(0.2))
                     : OutlinedButton.styleFrom(),
                 label:
                     Text("Accesos", style: TextStyle(color: Colors.black54))),
-            Container(
+            /*   Container(
                 color: AppColors.morenaLightColor.withOpacity(0.1),
                 child: IconButton(
                     onPressed: () {
                       setOrigin("all");
                     },
-                    icon: Icon(Icons.ac_unit)))
+                    icon: Icon(Icons.ac_unit)))*/
           ],
         ));
   }

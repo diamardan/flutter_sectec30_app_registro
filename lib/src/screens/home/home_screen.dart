@@ -1,17 +1,21 @@
 import 'dart:async';
 
 import 'package:cetis32_app_registro/src/constants/constants.dart';
+import 'package:cetis32_app_registro/src/controllers/SignIn/SignInController.dart';
 import 'package:cetis32_app_registro/src/models/user_model.dart';
+import 'package:cetis32_app_registro/src/provider/Device.dart';
+import 'package:cetis32_app_registro/src/provider/supscritions_provider.dart';
 import 'package:cetis32_app_registro/src/provider/user_provider.dart';
 import 'package:cetis32_app_registro/src/res/notifications.dart';
-import 'package:cetis32_app_registro/src/screens/home/home_view.dart';
+import 'package:cetis32_app_registro/src/screens/home/menu_view.dart';
 import 'package:cetis32_app_registro/src/screens/home/my_data_view.dart';
+import 'package:cetis32_app_registro/src/services/AuthenticationService.dart';
 import 'package:cetis32_app_registro/src/services/MessagingService.dart';
 import 'package:cetis32_app_registro/src/services/RegistrationService.dart';
 import 'package:cetis32_app_registro/src/widgets/log_out_dialog.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
@@ -37,6 +41,14 @@ extension DisposableStreamSubscriton on StreamSubscription {
   }
 }
 
+extension StreamSubscriptionState on StreamSubscription {
+  void addToState(BuildContext context) {
+    SubscriptionsProvider subscriptionProvider =
+        Provider.of<SubscriptionsProvider>(context, listen: false);
+    subscriptionProvider.addSubscription(this);
+  }
+}
+
 class HomeScreen extends StatefulWidget {
   @override
   _homeScreenState createState() => _homeScreenState();
@@ -49,10 +61,11 @@ class _homeScreenState extends State<HomeScreen> with DisposableWidget {
   FirebaseMessaging messaging;
 
   int _viewIndex = 0;
-  Registration registration;
+  Registration user;
   UserProvider userProvider;
-  User user;
+
   bool userLoaded = false;
+  bool loading;
 
   @override
   void initState() {
@@ -61,17 +74,25 @@ class _homeScreenState extends State<HomeScreen> with DisposableWidget {
 
   @override
   void dispose() {
-    cancelSubscriptions();
+    //  cancelSubscriptions();
     super.dispose();
+  }
+
+  setLoading(value) {
+    setState(() {
+      loading = value;
+    });
   }
 
   @override
   didChangeDependencies() {
     UserProvider userProvider = Provider.of<UserProvider>(context);
-    registration = userProvider.getRegistration;
-    user = userProvider.getUser;
+    user = userProvider.getRegistration;
+    //print(user.toString());
+    print(user.toString());
     if (user != null && userLoaded == false) {
-      startNotificationsListening();
+      startNotificationsListeners();
+      startDeviceLIstener();
       userLoaded = true;
     }
 
@@ -82,23 +103,54 @@ class _homeScreenState extends State<HomeScreen> with DisposableWidget {
     Navigator.pushNamed(context, "notification");
   }
 
-  startNotificationsListening() {
-    print("Starting notifications");
+  startNotificationsListeners() {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
       NotificationHandler notificationHandler = NotificationHandler(message);
       notificationHandler.showLocalNotification(openNotificationScreen);
 
       messagingService.addNotification(
           user.id, notificationHandler.currentNotification);
-    }).canceledBy(this);
+    }).addToState(context);
     FirebaseMessaging.onMessageOpenedApp.listen((message) {
       openNotificationScreen();
-    });
+    }).addToState(context);
   }
 
-  void _switchView(int index) {
+  void startDeviceLIstener() async {
+    Device device = await DeviceProvider.instance.device;
+    print("listen device");
+    print(user.id);
+
+    FirebaseFirestore.instance
+        .collection("schools")
+        .doc(school)
+        .collection("registros")
+        .doc(user.id)
+        .collection("devices")
+        .doc(device.id)
+        .snapshots()
+        .listen((doc) {
+      print(doc);
+      if (!doc.exists) {
+        print("no hay dispositivo");
+        SignInController().cleanAuthenticationData(context);
+        AuthenticationService().signOut();
+      }
+    }).addToState(context);
+  }
+
+  void _logout() async {
+    setLoading(true);
+    //  cancelSubscriptions();
+    await SignInController().cleanAuthenticationData(context);
+    AuthenticationService().signOut();
+  }
+
+  void _switchView(int index) async {
     if (index == 2) {
-      showLogoutDialog(context, "main");
+      bool res = await showLogoutDialog(context, "main");
+      if (res) _logout();
+
       return;
     }
 
@@ -107,32 +159,40 @@ class _homeScreenState extends State<HomeScreen> with DisposableWidget {
     });
   }
 
+  Future<bool> _systemBackButtonPressed() async {
+    if (_viewIndex == 1) {
+      setState(() {
+        _viewIndex = 0;
+      });
+      return false;
+    }
+    return true;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return ModalProgressHUD(
-        inAsyncCall: user == null,
-        child: Scaffold(
-          appBar: AppBar(
-            title: Text("Bienvenido a CETIS 32"),
-            titleTextStyle: TextStyle(fontSize: 18),
-            centerTitle: false,
-            leading: Padding(
-              padding: EdgeInsets.fromLTRB(20, 5, 0, 10),
-              child: Image.asset(
-                'assets/img/logo-3.png',
-                color: Colors.white,
-                width: 10,
+    return WillPopScope(
+        onWillPop: _systemBackButtonPressed,
+        child: ModalProgressHUD(
+            inAsyncCall: user == null,
+            child: Scaffold(
+              /*     appBar: AppBar(
+                title: Text("SISTEMA ESCOLAR INTELIGENTE"),
+                //       style: TextStyle(fontStyle: FontStyle.italic),
+                titleTextStyle: TextStyle(fontSize: 16),
+                centerTitle: true,
+                toolbarHeight: 120,
+                backgroundColor: AppColors.morenaLightColor,
+
+                foregroundColor: Colors.white,
+                //  systemOverlayStyle: SystemUiOverlayStyle.light,
+              ),*/
+              body: IndexedStack(
+                index: _viewIndex,
+                children: [MenuView(), MyDataView()],
               ),
-            ),
-            backgroundColor: AppColors.morenaLightColor,
-            systemOverlayStyle: SystemUiOverlayStyle.light,
-          ),
-          body: IndexedStack(
-            index: _viewIndex,
-            children: [HomeView(), MyDataView()],
-          ),
-          bottomNavigationBar: _bottomNavBar(context),
-        ));
+              bottomNavigationBar: _bottomNavBar(context),
+            )));
   }
 
   _bottomNavBar(BuildContext context) {

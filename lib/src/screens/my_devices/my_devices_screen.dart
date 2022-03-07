@@ -1,5 +1,8 @@
+import 'package:cetis32_app_registro/src/controllers/SignIn/SignInController.dart';
 import 'package:cetis32_app_registro/src/provider/Device.dart';
 import 'package:cetis32_app_registro/src/provider/user_provider.dart';
+import 'package:cetis32_app_registro/src/services/AuthenticationService.dart';
+import 'package:cetis32_app_registro/src/services/DeviceService.dart';
 import 'package:cetis32_app_registro/src/services/RegistrationService.dart';
 import 'package:cetis32_app_registro/src/widgets/log_out_dialog.dart';
 import 'package:flutter/material.dart';
@@ -20,8 +23,10 @@ class MyDevicesScreen extends StatefulWidget {
 
 class _MyDevicesScreenState extends State<MyDevicesScreen> {
   RegistrationService registrationService = RegistrationService();
+  DeviceService deviceService = DeviceService();
   List devices = [];
   String userId;
+  bool loading = false;
 
   @override
   void initState() {
@@ -35,20 +40,33 @@ class _MyDevicesScreenState extends State<MyDevicesScreen> {
     super.didChangeDependencies();
   }
 
-  _getDevices() {
-    userId = Provider.of<UserProvider>(context).getUser.id;
+  setLoading(bool value) {
+    setState(() {
+      loading = value;
+    });
+  }
 
-    registrationService.get(userId).then((r) => setState(() {
-          devices = r.devices;
+  _getDevices() {
+    userId =
+        Provider.of<UserProvider>(context, listen: false).getRegistration.id;
+
+    AuthenticationService().getDevices(userId).then((_devices) => setState(() {
+          devices = _devices;
         }));
   }
 
   _removeDevice(deviceId) async {
     Device myDevice = await DeviceProvider.instance.device;
     if (deviceId == myDevice.id) {
-      showLogoutDialog(context, "my-devices-screen");
+      bool res = await showLogoutDialog(context, "my-devices-screen");
+      if (res) {
+        setLoading(true);
+        await SignInController().cleanAuthenticationData(context);
+        Navigator.pop(context);
+        AuthenticationService().signOut();
+      }
     } else
-      registrationService.removeDevice(userId, deviceId);
+      deviceService.removeDevice(userId, deviceId);
     _getDevices();
   }
 
@@ -65,9 +83,9 @@ class _MyDevicesScreenState extends State<MyDevicesScreen> {
         body: ListView.builder(
             itemCount: devices.length,
             itemBuilder: (context, index) {
-              var device = Device.fromJson(devices[index]);
+              var device = devices[index];
               return Container(
-                  padding: EdgeInsets.symmetric(vertical: 30, horizontal: 0),
+                  padding: EdgeInsets.symmetric(vertical: 25, horizontal: 0),
                   decoration: BoxDecoration(
                       border: Border(
                           bottom:

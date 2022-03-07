@@ -56,22 +56,4 @@ class RegistrationService {
         return null;
     });
   }
-
-  Future<void> addDevice(String regId, Map<String, String> device) {
-    db
-        .collection("registros")
-        .doc(regId)
-        .collection("devices")
-        .doc(device["]id"])
-        .set(device);
-  }
-
-  Future<void> removeDevice(String regId, String deviceId) {
-    db
-        .collection("registros")
-        .doc(regId)
-        .collection("devices")
-        .doc(deviceId)
-        .delete();
-  }
 }

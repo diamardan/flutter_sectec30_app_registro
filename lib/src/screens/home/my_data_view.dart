@@ -1,7 +1,7 @@
 import 'package:cetis32_app_registro/src/constants/constants.dart';
 import 'package:cetis32_app_registro/src/models/user_model.dart';
 import 'package:cetis32_app_registro/src/provider/user_provider.dart';
-import 'package:cetis32_app_registro/src/services/RegistrationService.dart';
+import 'package:cetis32_app_registro/src/services/registrationService.dart';
 import 'package:cetis32_app_registro/src/utils/auth_sign_psw.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -15,9 +15,9 @@ class MyDataView extends StatefulWidget {
 
 class _MyDataViewState extends State<MyDataView> {
   UserProvider userProvider;
-  User user;
-  Registration registration;
-  final RegistrationService registrationService = RegistrationService();
+
+  Registration user;
+  final RegistrationService userService = RegistrationService();
 
   @override
   void initState() {
@@ -32,13 +32,15 @@ class _MyDataViewState extends State<MyDataView> {
 
   _getStudentData() {
     userProvider = Provider.of<UserProvider>(context, listen: true);
-    user = userProvider.getUser;
-    registration = userProvider.getRegistration;
+
+    user = userProvider.getRegistration;
     print(user.toString());
   }
 
   @override
   Widget build(BuildContext context) {
+    double _fontSize = 22;
+    double deviderHeight = 5;
     return SingleChildScrollView(
       child: Stack(children: [
         Container(
@@ -56,7 +58,15 @@ class _MyDataViewState extends State<MyDataView> {
               height: 20,
             ),
             Card(
-                margin: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+              child: Container(
+                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                  //color: Colors,
+                  child: Text("Mis datos",
+                      style: TextStyle(
+                          fontSize: 18, fontWeight: FontWeight.w400))),
+            ),
+            Card(
+                margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                 /*    decoration: BoxDecoration(
                   color: Colors.white.withOpacity(0.7),
                   border: Border.all(
@@ -68,75 +78,82 @@ class _MyDataViewState extends State<MyDataView> {
                 width: 280,
                 height: 460,*/
                 child: Container(
+                    //padding: EdgeInsets.symmetric(horizontal: 20),
                     height: MediaQuery.of(context).size.height * 0.7,
-                    child: registration != null
+                    width: MediaQuery.of(context).size.width * 0.8,
+                    child: user != null
                         ? SingleChildScrollView(
                             child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                Text(
-                                  "${registration.name ?? "No disponible"} ${registration.surnames ?? "No disponible"}",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(fontSize: 16),
-                                ),
-                                Divider(
-                                  height: 5,
-                                  color: Colors.grey,
-                                ),
-                                SizedBox(height: 20),
-                                Text(
-                                  "Matrícula",
-                                  style: TextStyle(color: Colors.black45),
-                                ),
-                                Text(registration.registrationCode ??
-                                    "No disponible"),
-                                SizedBox(height: 20),
-                                Text("CURP",
-                                    style: TextStyle(color: Colors.black45)),
-                                Text(registration.curp ?? "No disponible"),
-                                SizedBox(height: 20),
-                                Text("Grado",
-                                    style: TextStyle(color: Colors.black45)),
-                                Text(registration.grade ?? "No disponible"),
-                                SizedBox(height: 20),
-                                Text("Grupo",
-                                    style: TextStyle(color: Colors.black45)),
-                                Text(registration.group ?? "No disponible"),
-                                SizedBox(height: 20),
-                                Text("Turno",
-                                    style: TextStyle(color: Colors.black45)),
-                                Text(registration.turn ?? "No disponible"),
-                                SizedBox(height: 20),
-                                Text("Correo",
-                                    style: TextStyle(color: Colors.black45)),
-                                Text(registration.email ?? "No disponible"),
-                                SizedBox(height: 20),
-                                Text("Celular",
-                                    style: TextStyle(color: Colors.black45)),
-                                Text(registration.cellphone ?? "No disponible"),
+                                _blockInfo("Apellidos:",
+                                    "${user.surnames ?? "No disponible"}"),
+                                _blockInfo("Nombre:",
+                                    "${user.name ?? "No disponible"} "),
+                                _blockInfo("Matricula", user.registrationCode),
+                                _blockInfo("CURP", user.curp),
+                                _blockInfo("Grado", user.grade),
+                                _blockInfo("Grupo", user.group),
+                                _blockInfo("Turno", user.turn),
+                                _blockInfo("Correo", user.email),
+                                _blockInfo("Celular", user.cellphone),
+                                user.accessMethod == "email"
+                                    ? Center(
+                                        child: Container(
+                                            color: Colors.white70,
+                                            width: 260,
+                                            height: 40,
+                                            padding: EdgeInsets.all(0),
+                                            child: TextButton(
+                                                onPressed: () {
+                                                  AuthSignPassword
+                                                      .changePassword(context);
+                                                },
+                                                child: Text(
+                                                    "Cambiar contraseña",
+                                                    style: TextStyle(
+                                                        fontSize: 14,
+                                                        color: Colors.blue)))))
+                                    : Container(),
                               ]))
                         : Container())),
-            SizedBox(height: 20),
-            user.accessMethod == "email"
-                ? Container(
-                    color: Colors.white70,
-                    width: 260,
-                    height: 40,
-                    padding: EdgeInsets.all(0),
-                    child: OutlinedButton(
-                        onPressed: () {
-                          AuthSignPassword.changePassword(context);
-                        },
-                        child: Text("Cambiar contraseña",
-                            style: TextStyle(
-                                fontSize: 13,
-                                color: AppColors.morenaLightColor
-                                    .withOpacity(0.7)))))
-                : Container(),
+            SizedBox(height: 0),
             SizedBox(height: 5),
           ]),
         )
       ]),
+    );
+  }
+
+  __blockInfo(label, field) {
+    return Container(
+        padding: EdgeInsets.symmetric(vertical: 10),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Text(label,
+                textAlign: TextAlign.start,
+                style: TextStyle(color: Colors.black45)),
+            TextFormField(
+              initialValue: field ?? "No disponible",
+              style: TextStyle(fontSize: 18, color: Colors.black54),
+            ),
+            /*   Divider(
+              height: 5,
+              color: Colors.black54,
+            )*/
+          ],
+        ));
+  }
+
+  _blockInfo(label, field) {
+    return ListTile(
+      subtitle: Text(label),
+      title: TextFormField(
+        initialValue: field ?? "No disponible",
+        enabled: false,
+        style: TextStyle(color: AppColors.morenaColor),
+      ),
     );
   }
 }

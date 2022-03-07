@@ -18,7 +18,7 @@ class AccessList extends StatefulWidget {
 
 class _AccessListState extends State<AccessList> {
   UserProvider userProvider;
-  User user;
+  Registration user;
 
   final RegistrationService registrationService = RegistrationService();
   bool _downloadingAttachments = false;
@@ -29,7 +29,7 @@ class _AccessListState extends State<AccessList> {
   @override
   void initState() {
     userProvider = Provider.of<UserProvider>(context, listen: false);
-    user = userProvider.getUser;
+    user = userProvider.getRegistration;
     super.initState();
   }
 

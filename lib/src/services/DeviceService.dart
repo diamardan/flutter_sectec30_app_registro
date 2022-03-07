@@ -1,4 +1,5 @@
 import 'package:cetis32_app_registro/src/constants/constants.dart';
+import 'package:cetis32_app_registro/src/provider/Device.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 const school = AppConstants.fsCollectionName;
@@ -12,17 +13,17 @@ class DeviceService {
     return res.size;
   }
 
-  Future<void> add(String regId, Map<String, String> device) async {
-    db
+  Future<void> addDevice(String regId, Device device) async {
+    await db
         .collection("registros")
         .doc(regId)
         .collection("devices")
-        .doc(device["id"])
-        .set(device);
+        .doc(device.id)
+        .set(device.toJson());
   }
 
-  Future<void> remove(String regId, String deviceId) async {
-    db
+  Future<void> removeDevice(String regId, String deviceId) async {
+    await db
         .collection("registros")
         .doc(regId)
         .collection("devices")

@@ -26,6 +26,7 @@ class _CalendarState extends State<Calendar> {
   var events;
   ValueNotifier<List<Access>> _selectedEvents = ValueNotifier([]);
   bool _loading = true;
+  UserProvider userProvider;
 
   @override
   void initState() {
@@ -46,29 +47,32 @@ class _CalendarState extends State<Calendar> {
 
   @override
   void didChangeDependencies() {
-    super.didChangeDependencies();
     getUserData();
+    super.didChangeDependencies();
+  }
+
+  setLoading(value) {
+    setState(() {
+      _loading = value;
+    });
   }
 
   getUserData() async {
-    UserProvider userProvider =
-        Provider.of<UserProvider>(context, listen: true);
+    userProvider = Provider.of<UserProvider>(context, listen: true);
     r = userProvider.getRegistration;
     _getAccess(r.idbio.toString());
   }
 
   _getAccess(String idBio) async {
-    // try {
-    var result = await accesService.getAllById(idBio);
-    print(result);
-    fillMap(result);
-    setState(() {
-      _loading = false;
-    });
-    _selectedEvents.value = _getAccessForDay(_focusedDay);
-    /*} catch (error) {
+    try {
+      var result = await accesService.getAllById(idBio);
+      print(result);
+      fillMap(result);
+      setLoading(false);
+      _selectedEvents.value = _getAccessForDay(_focusedDay);
+    } catch (error) {
       print(error);
-    }*/
+    }
     return;
   }
 
@@ -104,53 +108,61 @@ class _CalendarState extends State<Calendar> {
 
   @override
   Widget build(BuildContext context) {
-    return ModalProgressHUD(
-        inAsyncCall: _loading,
-        child: Column(children: [
-          TableCalendar<Access>(
-            locale: 'es-ES',
-            firstDay: DateTime.utc(2010, 10, 16),
-            lastDay: DateTime.utc(2025, 3, 14),
-            focusedDay: _focusedDay,
-            calendarFormat: CalendarFormat.month,
-            calendarStyle: CalendarStyle(
-                defaultTextStyle: TextStyle(
-                    fontSize: MediaQuery.of(context).size.width * 0.04)),
-            headerStyle: HeaderStyle(
-                titleCentered: true,
-                titleTextFormatter: (date, locale) => DateFormat.yMMM(locale)
-                    .format(date)
-                    .toString()
-                    .toUpperCase(),
-                formatButtonVisible: false,
-                titleTextStyle: TextStyle(
-                    fontSize: MediaQuery.of(context).size.width * 0.07)),
-            selectedDayPredicate: (day) {
-              // Use `selectedDayPredicate` to determine which day is currently selected.
-              // If this returns true, then `day` will be marked as selected.
+    return RefreshIndicator(
+        onRefresh: () {
+          setLoading(true);
+          r = userProvider.getRegistration;
+          _getAccess(r.idbio.toString());
+          return;
+        },
+        child: ModalProgressHUD(
+            inAsyncCall: _loading,
+            child: Column(children: [
+              TableCalendar<Access>(
+                locale: 'es-ES',
+                firstDay: DateTime.utc(2010, 10, 16),
+                lastDay: DateTime.utc(2025, 3, 14),
+                focusedDay: _focusedDay,
+                calendarFormat: CalendarFormat.month,
+                calendarStyle: CalendarStyle(
+                    defaultTextStyle: TextStyle(
+                        fontSize: MediaQuery.of(context).size.width * 0.04)),
+                headerStyle: HeaderStyle(
+                    titleCentered: true,
+                    titleTextFormatter: (date, locale) =>
+                        DateFormat.yMMM(locale)
+                            .format(date)
+                            .toString()
+                            .toUpperCase(),
+                    formatButtonVisible: false,
+                    titleTextStyle: TextStyle(
+                        fontSize: MediaQuery.of(context).size.width * 0.07)),
+                selectedDayPredicate: (day) {
+                  // Use `selectedDayPredicate` to determine which day is currently selected.
+                  // If this returns true, then `day` will be marked as selected.
 
-              // Using `isSameDay` is recommended to disregard
-              // the time-part of compared DateTime objects.
-              return isSameDay(_selectedDay, day);
-            },
-            onDaySelected: _onDaySelected,
-            eventLoader: _getAccessForDay,
-            onFormatChanged: (format) {
-              if (_calendarFormat != format) {
-                // Call `setState()` when updating calendar format
-                setState(() {
-                  _calendarFormat = format;
-                });
-              }
-            },
-            onPageChanged: (focusedDay) {
-              // No need to call `setState()` here
-              _focusedDay = focusedDay;
-            },
-          ),
-          const SizedBox(height: 8.0),
-          Expanded(child: _accessDetails()),
-        ]));
+                  // Using `isSameDay` is recommended to disregard
+                  // the time-part of compared DateTime objects.
+                  return isSameDay(_selectedDay, day);
+                },
+                onDaySelected: _onDaySelected,
+                eventLoader: _getAccessForDay,
+                onFormatChanged: (format) {
+                  if (_calendarFormat != format) {
+                    // Call `setState()` when updating calendar format
+                    setState(() {
+                      _calendarFormat = format;
+                    });
+                  }
+                },
+                onPageChanged: (focusedDay) {
+                  // No need to call `setState()` here
+                  _focusedDay = focusedDay;
+                },
+              ),
+              const SizedBox(height: 8.0),
+              Expanded(child: _accessDetails()),
+            ])));
   }
 
   _accessDetails() {

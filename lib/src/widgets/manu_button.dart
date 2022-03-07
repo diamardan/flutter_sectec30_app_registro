@@ -10,13 +10,13 @@ class MenuButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
         elevation: 1,
-        child: OutlineButton(
+        child: OutlinedButton(
             onPressed: () {
               Navigator.pushNamed(context, route);
             },
             child: Row(children: [
               Icon(iconData,
-                  size: 60, color: AppColors.morenaLightColor.withOpacity(0.6)),
+                  size: 60, color: AppColors.morenaLightColor.withOpacity(0.8)),
               SizedBox(
                 width: 10,
               ),
@@ -24,7 +24,7 @@ class MenuButton extends StatelessWidget {
                   style: TextStyle(
                       fontSize: 20,
                       color: AppColors.morenaLightColor
-                          .withOpacity(0.6)
+                          .withOpacity(0.8)
                           .withBlue(20))),
             ])));
   }

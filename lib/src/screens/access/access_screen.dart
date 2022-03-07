@@ -20,9 +20,8 @@ class _AccessesScreenState extends State<AccessesScreen> {
     return Scaffold(
       appBar: AppBar(
           title: Text('Accesos'),
-          centerTitle: true,
           backgroundColor: Colors.green,
-          foregroundColor: Colors.black87),
+          foregroundColor: Colors.white),
       body: SafeArea(
         child: Calendar(),
       ),

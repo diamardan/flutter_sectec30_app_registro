@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:cetis32_app_registro/src/constants/constants.dart';
+import 'package:cetis32_app_registro/src/provider/Device.dart';
 import 'package:cetis32_app_registro/src/utils/net_util.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -144,5 +145,23 @@ class AuthenticationService {
       print(e.code);
       return {"code": e.code};
     }
+  }
+
+  Future<List<Device>> getDevices(String registrationId) async {
+    var result = await FirebaseFirestore.instance
+        .collection("schools")
+        .doc(school)
+        .collection("registros")
+        .doc(registrationId)
+        .collection("devices")
+        .get();
+
+    if (result.size > 0) {
+      return result.docs.map((doc) {
+        var data = doc.data();
+        return Device.fromJson(data);
+      }).toList();
+    } else
+      return [];
   }
 }
