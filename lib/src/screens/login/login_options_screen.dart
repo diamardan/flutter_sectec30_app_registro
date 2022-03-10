@@ -1,9 +1,12 @@
+import 'package:barcode_scan2/platform_wrapper.dart';
 import 'package:cetis32_app_registro/src/constants/constants.dart';
 import 'package:cetis32_app_registro/src/controllers/SignIn/SignInQRController.dart';
 import 'package:cetis32_app_registro/src/screens/login/login_email_screen.dart';
+import 'package:cetis32_app_registro/src/screens/preregistro/create_form.dart';
 import 'package:cetis32_app_registro/src/utils/notify_ui.dart';
 import 'package:cetis32_app_registro/src/widgets/whatsapp_help_btn.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -59,19 +62,19 @@ class _LoginOptionsScreenState extends State<LoginOptionsScreen> {
   }
 
   _loginWithCamera(BuildContext context) async {
-    // try {
-    setLoading(true);
-    String qr = await signInController.scanQR();
-    print("logging");
+    try {
+      setLoading(true);
+      String qr = await signInController.scanQR();
+      print("logging");
 
-    Map<String, dynamic> response = await signInController.authenticate(qr);
+      Map<String, dynamic> response = await signInController.authenticate(qr);
 
-    if (response["code"].toString() == "sign_in_success") {
-    } else {
-      setLoading(false);
-      await NotifyUI.showError(context, messageTitle, response["message"]);
-    }
-    /*  } on PlatformException catch (e) {
+      if (response["code"].toString() == "sign_in_success") {
+      } else {
+        setLoading(false);
+        await NotifyUI.showError(context, messageTitle, response["message"]);
+      }
+    } on PlatformException catch (e) {
       if (e.code == BarcodeScanner.cameraAccessDenied) {
         showDialogPermissions(context);
       } else {
@@ -81,16 +84,56 @@ class _LoginOptionsScreenState extends State<LoginOptionsScreen> {
       setLoading(false);
       await NotifyUI.showError(
           context, "Error de inicio de sesión", error.toString());
-    }*/
+    }
+  }
+
+  Widget _botonRegistro(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    return MaterialButton(
+      elevation: 10,
+      /* onPressed: () {
+      showAlertPago(context, "Aviso",
+          "Para comenzar el registro se verificará el pago, si ya lo realizó favor de mandar foto del voucher por whatsapp");
+    //goToForm(context);
+    }, */
+      onPressed: () {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => PreregForm()));
+      },
+      height: 45,
+      color: AppColors.morenaColor,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
+      child: Container(
+        width: 200,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(40),
+        ),
+        child: Center(
+          child: FittedBox(
+            fit: BoxFit.fitHeight,
+            child: Text(
+              "Registrarse",
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.white, fontSize: 18),
+            ),
+          ),
+        ),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
-      /*  appBar: AppBar(
-        backgroundColor: AppColors.morenaLightColor,
-        title: Text("INICIAR SESIÓN"),
+      /*appBar: AppBar(
+        backgroundColor: Colors.white,
+        title: Text(
+          "SISTEMA ESCOLAR INTELIGENTE",
+          style: TextStyle(fontSize: 14),
+        ),
+        elevation: 0,
+        foregroundColor: Colors.black87,
       ),*/
       body: ModalProgressHUD(
           inAsyncCall: loading,
@@ -112,32 +155,51 @@ class _LoginOptionsScreenState extends State<LoginOptionsScreen> {
           Image.asset(
             'assets/img/logo-3.png',
             color: AppColors.morenaColor,
-            width: 100,
+            width: 70,
           ),
-          SizedBox(height: 30),
-          Container(
-            width: 290,
-            decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.all(Radius.circular(5))),
-            padding: EdgeInsets.symmetric(horizontal: 9, vertical: 5),
-            child: Text(
-              '¿Cómo deseas iniciar sesión?',
-              style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w400,
-                  fontStyle: FontStyle.italic,
-                  color: Colors.black54),
+          SizedBox(height: 10),
+          Text("SISTEMA ESCOLAR INTELIGENTE",
               textAlign: TextAlign.center,
-            ),
-          ),
+              style: TextStyle(
+                  fontSize: 22,
+                  color: AppColors.morenaColor,
+                  fontStyle: FontStyle.italic)),
+          Container(
+              width: 40,
+              child: Divider(
+                thickness: 3,
+                height: 20,
+                color: AppColors.morenaColor,
+              )),
           SizedBox(
             height: 20,
           ),
           Container(
+              width: 240,
+              height: 45,
+              child: Align(
+                  alignment: Alignment.bottomLeft,
+                  child: Text(
+                    'Inicia sesión con',
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w200,
+                        //fontStyle: FontStyle.italic,
+                        color: Colors.black87),
+                    textAlign: TextAlign.center,
+                  ))),
+          SizedBox(
+            height: 5,
+          ),
+          Container(
             width: 240,
-            height: 70,
-            child: OutlinedButton.icon(
+            height: 45,
+            child: ElevatedButton.icon(
+              style: OutlinedButton.styleFrom(
+                backgroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20)),
+              ),
               icon: Icon(Icons.qr_code, color: AppColors.morenaLightColor),
               label: Text(
                 "QR desde camara",
@@ -154,8 +216,13 @@ class _LoginOptionsScreenState extends State<LoginOptionsScreen> {
           ),
           Container(
               width: 240,
-              height: 70,
-              child: OutlinedButton.icon(
+              height: 45,
+              child: ElevatedButton.icon(
+                style: OutlinedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20)),
+                ),
                 icon:
                     Icon(Icons.upload_file, color: AppColors.morenaLightColor),
                 label: Text(
@@ -172,8 +239,13 @@ class _LoginOptionsScreenState extends State<LoginOptionsScreen> {
           ),
           Container(
               width: 240,
-              height: 70,
-              child: OutlinedButton.icon(
+              height: 45,
+              child: ElevatedButton.icon(
+                style: OutlinedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20)),
+                ),
                 icon: Icon(Icons.email, color: AppColors.morenaLightColor),
                 label: Text(
                   "Correo Electrónico",
@@ -190,6 +262,7 @@ class _LoginOptionsScreenState extends State<LoginOptionsScreen> {
           SizedBox(
             height: 30,
           ),
+          _botonRegistro(context)
         ]));
   }
 
