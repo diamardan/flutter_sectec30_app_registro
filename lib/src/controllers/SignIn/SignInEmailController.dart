@@ -61,4 +61,6 @@ class SignInEmailController extends SignInController {
       return {"code": "error", "message": "Cuenta no identificada."};
     }
   }
+
+  void setStateAndPersistence(BuildContext context, response, String s) {}
 }

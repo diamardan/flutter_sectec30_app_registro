@@ -1,8 +1,8 @@
-import 'package:cetis32_app_registro/src/screens/login/login_email_screen.dart';
 import 'package:cetis32_app_registro/src/screens/login/login_options_screen.dart';
 import 'package:cetis32_app_registro/src/screens/login/recovery_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:cetis32_app_registro/src/screens/login/login_email_screen.dart';
 
 class LoginNavigator extends StatefulWidget {
   @override

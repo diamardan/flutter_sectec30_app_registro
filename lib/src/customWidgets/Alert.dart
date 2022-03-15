@@ -6,10 +6,10 @@ import 'package:cetis32_app_registro/src/screens/preregistro/create_form.dart';
 showAlertDialog(BuildContext context, String title, String message,
     [String kind, bool redirect = false]) {
   // Create button
-  Widget okButton = FlatButton(
+  Widget okButton = TextButton(
     child: Text("OK"),
     onPressed: () {
-      Navigator.of(context).pop();
+      Navigator.of(context, rootNavigator: true).pop();
     },
   );
   String lottiePath = "";
@@ -21,7 +21,7 @@ showAlertDialog(BuildContext context, String title, String message,
       lottiePath = 'assets/lotties/warning_animation.json';
   }
   Widget goToPayButton() {
-    return FlatButton(
+    return TextButton(
         child: Text("Pagar"),
         onPressed: () {
           Navigator.push(

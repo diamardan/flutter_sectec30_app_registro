@@ -52,6 +52,7 @@ class AlumnoService {
       ..fields["turno"] = alumno['turno']
       ..fields["matricula"] = alumno['matricula']
       ..fields["sexo"] = alumno['sexo']
+      ..fields["tipo_registro"] = "APP"
       ..fields["escuela"] = AppConstants.fsCollectionName;
 
     if (foto != null) {

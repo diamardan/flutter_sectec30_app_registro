@@ -3,11 +3,9 @@ import 'dart:io';
 import 'package:cetis32_app_registro/src/screens/initial_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:cetis32_app_registro/src/constants/constants.dart';
 import 'package:cetis32_app_registro/src/customWidgets/Alert.dart';
-import 'package:cetis32_app_registro/src/screens/pago/payment_wrapper.dart';
 import 'package:cetis32_app_registro/src/screens/preregistro/last_screen.dart';
 import 'package:cetis32_app_registro/src/services/AlumnoService.dart';
 import 'package:cetis32_app_registro/src/services/EspecialidadesService.dart';
@@ -82,6 +80,7 @@ class _PreregFormState extends State<PreregForm> {
   File voucher;
   String voucher1 = "";
 
+  BuildContext context2;
   @override
   void initState() {
     super.initState();
@@ -121,7 +120,7 @@ class _PreregFormState extends State<PreregForm> {
           bool tieneFirma = await procesarFirma();
           if (tieneFirma == false) {
             showAlertDialog(
-                context,
+                context2,
                 "Sin firma",
                 "no se puede finalizar el registro si no se captura la firma del alumno",
                 "error");
@@ -359,48 +358,51 @@ class _PreregFormState extends State<PreregForm> {
           title: Text('Proceso de Registro'),
         ),
         body: Stack(children: <Widget>[
-          _loading == true
-              ? showLoading()
-              : Stepper(
-                  controlsBuilder: (BuildContext context,
-                      {VoidCallback onStepContinue,
-                      VoidCallback onStepCancel}) {
-                    return Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        SizedBox(
-                          height: 30,
-                        ),
-                        Container(
-                          height: 60,
-                          width: 200,
-                          child: MaterialButton(
-                            color: AppColors.morenaColor,
-                            onPressed: onStepContinue,
-                            child: const Text(
-                              'Continuar',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ),
-                        ),
-                        MaterialButton(
-                          onPressed: onStepCancel,
-                          child: const Text('Atrás'),
-                        ),
-                      ],
-                    );
-                  },
-                  type: StepperType.horizontal,
-                  physics: ClampingScrollPhysics(),
-                  currentStep: _currentStep,
-                  onStepContinue: () {
-                    next();
-                  },
-                  onStepCancel: () {
-                    cancel();
-                  },
-                  steps: _mySteps()),
+          _loading == true ? showLoading() : myStepper()
         ]));
+  }
+
+  Widget myStepper() {
+    return Stepper(
+        controlsBuilder: (BuildContext ctx,
+            /* ControlsDetails controls */
+            {VoidCallback onStepContinue,
+            VoidCallback onStepCancel}) {
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              SizedBox(
+                height: 30,
+              ),
+              Container(
+                height: 60,
+                width: 200,
+                child: MaterialButton(
+                  color: AppColors.morenaColor,
+                  onPressed: onStepContinue /* controls.onStepContinue */,
+                  child: const Text(
+                    'Continuar',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              ),
+              MaterialButton(
+                onPressed: onStepCancel /* controls.onStepCancel */,
+                child: const Text('Atrás'),
+              ),
+            ],
+          );
+        },
+        type: StepperType.horizontal,
+        physics: ClampingScrollPhysics(),
+        currentStep: _currentStep,
+        onStepContinue: () {
+          next();
+        },
+        onStepCancel: () {
+          cancel();
+        },
+        steps: _mySteps());
   }
 
   List<Step> _mySteps() {
@@ -738,8 +740,8 @@ class _PreregFormState extends State<PreregForm> {
                       },
                     ), */
 
-                    FlatButton(
-                      color: Colors.transparent,
+                    TextButton(
+                      style: TextButton.styleFrom(primary: Colors.transparent),
                       onPressed: () {
                         setState(() => _signController.clear());
                       },
@@ -792,7 +794,7 @@ class _PreregFormState extends State<PreregForm> {
   _tomarFoto(ImageSource source) async {
     final _picker = ImagePicker();
 
-    final pickedFile = await _picker.getImage(source: source);
+    final pickedFile = await _picker.pickImage(source: source);
     //foto = await ImagePicker.pickImage(source: ImageSource.camera);
     //
     foto = File(pickedFile.path);
@@ -806,6 +808,8 @@ class _PreregFormState extends State<PreregForm> {
       _loading = false;
       //foto = File(pickedFile.path);
     });
+
+    Navigator.of(context, rootNavigator: true).maybePop();
   }
 
   Widget _mostrarFoto() {
@@ -826,7 +830,7 @@ class _PreregFormState extends State<PreregForm> {
   _tomarVoucher(ImageSource source) async {
     final _picker = ImagePicker();
 
-    final pickedFile = await _picker.getImage(source: source);
+    final pickedFile = await _picker.pickImage(source: source);
     //foto = await ImagePicker.pickImage(source: ImageSource.camera);
     //
     voucher = File(pickedFile.path);
@@ -840,6 +844,7 @@ class _PreregFormState extends State<PreregForm> {
       _loading = false;
       //foto = File(pickedFile.path);
     });
+    Navigator.of(context, rootNavigator: true).pop();
   }
 
   Widget _mostrarVoucher() {
@@ -884,7 +889,6 @@ class _PreregFormState extends State<PreregForm> {
                 setState(() {
                   _loading = true;
                 });
-                Navigator.pop(context);
               }),
           ListTile(
               title: Text("Desde almacenamiento"),
@@ -895,7 +899,6 @@ class _PreregFormState extends State<PreregForm> {
                 setState(() {
                   _loading = true;
                 });
-                Navigator.pop(context);
               }),
         ],
       ),
