@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cetis32_app_registro/src/screens/initial_screen.dart';
+import 'package:cetis32_app_registro/src/screens/login/login_options_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
@@ -120,7 +121,7 @@ class _PreregFormState extends State<PreregForm> {
           bool tieneFirma = await procesarFirma();
           if (tieneFirma == false) {
             showAlertDialog(
-                context2,
+                context,
                 "Sin firma",
                 "no se puede finalizar el registro si no se captura la firma del alumno",
                 "error");
@@ -140,8 +141,8 @@ class _PreregFormState extends State<PreregForm> {
     if (_currentStep > 1) {
       goTo(_currentStep - 1);
     } else {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => InitialScreen()));
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => LoginOptionsScreen()));
       /* Navigator.popUntil(context, ModalRoute.withName('inicio')); */
     }
   }
@@ -159,11 +160,11 @@ class _PreregFormState extends State<PreregForm> {
         print(error);
       }
 
-      if (result['message'] != "SUCCESS") {
+      /* if (result['message'] == "SUCCESS") {
         showAlertDialog(context, "Error",
             "Ocurrió un error al conectarse al servidor", "error");
         return avanza;
-      }
+      } */
 
       if (result['code'] == 201) {
         return avanza;
@@ -227,7 +228,6 @@ class _PreregFormState extends State<PreregForm> {
             */
             message =
                 "No se encontró el alumno con la C.U.R.P. ingresada, en caso de que sea correcto por favor comunicarse al 5520779800 para darlo de alta en el sistema";
-            ;
           }
           print("puedo avanzar ? : $avanzar");
         }
