@@ -1,8 +1,6 @@
 package mx.com.infon.cetis32_app_registro
-
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.android.SplashScreen
-
 import android.content.BroadcastReceiver
 import android.os.Bundle
 import android.content.Context
@@ -14,8 +12,9 @@ import io.flutter.plugin.common.EventChannel.EventSink
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugins.GeneratedPluginRegistrant
 
+
 class MainActivity: FlutterActivity() {
-    
+  /*  
     private val CHANNEL = "poc.deeplink.flutter.dev/channel"
     private val EVENTS = "poc.deeplink.flutter.dev/events"
     private var startString: String? = null
@@ -69,5 +68,5 @@ class MainActivity: FlutterActivity() {
                 events.success(dataString)
             }
         }
-    }
+    }*/
 }
