@@ -1,5 +1,6 @@
 import 'package:cetis32_app_registro/src/constants/constants.dart';
 import 'package:cetis32_app_registro/src/widgets/manu_button.dart';
+import 'package:cetis32_app_registro/src/widgets/whatsapp_help_btn.dart';
 import 'package:flutter/cupertino.dart';
 import "package:flutter/material.dart";
 
@@ -17,14 +18,15 @@ class MenuView extends StatelessWidget {
       Center(
           child: Container(
               //width: 310,
-              height: 600,
+              height: 650,
               width: MediaQuery.of(context).size.width * .9,
               // margin: EdgeInsets.symmetric(vertical: 40),
               decoration: BoxDecoration(
                 //  color: Colors.white.withOpacity(0.9),
                 borderRadius: BorderRadius.all(Radius.circular(10)),
               ),
-              child: Column(
+              child: Card(
+                  child: Column(
                 //mainAxisSize: MainAxisSize.min,
 
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -81,8 +83,15 @@ class MenuView extends StatelessWidget {
                       title: "Mis dispositivos",
                       iconData: Icons.phone_android_outlined,
                       route: "my-devices"),
+                  SizedBox(height: 30),
+                  /*  ConstrainedBox(
+                      constraints: BoxConstraints.tight(Size(150, 40)),
+                      child:*/
                 ],
-              )))
+              )))),
+      WhatsappHelpBtn(context: context)
+
+      //
     ]);
   }
 }

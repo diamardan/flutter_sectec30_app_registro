@@ -10,13 +10,18 @@ class MenuButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
         elevation: 1,
-        child: OutlinedButton(
+        child: ElevatedButton(
             onPressed: () {
               Navigator.pushNamed(context, route);
             },
+            style: OutlinedButton.styleFrom(
+                backgroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20))),
+            //  onSurface: Colors..withOpacity(0.0)),
             child: Row(children: [
               Icon(iconData,
-                  size: 60, color: AppColors.morenaLightColor.withOpacity(0.8)),
+                  size: 40, color: AppColors.morenaLightColor.withOpacity(0.8)),
               SizedBox(
                 width: 10,
               ),
