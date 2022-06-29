@@ -186,8 +186,8 @@ class _PreregFormState extends State<PreregForm> {
     }
 
     if (result['message'] == null) {
-      showAlertDialog(
-          context, "Error", "Ocurrió un error al conectarse al servidor", "error");
+      showAlertDialog(context, "Error",
+          "Ocurrió un error al conectarse al servidor", "error");
     }
 
     var message = result['message'];
@@ -200,8 +200,8 @@ class _PreregFormState extends State<PreregForm> {
         avanza = true;
       }
     } else {
-      showAlertDialog(
-          context, "Error", "Ocurrió un error al conectarse al servidor", "error");
+      showAlertDialog(context, "Error",
+          "Ocurrió un error al conectarse al servidor", "error");
     }
     print('misVotos: $result');
     /*  setState(() {
@@ -297,7 +297,8 @@ class _PreregFormState extends State<PreregForm> {
     var firma = await _signController.toPngBytes();
     var data = Image.memory(firma);
 
-    final finishStep = await alumnoService.finish(_alumno, voucher, foto, firma);
+    final finishStep =
+        await alumnoService.finish(_alumno, voucher, foto, firma);
     final result = finishStep['message'];
     if (result == "success") {
       setState(() {
@@ -324,7 +325,6 @@ class _PreregFormState extends State<PreregForm> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
         key: _scaffoldKey,
         appBar: AppBar(
@@ -334,22 +334,21 @@ class _PreregFormState extends State<PreregForm> {
           _loading == true
               ? showLoading()
               : Stepper(
-                  controlsBuilder: (BuildContext context,
-                      {VoidCallback onStepContinue,
-                      VoidCallback onStepCancel}) {
+                  controlsBuilder:
+                      (BuildContext context, ControlsDetails details) {
                     return Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         RaisedButton(
                           color: Colors.blue,
-                          onPressed: onStepContinue,
+                          onPressed: details.onStepContinue,
                           child: const Text(
                             'Continuar',
                             style: TextStyle(color: Colors.white),
                           ),
                         ),
                         RaisedButton(
-                          onPressed: onStepCancel,
+                          onPressed: details.onStepCancel,
                           child: const Text('Atrás'),
                         ),
                       ],
@@ -730,7 +729,7 @@ class _PreregFormState extends State<PreregForm> {
         child: Image(
           image: FileImage(foto /* ?? 'assets/img/no-image.png'  */),
           height: 300.0,
-          fit:BoxFit.cover,
+          fit: BoxFit.cover,
         ),
       );
     }

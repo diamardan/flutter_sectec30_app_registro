@@ -364,10 +364,7 @@ class _PreregFormState extends State<PreregForm> {
 
   Widget myStepper() {
     return Stepper(
-        controlsBuilder: (BuildContext ctx,
-            /* ControlsDetails controls */
-            {VoidCallback onStepContinue,
-            VoidCallback onStepCancel}) {
+        controlsBuilder: (BuildContext context, ControlsDetails details) {
           return Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
@@ -379,7 +376,7 @@ class _PreregFormState extends State<PreregForm> {
                 width: 200,
                 child: MaterialButton(
                   color: AppColors.morenaColor,
-                  onPressed: onStepContinue /* controls.onStepContinue */,
+                  onPressed: details.onStepContinue,
                   child: const Text(
                     'Continuar',
                     style: TextStyle(color: Colors.white),
@@ -387,7 +384,7 @@ class _PreregFormState extends State<PreregForm> {
                 ),
               ),
               MaterialButton(
-                onPressed: onStepCancel /* controls.onStepCancel */,
+                onPressed: details.onStepCancel,
                 child: const Text('Atrás'),
               ),
             ],

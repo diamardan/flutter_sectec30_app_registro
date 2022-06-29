@@ -1,3 +1,4 @@
+import 'package:cetis32_app_registro/src/screens/access/access_geo_screen.dart';
 import 'package:cetis32_app_registro/src/screens/access/access_screen.dart';
 import 'package:cetis32_app_registro/src/screens/credential/digital_credential_screen.dart';
 import 'package:cetis32_app_registro/src/screens/home/home_screen.dart';
@@ -17,6 +18,7 @@ Map<String, WidgetBuilder> getApplicationRoutes(BuildContext context) {
     'pagar': (BuildContext context) => PaymentPage(),
     'wrapper': (BuildContext context) => Wrapper(),
     'access': (BuildContext context) => AccessesScreen(),
+    'access-geo': (BuildContext context) => AccessesGeoScreen(),
     'notifications': (BuildContext context) => NotificationsScreen(),
     'notifications-attachments': (BuildContext context) => AttachmentsScreen(),
     'credential': (BuildContext context) => DigitalCredentialScreen(),
