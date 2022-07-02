@@ -8,8 +8,8 @@ class MenuButton extends StatelessWidget {
   MenuButton({this.title, this.iconData, this.route});
   @override
   Widget build(BuildContext context) {
-    return Card(
-        elevation: 1,
+    return Container(
+        height: 70,
         child: ElevatedButton(
             onPressed: () {
               Navigator.pushNamed(context, route);
@@ -17,7 +17,7 @@ class MenuButton extends StatelessWidget {
             style: OutlinedButton.styleFrom(
                 backgroundColor: Colors.white,
                 shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20))),
+                    borderRadius: BorderRadius.circular(10))),
             //  onSurface: Colors..withOpacity(0.0)),
             child: Row(children: [
               Icon(iconData,
@@ -27,10 +27,10 @@ class MenuButton extends StatelessWidget {
               ),
               Text(title,
                   style: TextStyle(
-                      fontSize: 20,
-                      color: AppColors.morenaLightColor
-                          .withOpacity(0.8)
-                          .withBlue(20))),
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400,
+                      color: Colors.black.withOpacity(0.8).withBlue(20))),
             ])));
+    ;
   }
 }

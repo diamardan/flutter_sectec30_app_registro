@@ -176,17 +176,6 @@ class _homeScreenState extends State<HomeScreen> with DisposableWidget {
         child: ModalProgressHUD(
             inAsyncCall: user == null,
             child: Scaffold(
-              /*     appBar: AppBar(
-                title: Text("SISTEMA ESCOLAR INTELIGENTE"),
-                //       style: TextStyle(fontStyle: FontStyle.italic),
-                titleTextStyle: TextStyle(fontSize: 16),
-                centerTitle: true,
-                toolbarHeight: 120,
-                backgroundColor: AppColors.morenaLightColor,
-
-                foregroundColor: Colors.white,
-                //  systemOverlayStyle: SystemUiOverlayStyle.light,
-              ),*/
               body: IndexedStack(
                 index: _viewIndex,
                 children: [MenuView(), MyDataView()],
