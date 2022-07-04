@@ -31,7 +31,7 @@ class MenuView extends StatelessWidget {
                     width: MediaQuery.of(context).size.width * .9,
                     // margin: EdgeInsets.symmetric(vertical: 40),
                     decoration: BoxDecoration(
-                      //  color: Colors.white.withOpacity(0.9),
+                      //color: AppColors.morenaColor,
                       borderRadius: BorderRadius.all(Radius.circular(10)),
                     ),
                     child: Column(
@@ -40,49 +40,50 @@ class MenuView extends StatelessWidget {
                       // mainAxisAlignment: MainAxisAlignment.center,
 
                       children: [
-                        SizedBox(height: 15),
-                        Row(children: [
-                          Image.asset(
-                            'assets/img/logo-3.png',
-                            color: AppColors.morenaColor,
-                            width: 80,
-                          ),
-                          SizedBox(
-                            width: 20,
-                          ),
-                          Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "SISTEMA ESCOLAR",
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 15,
-                                      fontStyle: FontStyle.italic),
-                                ),
-                                Text(
-                                  "INTELIGENTE",
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 15,
-                                      fontStyle: FontStyle.italic),
-                                ),
-                              ]),
-                        ]),
-                        Divider(
+                        //SizedBox(height: 15),
+                        Container(
+                            padding: EdgeInsets.symmetric(
+                                vertical: 15, horizontal: 20),
+                            decoration: BoxDecoration(
+                                color: Colors.grey.withOpacity(0.2),
+                                border: Border.all(
+                                  color: Colors.black54,
+                                )),
+                            child: Row(children: [
+                              Image.asset(
+                                'assets/img/logo-3.png',
+                                color: AppColors.morenaColor,
+                                width: 80,
+                              ),
+                              SizedBox(
+                                width: 20,
+                              ),
+                              Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "SISTEMA ESCOLAR",
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 15,
+                                          fontStyle: FontStyle.italic),
+                                    ),
+                                    Text(
+                                      "INTELIGENTE",
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 15,
+                                          fontStyle: FontStyle.italic),
+                                    ),
+                                  ]),
+                            ])),
+                        /*  Divider(
                           thickness: 0.5,
-                          height: 30,
+                          //  height: 30,
                           color: AppColors.morenaColor.withOpacity(0.8),
-                        ),
-
-                        /*   Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text("SELECCIONA UNA OPCIÓN",
-                            // textAlign: TextAlign.start,
-                            style:
-                                TextStyle(fontSize: 16, color: Colors.black54))),*/
+                        ),*/
                         SizedBox(
                           height: 20,
                         ),

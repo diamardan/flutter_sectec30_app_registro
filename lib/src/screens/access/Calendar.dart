@@ -25,7 +25,8 @@ class _CalendarState extends State<Calendar> {
   DateTime _selectedDay;
   var events;
   ValueNotifier<List<Access>> _selectedEvents = ValueNotifier([]);
-  bool _loading = true;
+  //bool _loading = true;
+  bool _loading = false;
   UserProvider userProvider;
 
   @override

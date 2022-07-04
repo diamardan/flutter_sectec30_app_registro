@@ -1,5 +1,6 @@
 import 'package:cetis32_app_registro/src/screens/access/access_geo_screen.dart';
 import 'package:cetis32_app_registro/src/screens/access/access_screen.dart';
+import 'package:cetis32_app_registro/src/screens/access/register_access.dart';
 import 'package:cetis32_app_registro/src/screens/credential/digital_credential_screen.dart';
 import 'package:cetis32_app_registro/src/screens/home/home_screen.dart';
 import 'package:cetis32_app_registro/src/screens/initial_screen.dart';
@@ -23,7 +24,8 @@ Map<String, WidgetBuilder> getApplicationRoutes(BuildContext context) {
     'notifications-attachments': (BuildContext context) => AttachmentsScreen(),
     'credential': (BuildContext context) => DigitalCredentialScreen(),
     'my-devices': (BuildContext context) => MyDevicesScreen(),
-    'home': (BuildContext context) => HomeScreen()
+    'home': (BuildContext context) => HomeScreen(),
+    'register-access': (BuildContext context) => RegisterAccess()
 
     //'verCredencialDigital': (BuildContext context) => DigitalCredentialScreen(),
   };

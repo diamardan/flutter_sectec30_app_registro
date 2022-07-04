@@ -64,12 +64,11 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Credencial inteligente"),
-        backgroundColor: AppColors.morenaLightColor,
       ),
       floatingActionButton: Visibility(
         visible: visibleButton == true ? true : false,
         child: FloatingActionButton.extended(
-            //sbackgroundColor: AppColors.morenaColor,
+            backgroundColor: AppColors.morenaColor,
             //backgroundColor: canDownload == true ? Colors.blue : Colors.grey,
             label: Text("Descargar"),
             icon: Icon(Icons.download),
@@ -92,6 +91,9 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
           child: SingleChildScrollView(
         child: Center(
           child: Column(children: <Widget>[
+            SizedBox(
+              height: 15,
+            ),
             _anversoCredencial(),
             WidgetToImage(builder: (key) {
               this.key2 = key;

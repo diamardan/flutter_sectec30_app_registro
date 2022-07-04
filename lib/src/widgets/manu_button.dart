@@ -9,7 +9,7 @@ class MenuButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        height: 70,
+        height: 80,
         child: ElevatedButton(
             onPressed: () {
               Navigator.pushNamed(context, route);
@@ -20,15 +20,14 @@ class MenuButton extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10))),
             //  onSurface: Colors..withOpacity(0.0)),
             child: Row(children: [
-              Icon(iconData,
-                  size: 40, color: AppColors.morenaLightColor.withOpacity(0.8)),
+              Icon(iconData, size: 50, color: AppColors.morenaColor),
               SizedBox(
                 width: 10,
               ),
               Text(title,
                   style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
                       color: Colors.black.withOpacity(0.8).withBlue(20))),
             ])));
     ;

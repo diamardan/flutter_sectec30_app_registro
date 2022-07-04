@@ -38,7 +38,6 @@ class SignInEmailController extends SignInController {
           "code": "-",
           "message": "Verifique el número de dispositivos de tu licencia"
         };
-      return {"code": "-", "message": "No se identificó a este usuario."};
     } else
       return {"code": "user-not-found", "message": "Usuario no encontrado."};
   }
