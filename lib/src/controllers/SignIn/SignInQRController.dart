@@ -1,7 +1,7 @@
 import 'package:barcode_scan2/barcode_scan2.dart';
 import 'package:cetis32_app_registro/src/controllers/SignIn/SignInController.dart';
 import 'package:cetis32_app_registro/src/models/user_model.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter/material.dart';
 import 'package:qr_code_tools/qr_code_tools.dart';
 
 class SignInQRController extends SignInController {
@@ -33,7 +33,7 @@ class SignInQRController extends SignInController {
           "code": "-",
           "message": "Verifique el número de dispositivos de tu licencia"
         };
-      return {"code": "-", "message": "No se identificó a este usuario."};
+      // return {"code": "-", "message": "No se identificó a este usuario."};
     } else
       return {"code": "user-not-found", "message": "Usuario no encontrado."};
   }

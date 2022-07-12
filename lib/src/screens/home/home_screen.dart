@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:cetis32_app_registro/src/constants/constants.dart';
 import 'package:cetis32_app_registro/src/controllers/SignIn/SignInController.dart';
 import 'package:cetis32_app_registro/src/models/user_model.dart';
@@ -9,10 +8,11 @@ import 'package:cetis32_app_registro/src/provider/user_provider.dart';
 import 'package:cetis32_app_registro/src/res/notifications.dart';
 import 'package:cetis32_app_registro/src/screens/home/menu_view.dart';
 import 'package:cetis32_app_registro/src/screens/home/my_data_view.dart';
+import 'package:cetis32_app_registro/src/screens/my_devices/my_devices_screen.dart';
+import 'package:cetis32_app_registro/src/screens/notifications/notifications_screen.dart';
 import 'package:cetis32_app_registro/src/services/AuthenticationService.dart';
 import 'package:cetis32_app_registro/src/services/MessagingService.dart';
 import 'package:cetis32_app_registro/src/services/RegistrationService.dart';
-import 'package:cetis32_app_registro/src/widgets/log_out_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -67,10 +67,10 @@ class _homeScreenState extends State<HomeScreen> with DisposableWidget {
   bool userLoaded = false;
   bool loading;
 
-  @override
+  /* @override
   void initState() {
-    super.initState();
-  }
+    super.initState(); 
+  }*/
 
   @override
   void dispose() {
@@ -118,8 +118,7 @@ class _homeScreenState extends State<HomeScreen> with DisposableWidget {
 
   void startDeviceLIstener() async {
     Device device = await DeviceProvider.instance.device;
-    print("listen device");
-    print(user.id);
+    final school = AppConstants.fsCollectionName;
 
     FirebaseFirestore.instance
         .collection("schools")
@@ -147,26 +146,19 @@ class _homeScreenState extends State<HomeScreen> with DisposableWidget {
   }
 
   void _switchView(int index) async {
-    if (index == 2) {
-      bool res = await showLogoutDialog(context, "main");
-      if (res) _logout();
-
-      return;
-    }
-
     setState(() {
       _viewIndex = index;
     });
   }
 
   Future<bool> _systemBackButtonPressed() async {
-    if (_viewIndex == 1) {
+    if (_viewIndex > 0) {
       setState(() {
-        _viewIndex = 0;
+        _viewIndex--;
       });
       return false;
-    }
-    return true;
+    } else
+      return true;
   }
 
   @override
@@ -178,24 +170,40 @@ class _homeScreenState extends State<HomeScreen> with DisposableWidget {
             child: Scaffold(
               body: IndexedStack(
                 index: _viewIndex,
-                children: [MenuView(), MyDataView()],
+                children: [
+                  MenuView(),
+                  NotificationsScreen(),
+                  MyDataView(
+                    key: Key("profile"),
+                  )
+                ],
               ),
-              bottomNavigationBar: _bottomNavBar(context),
+              bottomNavigationBar: _bottomNavBar(),
             )));
   }
 
-  _bottomNavBar(BuildContext context) {
+  _bottomNavBar() {
+    double iconSize = 35;
     return BottomNavigationBar(
       items: [
         BottomNavigationBarItem(
             icon: Icon(
               Icons.home_filled,
+              size: iconSize,
             ),
             label: "Home"),
         BottomNavigationBarItem(
-            icon: Icon(Icons.account_box_rounded), label: "Mis datos"),
+            icon: Icon(
+              Icons.notifications_rounded,
+              size: iconSize,
+            ),
+            label: "Notificaciones"),
         BottomNavigationBarItem(
-            icon: Icon(Icons.logout_outlined), label: "Salir"),
+            icon: Icon(
+              Icons.account_box_rounded,
+              size: iconSize,
+            ),
+            label: "Mi Perfil"),
       ],
       currentIndex: _viewIndex,
       selectedItemColor: AppColors.morenaLightColor,

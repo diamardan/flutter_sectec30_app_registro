@@ -7,7 +7,7 @@ class AccessesGeoScreen extends StatefulWidget {
   _AccessesGeoScreenState createState() => _AccessesGeoScreenState();
 }
 
-_getEventsForDay(DateTime day) {}
+//_getEventsForDay(DateTime day) {}
 
 class _AccessesGeoScreenState extends State<AccessesGeoScreen> {
   @override

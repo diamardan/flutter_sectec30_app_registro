@@ -1,6 +1,8 @@
 // * * *  Sign off  * * *
 import 'package:flutter/material.dart';
 
+import '../constants/constants.dart';
+
 Future<bool> showLogoutDialog(BuildContext context, String launcher) {
   String message = launcher == "main"
       ? "¿Abandonar la sesión?"
@@ -10,22 +12,13 @@ Future<bool> showLogoutDialog(BuildContext context, String launcher) {
     builder: (BuildContext context) {
       return AlertDialog(
         title: Text(
-          "Cerrar Sesión",
-//style: TextStyle(color: AppColors.morenaLightColor),
+          "CETIS 32",
+          style: TextStyle(color: AppColors.morenaColor, fontSize: 16),
         ),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              Icons.logout_outlined,
-              size: 50,
-              color: Colors.orange.withOpacity(0.5),
-            ),
-            Text(
-              message,
-              textAlign: TextAlign.center,
-            )
-          ],
+        content: Text(
+          message,
+          textAlign: TextAlign.center,
+          style: TextStyle(fontSize: 18),
         ),
         backgroundColor: Colors.white,
         elevation: 3,
@@ -36,17 +29,21 @@ Future<bool> showLogoutDialog(BuildContext context, String launcher) {
                 onPressed: () {
                   Navigator.pop(context, false);
                 },
+                style: OutlinedButton.styleFrom(
+                    backgroundColor: Colors.grey.withOpacity(0.7)),
                 child: Text("Cancelar",
-                    style: TextStyle(color: Colors.black45, fontSize: 16)),
+                    style: TextStyle(
+                        color: Colors.black.withOpacity(0.7), fontSize: 16)),
               )),
           Container(
               width: 120,
-              child: OutlinedButton(
+              child: ElevatedButton(
                 onPressed: () {
                   Navigator.pop(context, true);
                 },
                 child: Text("Salir",
-                    style: TextStyle(color: Colors.black45, fontSize: 16)),
+                    style: TextStyle(
+                        color: Colors.white.withOpacity(0.7), fontSize: 16)),
               )),
         ],
       );

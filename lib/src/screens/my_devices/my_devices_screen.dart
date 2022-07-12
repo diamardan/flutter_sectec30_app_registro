@@ -73,13 +73,14 @@ class _MyDevicesScreenState extends State<MyDevicesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
+        /*  appBar: AppBar(
           title: Text("Mis dispositivos"),
-          titleTextStyle: TextStyle(
-              fontSize: 17, color: Colors.black87, fontWeight: FontWeight.w400),
-          backgroundColor: Color(0XEEF5F5F5),
-          foregroundColor: Colors.black87,
-        ),
+          centerTitle: true,
+          /* titleTextStyle: TextStyle(
+              fontSize: 17, color: Colors.black87, fontWeight: FontWeight.w400),*/
+          //   backgroundColor: Color(0XEEF5F5F5),
+          // foregroundColor: Colors.black87,
+        ),*/
         body: ListView.builder(
             itemCount: devices.length,
             itemBuilder: (context, index) {

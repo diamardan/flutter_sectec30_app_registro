@@ -6,9 +6,10 @@ class AppColors {
   static const whatsappColor = Color.fromRGBO(37, 211, 102, 1);
   static const paymentInfoHeader = Color.fromRGBO(103, 218, 255, .5);
   static const primaryText = const Color.fromRGBO(255, 255, 255, 1);
-  static const morenaColor = const Color.fromRGBO(94, 33, 41, 1);
+  static const morenaColor = Color.fromRGBO(94, 33, 41, 1); //#6a1b31
   static const morenaLightColor = const Color.fromRGBO(158, 91, 100, 1);
   static const secondary = const Color.fromRGBO(166, 123, 96, 1);
+  static const secondaryColor = const Color.fromRGBO(166, 123, 96, 1);
   static const blackTransparent = const Color(0x88000000);
   static const yellow = const Color(0XFFFFDD00);
   static const redError = const Color(0XFFFF8888);

@@ -3,6 +3,7 @@ import 'package:cetis32_app_registro/src/screens/access/access_screen.dart';
 import 'package:cetis32_app_registro/src/screens/access/register_access.dart';
 import 'package:cetis32_app_registro/src/screens/credential/digital_credential_screen.dart';
 import 'package:cetis32_app_registro/src/screens/home/home_screen.dart';
+import 'package:cetis32_app_registro/src/screens/incoming_screen.dart';
 import 'package:cetis32_app_registro/src/screens/initial_screen.dart';
 import 'package:cetis32_app_registro/src/screens/login/wrapper_auth.dart';
 import 'package:cetis32_app_registro/src/screens/my_devices/my_devices_screen.dart';
@@ -11,6 +12,8 @@ import 'package:cetis32_app_registro/src/screens/notifications/notifications_scr
 import 'package:cetis32_app_registro/src/screens/pago/payment_wrapper.dart';
 import 'package:cetis32_app_registro/src/screens/preregistro/create_form.dart';
 import 'package:flutter/material.dart';
+
+import '../screens/home/settings_screen.dart';
 
 Map<String, WidgetBuilder> getApplicationRoutes(BuildContext context) {
   return <String, WidgetBuilder>{
@@ -25,7 +28,9 @@ Map<String, WidgetBuilder> getApplicationRoutes(BuildContext context) {
     'credential': (BuildContext context) => DigitalCredentialScreen(),
     'my-devices': (BuildContext context) => MyDevicesScreen(),
     'home': (BuildContext context) => HomeScreen(),
-    'register-access': (BuildContext context) => RegisterAccess()
+    'register-access': (BuildContext context) => RegisterAccess(),
+    'settings': (BuildContext context) => SettingsScreen(),
+    'incoming': (BuildContext context) => IncomingScreen(),
 
     //'verCredencialDigital': (BuildContext context) => DigitalCredentialScreen(),
   };

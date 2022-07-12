@@ -79,23 +79,33 @@ class _NMessagesListState extends State<NMessagesList> {
   }
 
   _notification(n.Notification notification) {
-    return Column(children: [
-      Container(
-        color: Colors.white,
-        child: Column(
-          children: [
-            _header(notification),
-            SizedBox(
-              height: 10,
+    return GestureDetector(
+        onTap: () {
+          showMessage(context, notification);
+        },
+        child: Column(children: [
+          Container(height: 20, color: Colors.white //grey.withOpacity(0.3),
+              ),
+          Container(
+            decoration: BoxDecoration(
+                color: Colors.white,
+                /*border: Border.all(
+              color: Colors.,
+            ),*/
+                borderRadius: BorderRadius.all(Radius.circular(30))),
+            child: Column(
+              children: [
+                _header(notification),
+                _body(notification),
+                Divider(
+                  thickness: 1.5,
+                  height: 5,
+                  color: Colors.grey,
+                ),
+              ],
             ),
-            _body(notification),
-          ],
-        ),
-      ),
-      /*  Divider(
-        height: 1,
-      ),*/
-    ]);
+          ),
+        ]));
   }
 
   _header(n.Notification notification) {
@@ -117,36 +127,24 @@ class _NMessagesListState extends State<NMessagesList> {
               child: ListTile(
                   dense: true,
                   leading: CircleAvatar(
-                      child: Icon(
-                        Icons.message_outlined,
-                        color: Colors.white,
-                      ),
-                      backgroundColor: Colors.orange.withOpacity(0.2)),
+                      child: Icon(Icons.message_outlined,
+                          size: 35, color: AppColors.morenaColor),
+                      backgroundColor: Colors.white),
                   title: notification.title == null
                       ? Text('No disponible')
-                      : Text(notification.title),
+                      : Text(
+                          notification.title,
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                  trailing: notification.haveAttachments
+                      ? _attachment(notification.messageId)
+                      : Container(
+                          width: 10,
+                        ),
                   subtitle: Text(
                     dateTime,
                     style: TextStyle(fontSize: 12),
                   )))),
-      Container(
-          padding: EdgeInsets.only(right: 15),
-          child: notification.haveAttachments
-              ? TextButton.icon(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (BuildContext context) =>
-                                AttachmentsScreen(
-                                  messageId: notification.messageId,
-                                )));
-                  },
-                  icon: Icon(Icons.attach_file),
-                  label: Text("Archivos"))
-              : SizedBox(
-                  width: 10,
-                ))
     ]);
   }
 
@@ -155,8 +153,6 @@ class _NMessagesListState extends State<NMessagesList> {
     message = message.length > 100 ? message.substring(0, 99) + "..." : message;
     return Container(
       decoration: BoxDecoration(
-        //    color: Colors.orange.withOpacity(0.05),
-        border: Border.all(width: 1, color: Colors.orange.withOpacity(0.2)),
         shape: BoxShape.rectangle,
         borderRadius: const BorderRadius.all(
           Radius.circular(10.0),
@@ -165,11 +161,7 @@ class _NMessagesListState extends State<NMessagesList> {
       width: double.infinity,
       margin: EdgeInsets.only(left: 15, right: 15, bottom: 15),
       padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
-      child: GestureDetector(
-          onTap: () {
-            showMessage(context, notification);
-          },
-          child: Text(message)),
+      child: Text(message),
     );
   }
 
@@ -247,5 +239,48 @@ class _NMessagesListState extends State<NMessagesList> {
         )
       ],
     ));
+  }
+
+  Widget _attachments(messageId) {
+    return OutlinedButton(
+        onPressed: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (BuildContext context) => AttachmentsScreen(
+                        messageId: messageId,
+                      )));
+        },
+        /* icon: Icon(
+          Icons.attach_file,
+          size: 20,
+        ),*/
+        child: Text(
+          "Ver Archivos adjuntos",
+          style: TextStyle(fontWeight: FontWeight.w400, fontSize: 12),
+        ));
+  }
+
+  Widget _attachment(messageId) {
+    return Container(
+        decoration: BoxDecoration(
+            color: AppColors.secondaryColor.withOpacity(0.2),
+            //border: Border.all(color: Colors.grey),
+            borderRadius: BorderRadius.all(Radius.circular(100))),
+        child: IconButton(
+          onPressed: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (BuildContext context) => AttachmentsScreen(
+                          messageId: messageId,
+                        )));
+          },
+          icon: Icon(Icons.attach_file, size: 25, color: Colors.black54),
+          /*   child: Text(
+          "Ver Archivos adjuntos",
+          style: TextStyle(fontWeight: FontWeight.w400, fontSize: 12),
+        )*/
+        ));
   }
 }

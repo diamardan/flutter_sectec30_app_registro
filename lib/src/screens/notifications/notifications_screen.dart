@@ -1,6 +1,7 @@
 import 'package:cetis32_app_registro/src/constants/constants.dart';
 import 'package:cetis32_app_registro/src/models/user_model.dart';
 import 'package:cetis32_app_registro/src/provider/user_provider.dart';
+import 'package:cetis32_app_registro/src/screens/incoming_screen.dart';
 import 'package:cetis32_app_registro/src/screens/notifications/list_access_widget.dart';
 import 'package:cetis32_app_registro/src/screens/notifications/list_all_widget.dart';
 import 'package:cetis32_app_registro/src/screens/notifications/list_messages_widget.dart';
@@ -20,7 +21,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
   Registration user;
 
   final RegistrationService registrationService = RegistrationService();
-  bool _downloadingAttachments = false;
+  // bool _downloadingAttachments = false;
   String downloadMessageId = "";
   double fontSize = 14;
   String selectedOrigin = "message";
@@ -40,26 +41,33 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: Text('Notificaciones'),
-          backgroundColor: Color(0XFFFFFFFF),
-          foregroundColor: Colors.black,
-          toolbarHeight: 100,
-          elevation: 0,
-        ),
-        body: Column(children: [
-          filters(),
-          SizedBox(
-            height: 20,
-          ),
-          Expanded(
-              child: Container(
-                  color: Color(0XFFEAEAEA), child: getNotificationList()))
-        ]));
+    return DefaultTabController(
+        length: 2,
+        child: Scaffold(
+            appBar: AppBar(
+              title: Text('Notificaciones'),
+              centerTitle: true,
+              bottom: TabBar(
+                //labelColor: Colors.white,
+                tabs: [
+                  Tab(
+                    icon: Icon(
+                      Icons.message_outlined,
+                    ),
+                    text: 'Mensajes',
+                  ),
+                  Tab(
+                      icon: Icon(
+                        Icons.account_box_outlined,
+                      ),
+                      text: 'Accesos'),
+                ],
+              ),
+            ),
+            body: TabBarView(children: [NMessagesList(), Container()])));
   }
 
-  Widget filters() {
+  /* Widget filters() {
     return Container(
         color: Colors.white,
         child: Row(
@@ -101,16 +109,6 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                     icon: Icon(Icons.ac_unit)))*/
           ],
         ));
-  }
+  }*/
 
-  getNotificationList() {
-    switch (selectedOrigin) {
-      case "message":
-        return NMessagesList();
-      case "access":
-        return AccessList();
-      default:
-        return AllList();
-    }
-  }
 }

@@ -1,141 +1,124 @@
 import 'package:cetis32_app_registro/src/constants/constants.dart';
+import 'package:cetis32_app_registro/src/screens/home/popup_menu_widget.dart';
+//import 'package:cetis32_app_registro/src/screens/home/popup_menu_widget.dart';
 import 'package:cetis32_app_registro/src/widgets/manu_button.dart';
 import 'package:cetis32_app_registro/src/widgets/whatsapp_help_btn.dart';
-import 'package:flutter/cupertino.dart';
 import "package:flutter/material.dart";
+import 'package:google_fonts/google_fonts.dart';
 
 class MenuView extends StatelessWidget {
+  const MenuView({Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("RUBEN DAVID DOMINGUEZ PEREZ"),
-          //       style: TextStyle(fontStyle: FontStyle.italic),
-          titleTextStyle: TextStyle(fontSize: 14),
+          toolbarHeight: 170,
+          title: _header(),
           centerTitle: true,
-          //toolbarHeight: 120,
+          actions: [popupMenu()],
         ),
         body: Stack(children: [
-          /* Container(
-              height: double.infinity,
+          Container(
+              height: MediaQuery.of(context).size.height,
               width: double.infinity,
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                      fit: BoxFit.fill,
-                      image: AssetImage('assets/img/fondo.jpg')))),*/
-          SingleChildScrollView(
-            child: Center(
-                child: Container(
-                    //width: 310,
-                    height: 900,
-                    width: MediaQuery.of(context).size.width * .9,
-                    // margin: EdgeInsets.symmetric(vertical: 40),
-                    decoration: BoxDecoration(
-                      //color: AppColors.morenaColor,
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                    ),
-                    child: Column(
-                      //mainAxisSize: MainAxisSize.min,
-
-                      // mainAxisAlignment: MainAxisAlignment.center,
-
-                      children: [
-                        //SizedBox(height: 15),
-                        Container(
-                            padding: EdgeInsets.symmetric(
-                                vertical: 15, horizontal: 20),
-                            decoration: BoxDecoration(
-                                color: Colors.grey.withOpacity(0.2),
-                                border: Border.all(
-                                  color: Colors.black54,
-                                )),
-                            child: Row(children: [
-                              Image.asset(
-                                'assets/img/logo-3.png',
-                                color: AppColors.morenaColor,
-                                width: 80,
-                              ),
-                              SizedBox(
-                                width: 20,
-                              ),
-                              Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "SISTEMA ESCOLAR",
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 15,
-                                          fontStyle: FontStyle.italic),
-                                    ),
-                                    Text(
-                                      "INTELIGENTE",
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 15,
-                                          fontStyle: FontStyle.italic),
-                                    ),
-                                  ]),
-                            ])),
-                        /*  Divider(
-                          thickness: 0.5,
-                          //  height: 30,
-                          color: AppColors.morenaColor.withOpacity(0.8),
-                        ),*/
-                        SizedBox(
-                          height: 20,
-                        ),
-                        MenuButton(
-                            title: "Accesos",
-                            iconData: Icons.account_box_outlined,
-                            route: "access"),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        MenuButton(
-                            title: "Asistencia",
-                            iconData: Icons.account_box_outlined,
-                            route: "access"),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        MenuButton(
-                            title: "Recompensas",
-                            iconData: Icons.star,
-                            route: "access"),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        MenuButton(
-                            title: "Notificaciones",
-                            iconData: Icons.circle_notifications_outlined,
-                            route: "notifications"),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        MenuButton(
-                            title: "Credencial Inteligente",
-                            iconData: Icons.ad_units_outlined,
-                            route: "credential"),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        MenuButton(
-                            title: "Mis dispositivos",
-                            iconData: Icons.phone_android_outlined,
-                            route: "my-devices"),
-
-                        /*  ConstrainedBox(
-                        constraints: BoxConstraints.tight(Size(150, 40)),
-                        child:*/
-                      ],
-                    ))),
-          ),
-          WhatsappHelpBtn(context: context)
+              color: Color(0XFFEFEFEF).withOpacity(0.7),
+              child: _body(context)),
+          //WhatsappHelpBtn(context: context)
 
           //
         ]));
+  }
+
+  _header() {
+    var headerFont = GoogleFonts.montserrat(
+        fontWeight: FontWeight.bold, color: Colors.white, fontSize: 14);
+    return Column(children: [
+      SizedBox(
+        height: 20,
+      ),
+      Image.asset(
+        'assets/img/logo-3.png',
+        color: Colors.white, //AppColors.morenaColor,
+        width: 70,
+      ),
+      SizedBox(
+        height: 15,
+      ),
+      Text(
+        "SISTEMA ESCOLAR INTELIGENTE",
+        textAlign: TextAlign.center,
+        style: headerFont,
+      )
+    ]);
+  }
+
+  Widget _body(BuildContext ctx) {
+    return SingleChildScrollView(
+      child: Center(
+          child: Container(
+              height: 600,
+              //    width: MediaQuery.of(context).size.width * .9,
+              decoration: BoxDecoration(
+                //color: AppColors.morenaColor,
+                borderRadius: BorderRadius.all(Radius.circular(10)),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+
+                // mainAxisAlignment: MainAxisAlignment.center,
+
+                children: [
+                  SizedBox(
+                    height: 20,
+                  ),
+                  MenuButton(
+                    title: "Accesos",
+                    subtitle: "Tus horas de entrada y salida al plantel.",
+                    iconData: Icons.account_box_outlined,
+                    route: "access",
+                    incoming: true,
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  MenuButton(
+                    title: "Asistencia",
+                    subtitle: "Tus horas de entrada y salida a clase. ",
+                    iconData: Icons.account_box_outlined,
+                    route: "access",
+                    incoming: true,
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  MenuButton(
+                      title: "Credencial Inteligente",
+                      subtitle: "Descarga tu credencial escolar.",
+                      iconData: Icons.ad_units_outlined,
+                      route: "credential"),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  /*   MenuButton(
+                      title: "Mis dispositivos",
+                      subtitle: "Revisa y registra tu acceso al plantel",
+                      iconData: Icons.phone_android_outlined,
+                      route: "my-devices"),
+                  SizedBox(
+                    height: 10,
+                  ),*/
+                  MenuButton(
+                    title: "Recompensas",
+                    subtitle: "Premisos a la puntualidad y otros.",
+                    iconData: Icons.star,
+                    route: "access",
+                    incoming: true,
+                  ),
+                ],
+              ))),
+    );
   }
 }

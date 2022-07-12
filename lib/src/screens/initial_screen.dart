@@ -1,4 +1,3 @@
-import 'dart:io' show Platform;
 import 'dart:io';
 import 'package:cetis32_app_registro/src/screens/login/login_options_screen.dart';
 import 'package:dio/adapter.dart';
