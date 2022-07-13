@@ -192,8 +192,8 @@ class _LoginOptionsScreenState extends State<LoginOptionsScreen> {
             height: 5,
           ),
           Container(
-            width: 240,
-            height: 45,
+            width: 280,
+            height: 50,
             child: ElevatedButton.icon(
               style: OutlinedButton.styleFrom(
                 backgroundColor: Colors.white,
@@ -215,8 +215,8 @@ class _LoginOptionsScreenState extends State<LoginOptionsScreen> {
             height: 10,
           ),
           Container(
-              width: 240,
-              height: 45,
+              width: 280,
+              height: 50,
               child: ElevatedButton.icon(
                 style: OutlinedButton.styleFrom(
                   backgroundColor: Colors.white,
@@ -238,8 +238,8 @@ class _LoginOptionsScreenState extends State<LoginOptionsScreen> {
             height: 10,
           ),
           Container(
-              width: 240,
-              height: 45,
+              width: 280,
+              height: 50,
               child: ElevatedButton.icon(
                 style: OutlinedButton.styleFrom(
                   backgroundColor: Colors.white,
@@ -260,7 +260,7 @@ class _LoginOptionsScreenState extends State<LoginOptionsScreen> {
                 },
               )),
           SizedBox(
-            height: 30,
+            height: 70,
           ),
           _botonRegistro(context)
         ]));

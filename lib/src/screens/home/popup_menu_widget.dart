@@ -19,6 +19,7 @@ popupMenu() {
         ),
         itemBuilder: (BuildContext context2) => [
           _settingsItem(context2),
+          _profileItem(context2),
           _myDevicesItem(context2),
           _whatsapp(context2),
           _logoutItem(context2),
@@ -39,6 +40,24 @@ PopupMenuItem _settingsItem(BuildContext ctx) {
           color: Colors.black,
         ),
         Text("  Configuración"),
+      ],
+    ),
+  );
+}
+
+PopupMenuItem _profileItem(BuildContext ctx) {
+  return PopupMenuItem(
+    onTap: () {
+      Future.delayed(
+          Duration(seconds: 0), () => Navigator.pushNamed(ctx, "profile"));
+    },
+    child: Row(
+      children: [
+        Icon(
+          Icons.account_box_rounded,
+          color: Colors.black,
+        ),
+        Text("  Perfil"),
       ],
     ),
   );
@@ -68,8 +87,8 @@ PopupMenuItem _logoutItem(BuildContext ctx) {
       Future.delayed(Duration(seconds: 0), () async {
         bool res = await showLogoutDialog(ctx, "main");
         if (res) {
-          //   await SignInController().cleanAuthenticationData(ctx);
-          //  AuthenticationService().signOut();
+          await SignInController().cleanAuthenticationData(ctx);
+          AuthenticationService().signOut();
         }
       });
     },

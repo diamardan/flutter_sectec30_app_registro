@@ -42,7 +42,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-        length: 2,
+        length: 3,
         child: Scaffold(
             appBar: AppBar(
               title: Text('Notificaciones'),
@@ -61,10 +61,16 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                         Icons.account_box_outlined,
                       ),
                       text: 'Accesos'),
+                  Tab(
+                      icon: Icon(
+                        Icons.account_box_outlined,
+                      ),
+                      text: 'Asistencias'),
                 ],
               ),
             ),
-            body: TabBarView(children: [NMessagesList(), Container()])));
+            body: TabBarView(
+                children: [NMessagesList(), Container(), Container()])));
   }
 
   /* Widget filters() {

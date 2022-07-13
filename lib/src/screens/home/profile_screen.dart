@@ -6,14 +6,14 @@ import 'package:cetis32_app_registro/src/utils/auth_sign_psw.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class MyDataView extends StatefulWidget {
-  MyDataView({Key key}) : super(key: key);
+class ProfileScreen extends StatefulWidget {
+  ProfileScreen({Key key}) : super(key: key);
 
   @override
-  _MyDataViewState createState() => _MyDataViewState();
+  _ProfileScreenState createState() => _ProfileScreenState();
 }
 
-class _MyDataViewState extends State<MyDataView> {
+class _ProfileScreenState extends State<ProfileScreen> {
   UserProvider userProvider;
 
   Registration user;

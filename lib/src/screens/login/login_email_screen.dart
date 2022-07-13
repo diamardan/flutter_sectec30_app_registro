@@ -147,7 +147,7 @@ class _LoginEmailScreenState extends State<LoginEmailScreen> {
               style: ElevatedButton.styleFrom(
                   elevation: 0,
                   fixedSize: Size(200, 45),
-                  primary: AppColors.morenaLightColor,
+                  primary: AppColors.morenaColor,
                   padding: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
                   textStyle:
                       TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),

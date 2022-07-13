@@ -33,7 +33,7 @@ class _AccessesScreenState extends State<AccessesScreen> {
                     icon: Icon(
                       Icons.clear_rounded,
                     ),
-                    text: 'Torniquete',
+                    text: 'Torniquetes',
                   ),
                   Tab(icon: Icon(Icons.location_pin), text: 'Geolocalización'),
                 ],
@@ -45,8 +45,9 @@ class _AccessesScreenState extends State<AccessesScreen> {
               height: 70,
               child: FloatingActionButton.extended(
                   backgroundColor: AppColors.morenaColor,
-                  onPressed: () =>
-                      Navigator.pushNamed(context, "register-access"),
+                  onPressed: null,
+                  /* () =>
+                      Navigator.pushNamed(context, "register-access"),*/
                   icon: Icon(
                     Icons.check_box_rounded,
                     size: 35,

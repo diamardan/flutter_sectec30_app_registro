@@ -7,8 +7,7 @@ import 'package:cetis32_app_registro/src/provider/supscritions_provider.dart';
 import 'package:cetis32_app_registro/src/provider/user_provider.dart';
 import 'package:cetis32_app_registro/src/res/notifications.dart';
 import 'package:cetis32_app_registro/src/screens/home/menu_view.dart';
-import 'package:cetis32_app_registro/src/screens/home/my_data_view.dart';
-import 'package:cetis32_app_registro/src/screens/my_devices/my_devices_screen.dart';
+import 'package:cetis32_app_registro/src/screens/home/news_view.dart';
 import 'package:cetis32_app_registro/src/screens/notifications/notifications_screen.dart';
 import 'package:cetis32_app_registro/src/services/AuthenticationService.dart';
 import 'package:cetis32_app_registro/src/services/MessagingService.dart';
@@ -170,13 +169,7 @@ class _homeScreenState extends State<HomeScreen> with DisposableWidget {
             child: Scaffold(
               body: IndexedStack(
                 index: _viewIndex,
-                children: [
-                  MenuView(),
-                  NotificationsScreen(),
-                  MyDataView(
-                    key: Key("profile"),
-                  )
-                ],
+                children: [MenuView(), NotificationsScreen(), NewsView()],
               ),
               bottomNavigationBar: _bottomNavBar(),
             )));
@@ -200,10 +193,10 @@ class _homeScreenState extends State<HomeScreen> with DisposableWidget {
             label: "Notificaciones"),
         BottomNavigationBarItem(
             icon: Icon(
-              Icons.account_box_rounded,
+              Icons.newspaper_rounded,
               size: iconSize,
             ),
-            label: "Mi Perfil"),
+            label: "Noticias"),
       ],
       currentIndex: _viewIndex,
       selectedItemColor: AppColors.morenaLightColor,

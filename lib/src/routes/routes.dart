@@ -3,6 +3,7 @@ import 'package:cetis32_app_registro/src/screens/access/access_screen.dart';
 import 'package:cetis32_app_registro/src/screens/access/register_access.dart';
 import 'package:cetis32_app_registro/src/screens/credential/digital_credential_screen.dart';
 import 'package:cetis32_app_registro/src/screens/home/home_screen.dart';
+import 'package:cetis32_app_registro/src/screens/home/profile_screen.dart';
 import 'package:cetis32_app_registro/src/screens/incoming_screen.dart';
 import 'package:cetis32_app_registro/src/screens/initial_screen.dart';
 import 'package:cetis32_app_registro/src/screens/login/wrapper_auth.dart';
@@ -31,6 +32,7 @@ Map<String, WidgetBuilder> getApplicationRoutes(BuildContext context) {
     'register-access': (BuildContext context) => RegisterAccess(),
     'settings': (BuildContext context) => SettingsScreen(),
     'incoming': (BuildContext context) => IncomingScreen(),
+    'profile': (BuildContext context) => ProfileScreen(),
 
     //'verCredencialDigital': (BuildContext context) => DigitalCredentialScreen(),
   };

@@ -76,7 +76,6 @@ class MenuView extends StatelessWidget {
                     subtitle: "Tus horas de entrada y salida al plantel.",
                     iconData: Icons.account_box_outlined,
                     route: "access",
-                    incoming: true,
                   ),
                   SizedBox(
                     height: 10,
@@ -102,17 +101,9 @@ class MenuView extends StatelessWidget {
                   SizedBox(
                     height: 10,
                   ),
-                  /*   MenuButton(
-                      title: "Mis dispositivos",
-                      subtitle: "Revisa y registra tu acceso al plantel",
-                      iconData: Icons.phone_android_outlined,
-                      route: "my-devices"),
-                  SizedBox(
-                    height: 10,
-                  ),*/
                   MenuButton(
                     title: "Recompensas",
-                    subtitle: "Premisos a la puntualidad y otros.",
+                    subtitle: "Premios a la puntualidad y mas.",
                     iconData: Icons.star,
                     route: "access",
                     incoming: true,
