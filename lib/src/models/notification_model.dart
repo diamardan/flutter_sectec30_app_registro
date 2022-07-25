@@ -1,3 +1,5 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
+
 class Notification {
   String serverMessageId;
   String title;
@@ -39,6 +41,22 @@ class Notification {
       messageId: json["message_id"],
       haveAttachments: json["have_attachments"],
     );
+  }
+
+  factory Notification.fromRemoteMessage(RemoteMessage message) {
+    return Notification(
+        serverMessageId: message.messageId,
+        title: message.notification.title,
+        message: message.notification.body,
+        receivedDate: DateTime.now(),
+        sentDate: message.sentTime,
+        origin: message.data["origin"],
+        senderName: message.data["sender"],
+        messageId: message.data["messageId"],
+        haveAttachments:
+            message.data["haveAttachments"] == "yes" ? true : false,
+        inputMode: "background",
+        read: false);
   }
 
   Map<String, dynamic> toJson() {

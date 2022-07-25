@@ -1,8 +1,8 @@
 import 'dart:math';
 
 import 'package:cetis32_app_registro/src/models/user_model.dart';
-import 'package:cetis32_app_registro/src/services/AuthenticationService.dart';
-import 'package:cetis32_app_registro/src/services/RegistrationService.dart';
+import 'package:cetis32_app_registro/src/data/AuthenticationService.dart';
+import 'package:cetis32_app_registro/src/data/RegistrationService.dart';
 import 'package:cetis32_app_registro/src/utils/enums.dart';
 
 class AuthSign {

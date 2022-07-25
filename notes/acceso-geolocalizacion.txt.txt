@@ -1,0 +1,31 @@
+
+----- Pautas para versión iOS -----
+
+Tenemos un requisito mínimo de iOS 9.0.
+
+En su Info.plistnecesitará agregar las siguientes claves:
+
+NSLocationWhenInUseUsageDescription
+NSUbicaciónAlwaysAndWhenInUseUsageDescription
+Nota:
+Si usa iOS 14 y versiones posteriores, debe agregar lo siguiente a su Info.plist 
+para registrar el puerto del observatorio con mDNS.
+
+<key>NSBonjourServices</key>
+<array>
+    <string>_dartobservatory._tcp</string>
+</array>
+Para depuración (reinicio en caliente) o actualizaciones de ubicación de fondo de fondo
+Para evitar que su aplicación se bloquee cuando reinicia su aplicación en caliente, 
+debe habilitar las capacidades en segundo plano. 
+Si necesita estas funcionalidades en producción, deberá explicarle a Apple por qué necesita
+ capacidades en segundo plano; de lo contrario, su aplicación será rechazada de la tienda de
+ aplicaciones. Lo siguiente agregará capacidades en segundo plano a su aplicación.
+
+<key>NSLocationAlwaysUsageDescription</key>
+<string>I want to get your location Information in background</string>
+
+<key>UIBackgroundModes</key>
+<array>
+    <string>location</string>
+</array>
