@@ -1,4 +1,4 @@
-package mx.com.infon.cetis32_app_registro
+package com.identaflix.cetis32_app_registro
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.android.SplashScreen
 import android.content.BroadcastReceiver

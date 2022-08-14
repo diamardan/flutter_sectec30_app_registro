@@ -1,39 +1,31 @@
 {
-  "project_info": {
-    "project_number": "1015698783853",
-    "project_id": "smart-school-39135",
-    "storage_bucket": "smart-school-39135.appspot.com"
-  },
-  "client": [
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:1015698783853:android:a976f7bc39f8632924c964",
-        "android_client_info": {
-          "package_name": "mx.com.infon.cetis32_app_registro"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "1015698783853-acugnmf3ack93amsq5tjbcvr1b0012dv.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyBDJOO0z9m85TP3ljfdJTQxbJUwVc0CnOU"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "1015698783853-acugnmf3ack93amsq5tjbcvr1b0012dv.apps.googleusercontent.com",
-              "client_type": 3
+    "project_info": {
+        "project_number": "1015698783853",
+        "project_id": "smart-school-39135",
+        "storage_bucket": "smart-school-39135.appspot.com"
+    },
+    "client": [{
+        "client_info": {
+            "mobilesdk_app_id": "1:1015698783853:android:a976f7bc39f8632924c964",
+            "android_client_info": {
+                "package_name": "com.identaflix.cetis32_app_registro"
             }
-          ]
+        },
+        "oauth_client": [{
+            "client_id": "1015698783853-acugnmf3ack93amsq5tjbcvr1b0012dv.apps.googleusercontent.com",
+            "client_type": 3
+        }],
+        "api_key": [{
+            "current_key": "AIzaSyBDJOO0z9m85TP3ljfdJTQxbJUwVc0CnOU"
+        }],
+        "services": {
+            "appinvite_service": {
+                "other_platform_oauth_client": [{
+                    "client_id": "1015698783853-acugnmf3ack93amsq5tjbcvr1b0012dv.apps.googleusercontent.com",
+                    "client_type": 3
+                }]
+            }
         }
-      }
-    }
-  ],
-  "configuration_version": "1"
+    }],
+    "configuration_version": "1"
 }
