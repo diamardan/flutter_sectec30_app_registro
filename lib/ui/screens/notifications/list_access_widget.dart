@@ -43,8 +43,8 @@ class _AccessListState extends State<AccessList> {
       //footer: SliverToBoxAdapter(child: Text('FOOTER')),
 
       itemBuilderType: PaginateBuilderType.listView, //Change types accordingly
-      itemBuilder: (index, context, documentSnapshot) {
-        final data = documentSnapshot.data() as Map;
+      itemBuilder: (context, documentSnapshot, index) {
+        final data = documentSnapshot[index].data() as Map;
         n.Notification notification = n.Notification.fromJson(data);
         return _notification(notification);
       },

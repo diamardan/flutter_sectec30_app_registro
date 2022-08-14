@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cetis32_app_registro/src/data/PaymentsService.dart';
 //credit card
 import 'package:flutter_credit_card/flutter_credit_card.dart';
-import 'package:flutter_openpay/flutter_openpay.dart';
+//import 'package:flutter_openpay/flutter_openpay.dart';
 
 //end credit card
 class PaymentForm extends StatefulWidget {
@@ -42,7 +42,7 @@ class _PaymentFormState extends State<PaymentForm> {
         Map<String, dynamic> result;
         List<String> expiry = expiryDate.split('/');
         print("estoy recibiendo el card number: $_number");
-        token = await FlutterOpenpay.tokenizeCard(
+        /* token = await FlutterOpenpay.tokenizeCard(
           cardholderName: _name,
           cardNumber: _number.replaceAll(new RegExp(r"\s+"), ""),
           cvv: _cvc,
@@ -51,7 +51,7 @@ class _PaymentFormState extends State<PaymentForm> {
           publicApiKey: 'pk_6f4a5e3d039f4c2d97f3458401b973f7',
           merchantId: 'mgq9hsebo1sbdtf1ifpz',
           productionMode: false,
-        );
+        ); */
 
         String amount = "150.0";
         String description = "pago del alumno DIMD890715ss";
@@ -78,7 +78,7 @@ class _PaymentFormState extends State<PaymentForm> {
   Future<String> requestDeviceSessionId() async {
     String deviceSessionId;
     try {
-      deviceSessionId = await FlutterOpenpay.getDeviceSessionId(
+      /* deviceSessionId = await FlutterOpenpay.getDeviceSessionId(
         publicApiKey: 'pk_6f4a5e3d039f4c2d97f3458401b973f7',
         merchantId: 'mgq9hsebo1sbdtf1ifpz',
         productionMode: false,
@@ -86,7 +86,7 @@ class _PaymentFormState extends State<PaymentForm> {
       setState(() {
         _deviceSessionId = deviceSessionId;
       });
-      return deviceSessionId;
+      return deviceSessionId; */
     } catch (e) {
       print(e.toString());
       deviceSessionId = "Unable to tokenize card";

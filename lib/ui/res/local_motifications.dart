@@ -16,7 +16,7 @@ class LocalNotificationsService {
   AndroidNotificationChannel _channel = const AndroidNotificationChannel(
     'school_notifications', // id
     'Notificaciones escolares', // title
-    'Este canal es utilizado para  recibir notificaciones escolares .', // description
+    /* 'Este canal es utilizado para  recibir notificaciones escolares .', // description */
     importance: Importance.high,
   );
 
@@ -62,8 +62,8 @@ class LocalNotificationsService {
       title,
       body,
       NotificationDetails(
-          android: AndroidNotificationDetails(
-              _channel.id, _channel.name, _channel.description,
+          android: AndroidNotificationDetails(_channel.id, _channel.name,
+              /* _channel.description, */
               icon: "@mipmap/launch"
               // other properties...
               )), /* payload: "go-to-notification"*/

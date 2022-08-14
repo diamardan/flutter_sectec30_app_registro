@@ -76,7 +76,7 @@ class DeviceProvider {
       DeviceInfoPlugin deviceInfo) async {
     var androidDeviceInfo = await deviceInfo.androidInfo;
     return {
-      "id": androidDeviceInfo.androidId,
+      "id": androidDeviceInfo.id,
       "brand": androidDeviceInfo.brand,
       "model": androidDeviceInfo.model,
       "os": "android",

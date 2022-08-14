@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cetis32_app_registro/src/constants/constants.dart';
-import 'package:cetis32_app_registro/ui/screens/pago/payment_form.dart';
+//import 'package:cetis32_app_registro/ui/screens/pago/payment_form.dart';
 
 import '../../res/colors.dart';
 
@@ -93,8 +93,8 @@ class _PaymentPageState extends State<PaymentPage> {
     return MaterialButton(
       padding: EdgeInsets.all(0),
       onPressed: () {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => PaymentForm()));
+        /* Navigator.push(
+            context, MaterialPageRoute(builder: (context) => PaymentForm())); */
       },
       child: Container(
         height: 160,

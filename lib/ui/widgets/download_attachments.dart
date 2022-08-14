@@ -118,8 +118,7 @@ class _DownloadAttchmentsState extends State<DownloadAttchments> {
   }
 
   Future<void> _showNotification(Map<String, dynamic> downloadStatus) async {
-    final android = AndroidNotificationDetails(
-        'channel id', 'channel name', 'channel description',
+    final android = AndroidNotificationDetails('channel id', 'channel name',
         priority: Priority.high, importance: Importance.max);
     final iOS = IOSNotificationDetails();
     final platform = NotificationDetails(android: android, iOS: iOS);
