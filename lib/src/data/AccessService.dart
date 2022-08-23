@@ -8,7 +8,7 @@ import 'package:http/http.dart' as http;
 
 class AccessService {
   getAll() async {
-    String endpoint = AppConstants.backendUrl + '/accesos/getAll';
+    String endpoint = AppConstants.backendUrl + '/cetis32/accesos/getAll';
     var uri = Uri.parse(endpoint);
     Map<String, String> headers = {
       "Content-type": "application/json; charset=UTF-8"

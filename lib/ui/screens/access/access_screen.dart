@@ -21,27 +21,26 @@ class _AccessesScreenState extends State<AccessesScreen> {
     return DefaultTabController(
         length: 2,
         child: Scaffold(
-            appBar: AppBar(
-              title: Text('Accesos'),
-              centerTitle: true,
-              //  backgroundColor: Colors.green,
-              // foregroundColor: Colors.white,
-              bottom: TabBar(
-                //labelColor: Colors.white,
-                tabs: [
-                  Tab(
-                    icon: Icon(
-                      Icons.clear_rounded,
-                    ),
-                    text: 'Torniquetes',
+          appBar: AppBar(
+            title: Text('Accesos'),
+            centerTitle: true,
+            //  backgroundColor: Colors.green,
+            // foregroundColor: Colors.white,
+            bottom: TabBar(
+              //labelColor: Colors.white,
+              tabs: [
+                Tab(
+                  icon: Icon(
+                    Icons.clear_rounded,
                   ),
-                  Tab(icon: Icon(Icons.location_pin), text: 'Geolocalización'),
-                ],
-              ),
+                  text: 'Torniquetes',
+                ),
+                Tab(icon: Icon(Icons.location_pin), text: 'Geolocalización'),
+              ],
             ),
-            body:
-                SafeArea(child: TabBarView(children: [Calendar(), Calendar()])),
-            floatingActionButton: Container(
+          ),
+          body: SafeArea(child: TabBarView(children: [Calendar(), Calendar()])),
+          /* floatingActionButton: Container(
               height: 70,
               child: FloatingActionButton.extended(
                   backgroundColor: AppColors.morenaColor,
@@ -53,7 +52,8 @@ class _AccessesScreenState extends State<AccessesScreen> {
                     size: 35,
                   ),
                   label: Text("Registrar \nAcceso")),
-            )));
+            ) */
+        ));
     //);
   }
 }
