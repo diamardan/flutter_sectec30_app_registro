@@ -70,101 +70,115 @@ class _NMessagesListState extends State<NMessagesList> {
       //footer: SliverToBoxAdapter(child: Text('FOOTER')),
 
       itemBuilderType: PaginateBuilderType.listView, //Change types accordingly
-      itemBuilder: (context, documentSnapshot, index) {
-        final data = documentSnapshot[index].data() as Map;
+      itemBuilder: (index, context, documentSnapshot) {
+        final data = documentSnapshot.data() as Map;
         n.Notification notification = n.Notification.fromJson(data);
-        return _notification(notification);
+        return _notificationBox(notification);
       },
       query: query.orderBy("sent_date", descending: true),
       isLive: true,
     );
   }
 
-  _notification(n.Notification notification) {
-    return GestureDetector(
-        onTap: () {
-          showMessage(context, notification);
-        },
-        child: Column(children: [
-          Container(height: 20, color: Colors.white //grey.withOpacity(0.3),
-              ),
-          Container(
-            decoration: BoxDecoration(
-                color: Colors.white,
-                /*border: Border.all(
-              color: Colors.,
-            ),*/
-                borderRadius: BorderRadius.all(Radius.circular(30))),
-            child: Column(
-              children: [
-                _header(notification),
-                _body(notification),
-                Divider(
-                  thickness: 1.5,
-                  height: 5,
-                  color: Colors.grey,
-                ),
-              ],
-            ),
+  _notificationBox(n.Notification notification) {
+    return TextButton(
+      onPressed: () {
+        showMessage(context, notification);
+      },
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _header(notification),
+          _body(notification),
+          Divider(
+            thickness: 1.5,
+            height: 5,
+            //  color: Colors.red,
           ),
-        ]));
+        ],
+      ),
+    );
   }
 
   _header(n.Notification notification) {
     var dateTime =
         DateFormat("dd-MM-y HH:mm").format(notification.receivedDate);
 
-    return Row(children: [
-      Expanded(
-          child: Container(
-              margin: EdgeInsets.only(left: 10, top: 10, right: 10),
-              decoration: BoxDecoration(
-                //  color: Colors.orange.shade50,
-                //  border: Border.all(width: 0.5, color: Color(0XFFABABAB)),
-                shape: BoxShape.rectangle,
-                borderRadius: const BorderRadius.all(
-                  Radius.circular(5.0),
-                ),
-              ),
-              child: ListTile(
-                  dense: true,
-                  leading: CircleAvatar(
-                      child: Icon(Icons.message_outlined,
-                          size: 35, color: AppColors.morenaColor),
-                      backgroundColor: Colors.white),
-                  title: notification.title == null
-                      ? Text('No disponible')
-                      : Text(
-                          notification.title,
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                  trailing: notification.haveAttachments
-                      ? _attachment(notification.messageId)
-                      : Container(
-                          width: 10,
-                        ),
-                  subtitle: Text(
-                    dateTime,
-                    style: TextStyle(fontSize: 12),
-                  )))),
-    ]);
+    return ListTile(
+      //  dense: true,
+      leading: CircleAvatar(
+          child: Icon(Icons.message_outlined,
+              size: 35, color: AppColors.morenaColor),
+          backgroundColor: Colors.white),
+      title: notification.title == null
+          ? Text('No disponible')
+          : Text(
+              notification.title,
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+      subtitle: Text(
+        dateTime,
+        style: TextStyle(fontSize: 12),
+      ),
+      trailing: notification.haveAttachments
+          ? _attachment(notification.messageId)
+          : Container(
+              width: 10,
+            ),
+    );
   }
 
   _body(n.Notification notification) {
-    var message = notification.message;
-    message = message.length > 100 ? message.substring(0, 99) + "..." : message;
-    return Container(
-      decoration: BoxDecoration(
-        shape: BoxShape.rectangle,
-        borderRadius: const BorderRadius.all(
-          Radius.circular(10.0),
+    var _message = notification.message;
+
+    return Padding(
+        padding: EdgeInsets.only(left: 15, right: 15, bottom: 15),
+        child: Text(
+          _message,
+          textAlign: TextAlign.left,
+          maxLines: 4,
+          style: TextStyle(color: Colors.black54),
+        ));
+  }
+
+  message(String title, String body) {
+    return SingleChildScrollView(
+        child: Column(
+      children: [
+        Text(
+          title,
+          style: TextStyle(fontWeight: FontWeight.w600, fontSize: fontSize),
         ),
-      ),
-      width: double.infinity,
-      margin: EdgeInsets.only(left: 15, right: 15, bottom: 15),
-      padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
-      child: Text(message),
-    );
+        SizedBox(
+          height: 12,
+        ),
+        Text(
+          body,
+          style: TextStyle(fontSize: fontSize),
+        )
+      ],
+    ));
+  }
+
+  Widget _attachment(messageId) {
+    return Container(
+        decoration: BoxDecoration(
+            color: AppColors.secondaryColor.withOpacity(0.1),
+            //border: Border.all(color: Colors.grey),
+            borderRadius: BorderRadius.all(Radius.circular(20))),
+        child: IconButton(
+          onPressed: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (BuildContext context) => AttachmentsScreen(
+                          messageId: messageId,
+                        )));
+          },
+          icon: Icon(Icons.attach_file, size: 25, color: Colors.black54),
+        ));
   }
 
   Future<void> showMessage(BuildContext context, n.Notification notification) {
@@ -222,67 +236,5 @@ class _NMessagesListState extends State<NMessagesList> {
         });
       },
     );
-  }
-
-  message(String title, String body) {
-    return SingleChildScrollView(
-        child: Column(
-      children: [
-        Text(
-          title,
-          style: TextStyle(fontWeight: FontWeight.w600, fontSize: fontSize),
-        ),
-        SizedBox(
-          height: 12,
-        ),
-        Text(
-          body,
-          style: TextStyle(fontSize: fontSize),
-        )
-      ],
-    ));
-  }
-
-  Widget _attachments(messageId) {
-    return OutlinedButton(
-        onPressed: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (BuildContext context) => AttachmentsScreen(
-                        messageId: messageId,
-                      )));
-        },
-        /* icon: Icon(
-          Icons.attach_file,
-          size: 20,
-        ),*/
-        child: Text(
-          "Ver Archivos adjuntos",
-          style: TextStyle(fontWeight: FontWeight.w400, fontSize: 12),
-        ));
-  }
-
-  Widget _attachment(messageId) {
-    return Container(
-        decoration: BoxDecoration(
-            color: AppColors.secondaryColor.withOpacity(0.2),
-            //border: Border.all(color: Colors.grey),
-            borderRadius: BorderRadius.all(Radius.circular(100))),
-        child: IconButton(
-          onPressed: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (BuildContext context) => AttachmentsScreen(
-                          messageId: messageId,
-                        )));
-          },
-          icon: Icon(Icons.attach_file, size: 25, color: Colors.black54),
-          /*   child: Text(
-          "Ver Archivos adjuntos",
-          style: TextStyle(fontWeight: FontWeight.w400, fontSize: 12),
-        )*/
-        ));
   }
 }
