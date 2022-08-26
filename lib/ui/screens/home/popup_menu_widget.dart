@@ -10,22 +10,22 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../../src/data/AuthenticationService.dart';
 
 popupMenu() {
-  return Align(
-      alignment: Alignment.topLeft,
-      child: PopupMenuButton(
-        //color: Colors.white,
-        icon: Icon(
-          Icons.more_vert_rounded,
-          color: Colors.white,
-        ),
-        itemBuilder: (BuildContext context2) => [
-          _settingsItem(context2),
-          _profileItem(context2),
-          _myDevicesItem(context2),
-          _whatsapp(context2),
-          _logoutItem(context2),
-        ],
-      ));
+  return PopupMenuButton(
+    //color: Colors.white,
+
+    icon: Icon(
+      Icons.more_vert_rounded,
+      color: Colors.white,
+      size: 30,
+    ),
+    itemBuilder: (BuildContext context2) => [
+      //  _settingsItem(context2),
+      // _profileItem(context2),
+      _myDevicesItem(context2),
+      //  _whatsapp(context2),
+      _logoutItem(context2),
+    ],
+  );
 }
 
 PopupMenuItem _settingsItem(BuildContext ctx) {

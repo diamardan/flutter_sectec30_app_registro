@@ -64,66 +64,51 @@ class _RecoveryPasswordScreenState extends State<RecoveryPasswordScreen> {
     return SafeArea(
         child: Scaffold(
       //resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black87,
-        title: Text("RESTABLECER CONTRASEÑA"),
-        titleTextStyle: TextStyle(fontSize: 14, color: Colors.black87),
-      ),
-      body: SingleChildScrollView(
-          child: Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height -
-                  MediaQuery.of(context).padding.top -
-                  kToolbarHeight,
-              //decoration: BoxDecoration(color: Color(0Xcdcdcdff)),
-              child: Center(
-                  child: ModalProgressHUD(
-                      inAsyncCall: loading,
-                      child: SingleChildScrollView(
-                        child: Center(
-                          child: _content(),
-                        ),
-                      ))))),
+
+      body: Center(
+          child: ModalProgressHUD(
+              inAsyncCall: loading,
+              child: SingleChildScrollView(
+                child: Center(
+                  child: _content(context),
+                ),
+              ))),
     ));
   }
 
-  _content() {
+  _content(BuildContext ctx) {
     return (Container(
-        padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-        width: 320,
-        height: 500,
+        padding: EdgeInsets.symmetric(
+            vertical: 20, horizontal: MediaQuery.of(context).size.width * .12),
+        height: 540,
         child: Column(
           mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SizedBox(
-              height: 10,
-            ),
-            Icon(
-              Icons.email_outlined,
-              size: 70,
-              color: Color(0XFFACACAC),
+            Image.asset(
+              'assets/img/logo-3.png',
+              color: AppColors.primary,
+              width: 100,
             ),
             SizedBox(
-              height: 20,
+              height: 50,
+            ),
+            Text("Recupera tu Contraseña",
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.headline2),
+            SizedBox(
+              height: 40,
             ),
             _form(),
             SizedBox(
               height: 20,
             ),
             showSignInButton == true
-                ? OutlinedButton(
+                ? ElevatedButton(
                     onPressed: () {
                       Navigator.pop(context);
                     },
                     child: Text("INICIAR SESIÓN"),
-                    style: ElevatedButton.styleFrom(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 25, vertical: 15),
-                        textStyle: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.morenaLightColor)),
                   )
                 : Container(),
           ],
@@ -137,44 +122,34 @@ class _RecoveryPasswordScreenState extends State<RecoveryPasswordScreen> {
           Text(
             "Introduce tu correo electrónico:",
             textAlign: TextAlign.center,
-            style: TextStyle(
-                fontWeight: FontWeight.w400,
-                color: Colors.black87,
-                fontSize: 16),
           ),
           SizedBox(
             height: 10,
           ),
           _emailTextField(),
           SizedBox(
-            height: 30,
-          ),
-          ElevatedButton(
-            onPressed: _email != ""
-                ? () async {
-                    _recovery();
-                  }
-                : null,
-            child: Text(
-              "  ENVIAR CORREO  ",
-              textAlign: TextAlign.center,
-            ),
-            style: ElevatedButton.styleFrom(
-                primary: AppColors.morenaLightColor.withOpacity(0.9),
-                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                textStyle:
-                    TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
-          ),
-          SizedBox(
-            height: 20,
+            height: 0,
           ),
           Text(
-            "Te enviaremos un correo electrónico con un enlace para restablecer tu contraseña.",
+            "Te enviaremos un correo electrónico con  tu contraseña.",
             textAlign: TextAlign.center,
-            style: TextStyle(
-                fontSize: 13,
-                fontStyle: FontStyle.italic,
-                color: AppColors.textFieldLabel),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Container(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () async {
+                  _recovery();
+                },
+                child: Text(
+                  "  Enviar correo  ",
+                  //textAlign: TextAlign.center,
+                ),
+              )),
+          SizedBox(
+            height: 20,
           ),
         ]));
   }
@@ -186,18 +161,7 @@ class _RecoveryPasswordScreenState extends State<RecoveryPasswordScreen> {
           keyboardType: TextInputType.emailAddress,
           decoration: InputDecoration(
               //contentPadding: const EdgeInsets.all(8.0),
-              focusedBorder: OutlineInputBorder(
-                borderSide: const BorderSide(
-                    color: AppColors.morenaLightColor, width: 2.0),
-                borderRadius: BorderRadius.circular(20.0),
-              ),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(20.0),
-              ),
-              filled: true,
-              fillColor: Colors.white,
-              contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 1),
-              hintText: "",
+
               counter: Offstage()),
           validator: (value) {
             var error = ValidatorsLumen().validateEmail(value);

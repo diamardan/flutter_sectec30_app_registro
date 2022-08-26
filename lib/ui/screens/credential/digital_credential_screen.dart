@@ -63,6 +63,7 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Credencial inteligente"),
+        centerTitle: true,
       ),
       floatingActionButton: Visibility(
         visible: visibleButton == true ? true : false,

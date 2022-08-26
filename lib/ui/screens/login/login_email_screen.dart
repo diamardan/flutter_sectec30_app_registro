@@ -3,9 +3,9 @@ import 'package:cetis32_app_registro/ui/screens/login/recovery_screen.dart';
 import 'package:cetis32_app_registro/ui/screens/login/request_password.dart';
 import 'package:cetis32_app_registro/ui/res/notify_ui.dart';
 import 'package:cetis32_app_registro/src/utils/validator.dart';
+import 'package:cetis32_app_registro/ui/widgets/loading.dart';
 import 'package:flutter/material.dart';
-import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
-
+import 'package:google_fonts/google_fonts.dart';
 import '../../res/colors.dart';
 
 class LoginEmailScreen extends StatefulWidget {
@@ -55,7 +55,7 @@ class _LoginEmailScreenState extends State<LoginEmailScreen> {
       } else {
         setLoading(false);
         await NotifyUI.showError(
-            context, "Estatus de inicio de sesión", response["message"]);
+            context, "Error de inicio de sesión", response["message"]);
       }
     } catch (e) {
       print("error");
@@ -68,72 +68,84 @@ class _LoginEmailScreenState extends State<LoginEmailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-        child: Scaffold(
-            appBar: AppBar(
-              backgroundColor: Colors.white,
-              foregroundColor: Colors.black87,
-              elevation: 1.0,
-              title: Text(
-                "INICIAR SESIÓN",
-                textAlign: TextAlign.center,
-                style: TextStyle(fontWeight: FontWeight.w500, fontSize: 18),
-              ),
+    return CustomLoading(
+        inAsyncCall: loading, child: Scaffold(appBar: _header(), body: _form())
+
+        // Expanded(child: _notHavePassword()),
+        );
+  }
+
+  _header() {
+    return AppBar(
+      automaticallyImplyLeading: false,
+      title: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Image.asset(
+              'assets/img/logo-3.png',
+              color: AppColors.white.withOpacity(0.8),
+              width: 70,
             ),
-            body: ModalProgressHUD(
-                inAsyncCall: loading,
-                child: SingleChildScrollView(
-                  child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height -
-                        MediaQuery.of(context).padding.top -
-                        kToolbarHeight,
-                    //decoration: BoxDecoration(color: Color(0Xcdcdcdff)),
-                    color: Colors.white,
-                    child: Center(
-                      child: Container(
-                        width: double.infinity,
-                        height: 350,
-                        child: _form(),
-                      ),
-                    ),
-                    // Expanded(child: _notHavePassword()),
-                  ),
-                ))));
+            SizedBox(height: 10),
+            /*    Text("CETIS 32",
+                textAlign: TextAlign.center,
+                style: GoogleFonts.bungee(
+                  fontSize: 24,
+                  //color: AppColors.primary,
+                )),
+            SizedBox(
+              height: 10,
+            ),*/
+            /*Text(
+              "Sistema Escolar Inteligente",
+              style: TextStyle(fontSize: 12),
+            ),*/
+            SizedBox(
+              height: 0,
+            ),
+            Text(
+              'Iniciar sesión con',
+              style: GoogleFonts.roboto(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w200,
+                  //fontStyle: FontStyle.italic,
+                  color: Colors.white),
+              textAlign: TextAlign.center,
+            )
+          ]),
+      centerTitle: true,
+      toolbarHeight: 150,
+    );
   }
 
   _form() {
     return (Container(
       padding: EdgeInsets.symmetric(vertical: 10, horizontal: 30),
-      color: Colors.white,
+      // color: Colors.white,
       child: Form(
         key: _formKey,
         child: Column(
           children: [
-            Align(
+            /*  Align(
                 alignment: Alignment.center,
-                child: Text(
-                  "CORREO ELECTRÓNICO: *",
-                  style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w400,
-                      color: AppColors.textFieldLabel),
-                )),
-            SizedBox(height: 4),
+                child: Text("Correo Electrónico: *",
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: AppColors.secondary,
+                    ))),*/
+            SizedBox(height: 10),
             _emailTextField(),
             SizedBox(
               height: 0,
             ),
-            Align(
+            /*  Align(
               alignment: Alignment.center,
               child: Text(
-                "CONTRASEÑA: *",
-                style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w400,
-                    color: AppColors.textFieldLabel),
+                "Contraseña: *",
+                style: TextStyle(fontSize: 14, color: Colors.black),
               ),
-            ),
+            ),*/
             SizedBox(
               height: 4,
             ),
@@ -142,17 +154,23 @@ class _LoginEmailScreenState extends State<LoginEmailScreen> {
               height: 5,
             ),
             //SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _signIn,
-              child: Text("ENTRAR"),
-              style: ElevatedButton.styleFrom(
-                  elevation: 0,
-                  fixedSize: Size(200, 45),
-                  primary: AppColors.morenaColor,
-                  padding: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
-                  textStyle:
-                      TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+            Container(
+              width: MediaQuery.of(context).size.width * .80,
+              child: ElevatedButton(
+                onPressed: _signIn,
+                child: Text("ENTRAR"),
+                style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(40)),
+                    elevation: 0,
+                    fixedSize: Size(200, 45),
+                    primary: AppColors.greyButton,
+                    padding: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
+                    textStyle:
+                        TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+              ),
             ),
+
             SizedBox(
               height: 30,
             ),
@@ -187,13 +205,16 @@ class _LoginEmailScreenState extends State<LoginEmailScreen> {
           controller: emailController,
           keyboardType: TextInputType.emailAddress,
           decoration: InputDecoration(
+            label: Text("Correo"),
             focusedBorder: OutlineInputBorder(
               borderSide: const BorderSide(
                   color: AppColors.morenaLightColor, width: 2.0),
-              borderRadius: BorderRadius.circular(20.0),
+              borderRadius: BorderRadius.circular(15.0),
             ),
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(20.0),
+              borderSide:
+                  const BorderSide(color: AppColors.primary, width: 10.0),
+              borderRadius: BorderRadius.circular(15.0),
             ),
             // filled: true,
             //fillColor: Color.fromRGBO(255, 248, 248, 1),
@@ -234,16 +255,17 @@ class _LoginEmailScreenState extends State<LoginEmailScreen> {
               focusNode: passwordFocus,
               obscureText: !_passwordVisible,
               decoration: InputDecoration(
+                  label: Text("Contraseña"),
                   focusedBorder: OutlineInputBorder(
                     borderSide: const BorderSide(
                         color: AppColors.morenaLightColor, width: 2.0),
-                    borderRadius: BorderRadius.circular(20.0),
+                    borderRadius: BorderRadius.circular(15.0),
                   ),
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20.0),
+                    borderRadius: BorderRadius.circular(15.0),
                   ),
-                  filled: true,
-                  fillColor: Colors.white,
+                  // filled: true,
+                  // fillColor: Colors.white,
                   contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 1)),
               onFieldSubmitted: (value) => _signIn(),
               validator: (value) {
@@ -262,7 +284,7 @@ class _LoginEmailScreenState extends State<LoginEmailScreen> {
               child: IconButton(
                 icon: Icon(
                   _passwordVisible ? Icons.visibility : Icons.visibility_off,
-                  color: Theme.of(context).primaryColorDark,
+                  color: Colors.grey,
                 ),
                 onPressed: () {
                   setState(() {

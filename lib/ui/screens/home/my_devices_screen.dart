@@ -4,6 +4,7 @@ import 'package:cetis32_app_registro/src/provider/user_provider.dart';
 import 'package:cetis32_app_registro/src/data/AuthenticationService.dart';
 import 'package:cetis32_app_registro/src/data/DeviceService.dart';
 import 'package:cetis32_app_registro/src/data/RegistrationService.dart';
+import 'package:cetis32_app_registro/ui/res/typography.dart';
 import 'package:cetis32_app_registro/ui/widgets/logout_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -73,36 +74,51 @@ class _MyDevicesScreenState extends State<MyDevicesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        /*  appBar: AppBar(
-          title: Text("Mis dispositivos"),
+        appBar: AppBar(
+          title: Text(""),
           centerTitle: true,
-          /* titleTextStyle: TextStyle(
-              fontSize: 17, color: Colors.black87, fontWeight: FontWeight.w400),*/
-          //   backgroundColor: Color(0XEEF5F5F5),
-          // foregroundColor: Colors.black87,
-        ),*/
-        body: ListView.builder(
-            itemCount: devices.length,
-            itemBuilder: (context, index) {
-              var device = devices[index];
-              return Container(
-                  padding: EdgeInsets.symmetric(vertical: 25, horizontal: 0),
-                  decoration: BoxDecoration(
-                      border: Border(
-                          bottom:
-                              BorderSide(width: 3, color: Color(0XFFEEEEEE)))),
-                  child: ListTile(
-                    leading: Icon(Icons.phone_android_outlined, size: 50),
-                    title: Text(
-                      "${device.brand.toString().capitalize()} ",
-                      style: TextStyle(fontSize: 17),
-                    ),
-                    subtitle:
-                        Text("${device.model}", style: TextStyle(fontSize: 14)),
-                    trailing: IconButton(
-                        icon: Icon(Icons.clear),
-                        onPressed: () => _removeDevice(device.id)),
-                  ));
-            }));
+        ),
+        body: Column(children: [
+          Container(
+              alignment: Alignment.centerLeft,
+              padding: EdgeInsets.fromLTRB(10, 20, 0, 5),
+              child: Text(
+                "Mis Dispositivos",
+                style: TextStyle(
+                    fontWeight: AppTypography.header2weight,
+                    fontSize: AppTypography.header2size),
+              )),
+          Expanded(
+              child: ListView.builder(
+                  itemCount: devices.length,
+                  itemBuilder: (context, index) {
+                    var device = devices[index];
+                    return Dismissible(
+                      key: Key(device.hashCode.toString()),
+                      child: Container(
+                          padding: EdgeInsets.symmetric(horizontal: 0),
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              border: Border(
+                                  bottom: BorderSide(
+                                      width: 3, color: Color(0XFFEEEEEE)))),
+                          child: ListTile(
+                            leading:
+                                Icon(Icons.phone_android_outlined, size: 50),
+                            title: Text(
+                              "${device.brand.toString().capitalize()} ",
+                            ),
+                            subtitle: Text(
+                              "${device.model}",
+                            ),
+                            /* trailing: IconButton(
+                                icon: Icon(Icons.clear),
+                                onPressed: () => _removeDevice(device.id)),*/
+                          )),
+                      background: Container(color: Colors.red),
+                      onDismissed: (direction) {},
+                    );
+                  }))
+        ]));
   }
 }

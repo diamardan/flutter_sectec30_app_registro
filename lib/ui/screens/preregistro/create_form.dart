@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:cetis32_app_registro/ui/screens/login/login_options_screen.dart';
+import 'package:cetis32_app_registro/ui/screens/login/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:cetis32_app_registro/src/customWidgets/Alert.dart';
@@ -139,8 +139,8 @@ class _PreregFormState extends State<PreregForm> {
     if (_currentStep > 1) {
       goTo(_currentStep - 1);
     } else {
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => LoginOptionsScreen()));
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => LoginScreen()));
       /* Navigator.popUntil(context, ModalRoute.withName('inicio')); */
     }
   }
@@ -369,10 +369,10 @@ class _PreregFormState extends State<PreregForm> {
                 height: 30,
               ),
               Container(
-                height: 60,
+                //  height: 60,
                 width: 200,
-                child: MaterialButton(
-                  color: AppColors.morenaColor,
+                child: ElevatedButton(
+                  //color: AppColors.morenaColor,
                   onPressed: details.onStepContinue,
                   child: const Text(
                     'Continuar',

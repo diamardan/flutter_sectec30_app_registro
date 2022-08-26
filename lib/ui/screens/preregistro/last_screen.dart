@@ -1,7 +1,7 @@
-import 'package:cetis32_app_registro/ui/screens/login/login_options_screen.dart';
+import 'package:cetis32_app_registro/ui/screens/login/login_screen.dart';
 import 'package:flutter/material.dart';
 
-import '../login/login_options_screen.dart';
+import '../login/login_screen.dart';
 
 class LastScreen extends StatelessWidget {
   const LastScreen({Key key}) : super(key: key);
@@ -17,7 +17,7 @@ class LastScreen extends StatelessWidget {
           onPressed: () {
             Navigator.of(context).push(
               MaterialPageRoute(builder: (BuildContext context) {
-                return LoginOptionsScreen();
+                return LoginScreen();
               }),
             );
           },
@@ -54,7 +54,7 @@ class LastScreen extends StatelessWidget {
                 onPressed: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(builder: (BuildContext context) {
-                      return LoginOptionsScreen();
+                      return LoginScreen();
                     }),
                   );
                   //Navigator.popUntil(context, ModalRoute.withName('login'));

@@ -10,21 +10,11 @@ class _RewardsScreenState extends State<RewardsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Center(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              new Text(
-                'Mis recompensas',
-                style: TextStyle(fontSize: 20.0),
-              ),
-            ],
-          ),
+        title: Text(
+          'Mis recompensas',
         ),
         centerTitle: true,
-        actions: <Widget>[
+        /*actions: <Widget>[
           // action button
           IconButton(
             icon: Icon(Icons.search),
@@ -32,7 +22,7 @@ class _RewardsScreenState extends State<RewardsScreen> {
               Navigator.pushNamed(context, 'group');
             },
           ),
-        ],
+        ],*/
       ),
       body: Center(
         child: Column(
@@ -47,12 +37,6 @@ class _RewardsScreenState extends State<RewardsScreen> {
             ),
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.pushNamed(context, 'add-notifications');
-        },
-        child: Icon(Icons.add),
       ),
     );
   }

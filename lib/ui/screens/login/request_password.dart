@@ -135,12 +135,14 @@ class _RequestPasswordScreenState extends State<RequestPasswordScreen> {
               height: 20,
             ),
             showeSigInButton == true
-                ? OutlinedButton(
+                ? ElevatedButton(
                     onPressed: () {
                       Navigator.pop(context);
                     },
                     child: Text("INICIAR SESIÓN"),
                     style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(40)),
                         padding:
                             EdgeInsets.symmetric(horizontal: 25, vertical: 15),
                         textStyle: TextStyle(
@@ -188,7 +190,7 @@ class _RequestPasswordScreenState extends State<RequestPasswordScreen> {
                 ? _createAccount
                 : null,
             child: Text(
-              "ENVIAR CORREO ELECTRÓNICO",
+              "ENVIAR C ORREO ELECTRÓNICO",
               textAlign: TextAlign.center,
             ),
             style: ElevatedButton.styleFrom(

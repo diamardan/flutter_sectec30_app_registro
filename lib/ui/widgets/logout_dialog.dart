@@ -1,5 +1,6 @@
 // * * *  Sign off  * * *
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../res/colors.dart';
 
@@ -11,39 +12,45 @@ Future<bool> showLogoutDialog(BuildContext context, String launcher) {
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-        title: Text(
-          "CETIS 32",
-          style: TextStyle(color: AppColors.morenaColor, fontSize: 16),
-        ),
+        title: Align(
+            alignment: Alignment.center,
+            child: Column(
+              children: [
+                SizedBox(height: 20),
+                Image.asset(
+                  'assets/img/logo-3.png',
+                  width: 80,
+                  color: AppColors.primary,
+                ),
+                SizedBox(height: 20),
+              ],
+            )),
         content: Text(
           message,
           textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 18),
+          //  style: TextStyle(fontSize: 18),
         ),
         backgroundColor: Colors.white,
         elevation: 3,
         actions: <Widget>[
           Container(
               width: 120,
-              child: OutlinedButton(
+              child: ElevatedButton(
                 onPressed: () {
                   Navigator.pop(context, false);
                 },
-                style: OutlinedButton.styleFrom(
-                    backgroundColor: Colors.grey.withOpacity(0.7)),
-                child: Text("Cancelar",
-                    style: TextStyle(
-                        color: Colors.black.withOpacity(0.7), fontSize: 16)),
+                style: ElevatedButton.styleFrom(primary: AppColors.greyButton),
+                child: Text("Cancelar", style: TextStyle(color: Colors.white)),
               )),
           Container(
               width: 120,
               child: ElevatedButton(
+                style: ElevatedButton.styleFrom(primary: AppColors.primary),
                 onPressed: () {
                   Navigator.pop(context, true);
                 },
                 child: Text("Salir",
-                    style: TextStyle(
-                        color: Colors.white.withOpacity(0.7), fontSize: 16)),
+                    style: TextStyle(color: Colors.white.withOpacity(0.7))),
               )),
         ],
       );

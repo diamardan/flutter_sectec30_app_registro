@@ -19,40 +19,30 @@ class _WhatsappHelpBtnState extends State<WhatsappHelpBtn> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return Positioned(
-      bottom: 40,
-      left: 90,
-      right: 90,
-      child: Container(
-          height: 38,
-          width: size.width * .3,
-          decoration: BoxDecoration(
-              color: AppColors.whatsappColor,
-              borderRadius: BorderRadius.circular(20),
-              border: Border.all(
-                  color: Colors.grey[200], style: BorderStyle.solid, width: 1)),
-          child: MaterialButton(
-            elevation: 20,
-            onPressed: () {
-              enviarWhatsapp(context);
-            },
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-            height: 15,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                Icon(
-                  FontAwesomeIcons.whatsapp,
-                  color: Colors.white,
-                ),
-                Text(
-                  'Ayuda',
-                  style: TextStyle(color: Colors.white),
-                )
-              ],
-            ),
-          )),
+    return ElevatedButton(
+      onPressed: () {
+        enviarWhatsapp(context);
+      },
+      style: ElevatedButton.styleFrom(
+          primary: AppColors.greyButton,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Icon(
+            FontAwesomeIcons.whatsapp,
+            color: Colors.white,
+          ),
+          SizedBox(
+            width: 10,
+          ),
+          Text(
+            'Ayuda',
+            style: TextStyle(color: Colors.white.withOpacity(0.8)),
+          )
+        ],
+      ),
     );
   }
 

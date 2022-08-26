@@ -59,34 +59,45 @@ class NotifyUI {
       builder: (BuildContext context) {
         return AlertDialog(
           backgroundColor: Colors.white,
-          title: Text(title),
+          actionsPadding: EdgeInsets.zero,
           titleTextStyle: TextStyle(
               color: AppColors.morenaColor,
               fontSize: 16,
               fontWeight: FontWeight.w500),
           content: Container(
-            height: 100,
-            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-            child: Container(
-              child: Align(
-                  alignment: Alignment.center,
-                  child: Text(message, style: TextStyle(color: Colors.black))),
+              //height: MediaQuery.of(context).size.width * .4,
+              //padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+              child: Column(mainAxisSize: MainAxisSize.min, children: [
+            SizedBox(
+              height: 15,
             ),
-            decoration: BoxDecoration(
-              color: AppColors.secondary.withOpacity(0.05),
-              border:
-                  Border.all(color: Colors.grey.withOpacity(0.7), width: 1.0),
-              borderRadius: BorderRadius.all(Radius.circular(5)),
+            Icon(
+              Icons.error_outline_rounded,
+              size: 90,
+              color: AppColors.secondary.withOpacity(0.7),
             ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: Text('Aceptar',
-                  style: TextStyle(color: AppColors.morenaColor)),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
+            SizedBox(
+              height: 10,
             ),
+            Text(title,
+                style: TextStyle(
+                    color: Colors.black, fontWeight: FontWeight.bold)),
+            SizedBox(
+              height: 10,
+            ),
+            Text(message, style: TextStyle(color: Colors.black)),
+          ])),
+          actions: [
+            Container(
+                width: MediaQuery.of(context).size.width,
+                padding: EdgeInsets.symmetric(horizontal: 50),
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(primary: AppColors.primary),
+                  child: Text('Cerrar', style: TextStyle(color: Colors.white)),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ))
           ],
         );
       },

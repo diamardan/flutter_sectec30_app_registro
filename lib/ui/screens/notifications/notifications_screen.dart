@@ -15,8 +15,8 @@ class NotificationsScreen extends StatefulWidget {
 }
 
 class _NotificationsScreenState extends State<NotificationsScreen> {
-  UserProvider userProvider;
-  Registration user;
+ // UserProvider userProvider;
+ // Registration user;
 
   final RegistrationService registrationService = RegistrationService();
   // bool _downloadingAttachments = false;
@@ -26,8 +26,8 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
 
   @override
   void initState() {
-    userProvider = Provider.of<UserProvider>(context, listen: false);
-    user = userProvider.getRegistration;
+   // userProvider = Provider.of<UserProvider>(context, listen: false);
+    //user = userProvider.getRegistration;
     super.initState();
   }
 

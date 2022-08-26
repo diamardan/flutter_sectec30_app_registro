@@ -1,4 +1,4 @@
-import 'package:cetis32_app_registro/ui/screens/login/login_options_screen.dart';
+import 'package:cetis32_app_registro/ui/screens/login/login_screen.dart';
 import 'package:cetis32_app_registro/ui/screens/login/recovery_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -38,7 +38,7 @@ class _LoginNavigatorState extends State<LoginNavigator> {
                       return RecoveryPasswordScreen();
 
                     default:
-                      return LoginOptionsScreen();
+                      return LoginScreen();
                   }
                 });
           },
