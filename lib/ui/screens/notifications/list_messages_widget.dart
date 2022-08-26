@@ -70,8 +70,8 @@ class _NMessagesListState extends State<NMessagesList> {
       //footer: SliverToBoxAdapter(child: Text('FOOTER')),
 
       itemBuilderType: PaginateBuilderType.listView, //Change types accordingly
-      itemBuilder: (index, context, documentSnapshot) {
-        final data = documentSnapshot.data() as Map;
+      itemBuilder: (context, documentSnapshot, index) {
+        final data = documentSnapshot as Map;
         n.Notification notification = n.Notification.fromJson(data);
         return _notificationBox(notification);
       },
