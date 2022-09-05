@@ -265,7 +265,7 @@ class _LoginScreenState extends State<LoginScreen> {
               SizedBox(
                 height: 10,
               ),
-              _botonRegistro(context),
+              //_botonRegistro(context),
               Expanded(
                   child: Column(
                 mainAxisSize: MainAxisSize.min,

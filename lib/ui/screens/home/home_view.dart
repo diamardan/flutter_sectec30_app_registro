@@ -146,7 +146,7 @@ class HomeView extends StatelessWidget {
           SizedBox(
               // height: 12,
               ),
-          MenuButton2(
+          /*MenuButton2(
             title: "Asistencia",
             //subtitle: "Tus horas de entrada y salida a clase. ",
             icon: Icons.account_box_outlined,
@@ -155,7 +155,7 @@ class HomeView extends StatelessWidget {
           ),
           SizedBox(
               //  height: 12,
-              ),
+              ),*/
           MenuButton2(
               title: "Credencial Inteligente",
               // subtitle: "Descarga tu credencial escolar.",

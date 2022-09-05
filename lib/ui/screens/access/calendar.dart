@@ -175,7 +175,7 @@ class _CalendarState extends State<Calendar> {
               child: ListView.builder(
             itemCount: value.length,
             itemBuilder: (context, index) {
-              var time = DateFormat("HH::mm").format(value[index].time);
+              var time = DateFormat("HH:mm").format(value[index].time);
               return Container(
                 margin: const EdgeInsets.symmetric(
                   horizontal: 12.0,

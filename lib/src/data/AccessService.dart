@@ -46,7 +46,7 @@ class AccessService {
     }
 
     // print("\nmi respuesta es $responseJson   \n la url es $endpoint");
-    if (responseJson["message"] == "SUCCES") {
+    if (responseJson["message"] == "SUCCESS") {
       List data = responseJson["data"];
       return data.map((event) => Event.fromJson(event)).toList();
     } else
