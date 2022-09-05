@@ -29,7 +29,6 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
   Uint8List bytes2;
   bool visibleButton;
   Registration register;
-
   @override
   void initState() {
     super.initState();
@@ -88,8 +87,8 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
             }),
       ),
       body: SafeArea(
-          child: SingleChildScrollView(
-        child: Center(
+          child: Center(
+        child: SingleChildScrollView(
           child: Column(children: <Widget>[
             SizedBox(
               height: 15,
@@ -131,12 +130,12 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
     );
   }
 
-  Widget _anversoCredencial() {
+  Widget _anversoCredencial2() {
     return WidgetToImage(builder: (key) {
       this.key1 = key;
       return Card(
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15.0),
+          borderRadius: BorderRadius.circular(25.0),
         ),
         elevation: 10,
         child: Container(
@@ -164,6 +163,156 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
     });
   }
 
+  Widget _anversoCredencial() {
+    return WidgetToImage(builder: (key) {
+      this.key1 = key;
+      return Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(25.0),
+        ),
+        elevation: 10,
+        child: Container(
+          height: 215,
+          width: 350,
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.red, width: 2),
+            borderRadius: BorderRadius.all(Radius.circular(15.0)),
+            image: DecorationImage(
+                fit: BoxFit.contain,
+                alignment: Alignment.topCenter,
+                image: AssetImage('assets/img/credencial/anverso2022.png')),
+          ),
+          child: Row(
+            children: [
+              Column(
+                children: <Widget>[
+                  SizedBox(height: 35),
+                  _espacioFoto(),
+                  _espacioFooter(),
+                  /* _cintillaFoto(),
+                      _cintillaBlanca(),
+                      _cintillaNombre(),
+                      _cintillaEspecialidad(),
+                      _cintillaNumeroControl(), */
+                ],
+              ),
+              SizedBox(
+                width: 7,
+              ),
+              RotatedBox(
+                quarterTurns: 1,
+                child: Text(
+                  '${register.career}' ?? '',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontSize: 14,
+                      fontFamily: 'Raleway',
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold),
+                ),
+              )
+            ],
+          ),
+        ),
+      );
+    });
+  }
+
+  Widget _espacioFooter() {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+    String tempMatric = register.registrationCode.toString();
+    String matricula = tempMatric != 'null' ? tempMatric : '';
+    return Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+      Container(
+        padding: EdgeInsets.fromLTRB(5, 13, 0, 0),
+        width: screenWidth * .8,
+        height: screenHeight * .07,
+        /* decoration:
+            BoxDecoration(border: Border.all(color: Colors.white, width: 3)), */
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              '$matricula' ?? '',
+              textAlign: TextAlign.left,
+              style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.amber,
+                  fontWeight: FontWeight.normal),
+            ),
+            Container(
+              padding: EdgeInsets.fromLTRB(40, 0, 0, 0),
+              child: Text(
+                '${register.idbio}' ?? '',
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                    fontSize: 14,
+                    color: Colors.amber,
+                    fontWeight: FontWeight.normal),
+              ),
+            ),
+          ],
+        ),
+      ),
+    ]);
+  }
+
+  Widget _espacioFoto() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        SizedBox(
+          height: 2,
+          width: 11,
+        ),
+        _networkImageWidget(124, 98, register.fotoUsuarioDrive),
+        Container(
+          height: 90,
+          width: 180,
+          /* decoration:
+              BoxDecoration(border: Border.all(color: Colors.green, width: 2)), */
+          margin: EdgeInsets.fromLTRB(5, 7, 0, 0),
+          padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                '${register.name}' ?? "",
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                    fontSize: 14,
+                    color: Colors.amber,
+                    fontWeight: FontWeight.normal),
+              ),
+              Text(
+                '${register.surnames}' ?? "",
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                    fontSize: 14,
+                    color: Colors.amber,
+                    fontWeight: FontWeight.normal),
+              ),
+              SizedBox(
+                height: 14,
+              ),
+              Text(
+                '${register.curp}' ?? "",
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                    fontSize: 14,
+                    color: Colors.amber,
+                    fontWeight: FontWeight.normal),
+              ),
+            ],
+          ),
+        )
+      ],
+    );
+  }
+
   Widget _cintillaFoto() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -172,7 +321,7 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
           height: 174,
           width: 81,
         ),
-        _networkImageWidget(174, 148, register.fotoUsuarioDrive),
+        //_networkImageWidget(174, 148, register.fotoUsuarioDrive),
         Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -284,7 +433,8 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
             children: [
               Text(
                 register.id ?? '-',
-                style: TextStyle(color: AppColors.textoRojoCredencial),
+                style: TextStyle(
+                    color: AppColors.textoRojoCredencial, fontSize: 12),
               ),
               SizedBox(
                 height: 5,
@@ -337,7 +487,7 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
               fit: BoxFit.fitWidth,
               child: Text(register.name != null ? register.name : "-",
                   style: TextStyle(
-                      fontSize: 50,
+                      fontSize: 30,
                       fontWeight: FontWeight.bold,
                       color: Colors.white)),
             ),
@@ -444,7 +594,7 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
               SizedBox(
                 height: 35,
               ),
-              _networkImageWidget(110, 110, register.qrDrive)
+              //_networkImageWidget(110, 110, register.qrDrive)
               /* Image.network(
                 'https://drive.google.com/uc?export=view&id=${register.qrDrive}',
                 height: 110,
@@ -481,7 +631,7 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
             ],
           ),
         ),
-        _networkImageWidget(50, 200, register.firmaDrive, false, true, 15.0)
+        //_networkImageWidget(50, 200, register.firmaDrive, false, true, 15.0)
         /* Container(
           width: 200,
           height: 60,
@@ -500,7 +650,10 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
   Widget _fotoReverso() {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [_networkImageWidget(90, 80, register.fotoUsuarioDrive, true)],
+      children: [
+        Container()
+        //_networkImageWidget(90, 80, register.fotoUsuarioDrive, true)
+      ],
     );
   }
 
