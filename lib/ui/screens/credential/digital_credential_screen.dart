@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:barcode_scan2/barcode_scan2.dart';
 import 'package:cetis32_app_registro/src/models/user_model.dart';
 import 'package:cetis32_app_registro/src/provider/user_provider.dart';
 import 'package:cetis32_app_registro/ui/res/colors.dart';
@@ -13,6 +14,7 @@ import 'package:intl/intl.dart'; // for date format
 import 'package:pdf/widgets.dart' as pw;
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
+import 'package:barcode_widget/barcode_widget.dart';
 
 class DigitalCredentialScreen extends StatefulWidget {
   @override
@@ -102,21 +104,23 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
                 ),
                 elevation: 10,
                 child: Container(
-                  height: 490,
-                  width: 310,
+                  height: 215,
+                  width: 350,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(15.0)),
                     image: DecorationImage(
                         fit: BoxFit.cover,
                         alignment: Alignment.topCenter,
-                        image: AssetImage('assets/img/credencial/reverso.png')),
+                        image: AssetImage(
+                            'assets/img/credencial/reverso2022.png')),
                   ),
                   child: Column(
                     children: <Widget>[
                       _cintillaTurno(),
-                      _espacioQR(),
+                      _midReverso(),
+                      /*  _espacioQR(),
                       _firmaAlumno(),
-                      _fotoReverso()
+                      _fotoReverso() */
                     ],
                   ),
                 ),
@@ -130,7 +134,73 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
     );
   }
 
-  Widget _anversoCredencial2() {
+  Widget _midReverso() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Column(
+                children: [
+                  Container(
+                    height: 25,
+                    width: 25,
+                    margin: EdgeInsets.fromLTRB(92, 15, 0, 0),
+                    decoration: BoxDecoration(
+                        color: Colors.transparent,
+                        border:
+                            Border.all(color: Colors.transparent, width: 1)),
+                    child: Text(
+                      '${register.grade}',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontFamily: 'montserrat',
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  Container(
+                    height: 25,
+                    width: 25,
+                    margin: EdgeInsets.fromLTRB(92, 12, 0, 0),
+                    decoration: BoxDecoration(
+                        color: Colors.transparent,
+                        border:
+                            Border.all(color: Colors.transparent, width: 1)),
+                    child: Text(
+                      '${register.group}',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontFamily: 'montserrat',
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ],
+              ),
+              Container(
+                margin: EdgeInsets.fromLTRB(25, 20, 0, 0),
+                width: 65,
+                height: 65,
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.lightBlue, width: 1),
+                ),
+                child: _networkImageWidget(110, 110, register.qrDrive),
+              ),
+            ]),
+        Container(
+            height: 30,
+            width: 125,
+            margin: EdgeInsets.fromLTRB(15, 5, 0, 0),
+            child: _networkImageWidget(110, 110, register.firmaDrive)),
+      ],
+    );
+  }
+
+/*   Widget _anversoCredencial2() {
     return WidgetToImage(builder: (key) {
       this.key1 = key;
       return Card(
@@ -162,7 +232,7 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
       );
     });
   }
-
+ */
   Widget _anversoCredencial() {
     return WidgetToImage(builder: (key) {
       this.key1 = key;
@@ -175,7 +245,7 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
           height: 215,
           width: 350,
           decoration: BoxDecoration(
-            border: Border.all(color: Colors.red, width: 2),
+            border: Border.all(color: Colors.transparent, width: 2),
             borderRadius: BorderRadius.all(Radius.circular(15.0)),
             image: DecorationImage(
                 fit: BoxFit.contain,
@@ -206,7 +276,7 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
                   textAlign: TextAlign.center,
                   style: TextStyle(
                       fontSize: 14,
-                      fontFamily: 'Raleway',
+                      fontFamily: 'montserrat',
                       color: Colors.black,
                       fontWeight: FontWeight.bold),
                 ),
@@ -225,7 +295,7 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
     String matricula = tempMatric != 'null' ? tempMatric : '';
     return Row(mainAxisAlignment: MainAxisAlignment.start, children: [
       Container(
-        padding: EdgeInsets.fromLTRB(5, 13, 0, 0),
+        padding: EdgeInsets.fromLTRB(5, 10, 0, 0),
         width: screenWidth * .8,
         height: screenHeight * .07,
         /* decoration:
@@ -234,13 +304,32 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              '$matricula' ?? '',
-              textAlign: TextAlign.left,
-              style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.amber,
-                  fontWeight: FontWeight.normal),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  margin: EdgeInsets.fromLTRB(0, 3, 0, 0),
+                  child: Text(
+                    '$matricula' ?? '',
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.amber,
+                        fontWeight: FontWeight.normal),
+                  ),
+                ),
+                Container(
+                    margin: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                    color: Colors.white,
+                    child: BarcodeWidget(
+                      barcode: Barcode.code39(),
+                      data: '$matricula',
+                      width: 160,
+                      height: 20,
+                      drawText: false,
+                    ))
+              ],
             ),
             Container(
               padding: EdgeInsets.fromLTRB(40, 0, 0, 0),
@@ -561,18 +650,42 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
   }
 
   Widget _cintillaTurno() {
-    return Container(
-      margin: EdgeInsets.only(top: 50),
-      padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
-      //color: Colors.red,
-      height: 30,
-      width: double.infinity,
-      child: Text(
-        register.turn != null ? register.turn : "-",
-        textAlign: TextAlign.right,
-        style: TextStyle(
-            fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
-      ),
+    DateFormat df = DateFormat('dd-MM-yyyy');
+    int fecha = register.fecha_registro != null
+        ? register.fecha_registro.millisecondsSinceEpoch
+        : DateTime.now().millisecondsSinceEpoch;
+    var fch1 = df.format(new DateTime.fromMillisecondsSinceEpoch(fecha));
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Container(
+          margin: EdgeInsets.only(top: 20),
+          padding: EdgeInsets.fromLTRB(70, 14, 0, 0),
+          //color: Colors.red,
+          height: 30,
+          width: 200,
+          child: Text(
+            register.turn != null ? register.turn : "-",
+            textAlign: TextAlign.left,
+            style: TextStyle(
+                fontSize: 14, fontWeight: FontWeight.bold, color: Colors.black),
+          ),
+        ),
+        Container(
+          margin: EdgeInsets.only(top: 20),
+          padding: EdgeInsets.fromLTRB(0, 4, 0, 0),
+          //color: Colors.red,
+          height: 30,
+          width: 80,
+          child: Text(
+            fch1.toString() != null ? fch1.toString() : '',
+            textAlign: TextAlign.left,
+            style: TextStyle(
+                fontSize: 10, fontWeight: FontWeight.bold, color: Colors.red),
+          ),
+        ),
+      ],
     );
   }
 
@@ -675,7 +788,7 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
     }
     pdf.addPage(
       pw.Page(
-        build: (pw.Context context) => pw.Row(
+        build: (pw.Context context) => pw.Column(
             mainAxisAlignment: pw.MainAxisAlignment.start,
             children: <pw.Widget>[
               pw.Image(

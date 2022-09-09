@@ -1,11 +1,12 @@
 class AppConstants {
   //backendUrl hace referencia ya sea a la url de producción o a la de desarrollo
-  static const backendUrl = 'https://api.escuelas.infon.mx/api/v1/firebase';
-  static const backendPublicUrl = 'https://api.escuelas.infon.mx/public';
+  static const backendUrl = 'https://escuelas.identaflix.com/api/v1/firebase';
+  //static const backendUrl = 'http://192.168.1.72:5000/api/v1/firebase';
+  static const backendPublicUrl = 'https://escuelas.identaflix.com/public';
   static const whatsappNumber = '+5215520779800';
   static const whatsappText = 'hola, necesito ayuda con la app';
   static const pdfPagoUrl =
-      "https://api.escuelas.infon.mx/public/pdfs/LUMEN%20FORMATO%20PAGO.pdf";
+      "https://escuelas.identaflix.com/public/pdfs/LUMEN%20FORMATO%20PAGO.pdf";
   static const urlAttendance = "https://attendance-lumen.web.app/";
   static const urlAttendanceIdPosition = 33;
   //fsCollectionName almacena el nombre de la collection que hace referencia a la escuela sobre la que se va a trabajar
