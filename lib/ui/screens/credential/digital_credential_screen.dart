@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
-import 'package:barcode_scan2/barcode_scan2.dart';
 import 'package:cetis32_app_registro/src/models/user_model.dart';
 import 'package:cetis32_app_registro/src/provider/user_provider.dart';
 import 'package:cetis32_app_registro/ui/res/colors.dart';
@@ -319,16 +318,18 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
                         fontWeight: FontWeight.normal),
                   ),
                 ),
-                Container(
-                    margin: EdgeInsets.fromLTRB(10, 0, 0, 0),
-                    color: Colors.white,
-                    child: BarcodeWidget(
-                      barcode: Barcode.code39(),
-                      data: '$matricula',
-                      width: 160,
-                      height: 20,
-                      drawText: false,
-                    ))
+                matricula != null && matricula != ''
+                    ? Container(
+                        margin: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                        color: Colors.white,
+                        child: BarcodeWidget(
+                          barcode: Barcode.code39(),
+                          data: '$matricula',
+                          width: 160,
+                          height: 20,
+                          drawText: false,
+                        ))
+                    : Container()
               ],
             ),
             Container(
@@ -351,6 +352,7 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
   Widget _espacioFoto() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(
           height: 2,
@@ -358,11 +360,11 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
         ),
         _networkImageWidget(124, 98, register.fotoUsuarioDrive),
         Container(
-          height: 90,
+          height: 95,
           width: 180,
-          /* decoration:
-              BoxDecoration(border: Border.all(color: Colors.green, width: 2)), */
-          margin: EdgeInsets.fromLTRB(5, 7, 0, 0),
+          decoration: BoxDecoration(
+              border: Border.all(color: Colors.transparent, width: 2)),
+          margin: EdgeInsets.fromLTRB(5, 19, 0, 0),
           padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,

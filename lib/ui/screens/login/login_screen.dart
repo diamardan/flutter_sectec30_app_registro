@@ -72,10 +72,11 @@ class _LoginScreenState extends State<LoginScreen> {
       Map<String, dynamic> response =
           await signInController.authenticate(qrText);
       print(response);
-      if (response["code"].toString() == "sign_in_success") {
-      } else
+      if (response["code"].toString() != "sign_in_success") {
+        /* } else */
         setLoading(false);
-      await NotifyUI.showError(context, messageTitle, response["message"]);
+        await NotifyUI.showError(context, messageTitle, response["message"]);
+      }
     } catch (error) {
       await NotifyUI.showError(context, messageTitle, error.toString());
     }
@@ -93,8 +94,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
       Map<String, dynamic> response = await signInController.authenticate(qr);
 
-      if (response["code"].toString() == "sign_in_success") {
-      } else {
+      print('mi respuesta de login es : ${response["code"].toString()}');
+      if (response["code"].toString() != "sign_in_success") {
+        /* } else { */
         setLoading(false);
         await NotifyUI.showError(context, messageTitle, response["message"]);
       }

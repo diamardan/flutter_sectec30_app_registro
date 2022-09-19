@@ -19,29 +19,32 @@ class _WhatsappHelpBtnState extends State<WhatsappHelpBtn> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return ElevatedButton(
-      onPressed: () {
-        enviarWhatsapp(context);
-      },
-      style: ElevatedButton.styleFrom(
-          primary: AppColors.greyButton,
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Icon(
-            FontAwesomeIcons.whatsapp,
-            color: Colors.white,
-          ),
-          SizedBox(
-            width: 10,
-          ),
-          Text(
-            'Ayuda',
-            style: TextStyle(color: Colors.white.withOpacity(0.8)),
-          )
-        ],
+    return SizedBox(
+      width: size.width * 0.6,
+      child: ElevatedButton(
+        onPressed: () {
+          enviarWhatsapp(context);
+        },
+        style: ElevatedButton.styleFrom(
+            primary: AppColors.whatsappColor,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20))),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Icon(
+              FontAwesomeIcons.whatsapp,
+              color: Colors.white,
+            ),
+            SizedBox(
+              width: 10,
+            ),
+            Text(
+              'Ayuda',
+              style: TextStyle(color: Colors.white.withOpacity(0.8)),
+            )
+          ],
+        ),
       ),
     );
   }
