@@ -39,7 +39,7 @@ class _NMessagesListState extends State<NMessagesList> {
     user = userProvider.getRegistration;
 
     origin = widget.origin;
-    print("initState: $origin");
+    print("initState Origin: $origin");
     query = getQuery();
     super.initState();
   }
@@ -70,8 +70,8 @@ class _NMessagesListState extends State<NMessagesList> {
       //footer: SliverToBoxAdapter(child: Text('FOOTER')),
 
       itemBuilderType: PaginateBuilderType.listView, //Change types accordingly
-      itemBuilder: (context, documentSnapshot, index) {
-        final data = documentSnapshot as Map;
+      itemBuilder: (context, documentSnapshots, index) {
+        final data = documentSnapshots[index].data() as Map;
         n.Notification notification = n.Notification.fromJson(data);
         return _notificationBox(notification);
       },

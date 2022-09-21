@@ -308,6 +308,7 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
+                  width: 100,
                   margin: EdgeInsets.fromLTRB(0, 3, 0, 0),
                   child: Text(
                     '$matricula' ?? '',
@@ -323,9 +324,9 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
                         margin: EdgeInsets.fromLTRB(10, 0, 0, 0),
                         color: Colors.white,
                         child: BarcodeWidget(
-                          barcode: Barcode.code39(),
+                          barcode: Barcode.code128(),
                           data: '$matricula',
-                          width: 160,
+                          width: 130,
                           height: 20,
                           drawText: false,
                         ))
@@ -370,32 +371,38 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(
-                '${register.name}' ?? "",
-                textAlign: TextAlign.left,
-                style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.amber,
-                    fontWeight: FontWeight.normal),
+              FittedBox(
+                child: Text(
+                  '${register.name}' ?? "",
+                  textAlign: TextAlign.left,
+                  style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.amber,
+                      fontWeight: FontWeight.normal),
+                ),
               ),
-              Text(
-                '${register.surnames}' ?? "",
-                textAlign: TextAlign.left,
-                style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.amber,
-                    fontWeight: FontWeight.normal),
+              FittedBox(
+                child: Text(
+                  '${register.surnames}' ?? "",
+                  textAlign: TextAlign.left,
+                  style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.amber,
+                      fontWeight: FontWeight.normal),
+                ),
               ),
               SizedBox(
                 height: 14,
               ),
-              Text(
-                '${register.curp}' ?? "",
-                textAlign: TextAlign.left,
-                style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.amber,
-                    fontWeight: FontWeight.normal),
+              FittedBox(
+                child: Text(
+                  '${register.curp}' ?? "",
+                  textAlign: TextAlign.left,
+                  style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.amber,
+                      fontWeight: FontWeight.normal),
+                ),
               ),
             ],
           ),

@@ -1,6 +1,7 @@
 import 'package:cetis32_app_registro/src/constants/constants.dart';
 import 'package:cetis32_app_registro/src/models/user_model.dart';
 import 'package:cetis32_app_registro/src/provider/user_provider.dart';
+import 'package:cetis32_app_registro/ui/screens/notifications/list_access_widget.dart';
 //import 'package:cetis32_app_registro/ui/screens/notifications/list_access_widget.dart';
 import 'package:cetis32_app_registro/ui/screens/notifications/list_messages_widget.dart';
 import 'package:cetis32_app_registro/src/data/RegistrationService.dart';
@@ -15,8 +16,8 @@ class NotificationsScreen extends StatefulWidget {
 }
 
 class _NotificationsScreenState extends State<NotificationsScreen> {
- // UserProvider userProvider;
- // Registration user;
+  // UserProvider userProvider;
+  // Registration user;
 
   final RegistrationService registrationService = RegistrationService();
   // bool _downloadingAttachments = false;
@@ -26,7 +27,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
 
   @override
   void initState() {
-   // userProvider = Provider.of<UserProvider>(context, listen: false);
+    // userProvider = Provider.of<UserProvider>(context, listen: false);
     //user = userProvider.getRegistration;
     super.initState();
   }
@@ -67,8 +68,11 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                 ],
               ),
             ),
-            body: TabBarView(
-                children: [NMessagesList(), Container(), Container()])));
+            body: TabBarView(children: [
+              NMessagesList(),
+              AccessList() /* Container() */,
+              Container()
+            ])));
   }
 
   /* Widget filters() {

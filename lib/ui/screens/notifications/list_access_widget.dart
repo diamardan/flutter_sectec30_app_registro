@@ -61,20 +61,24 @@ class _AccessListState extends State<AccessList> {
   }
 
   _notification(n.Notification notification) {
-    return Column(children: [
-      Container(
-        color: Colors.white,
-        child: Column(
-          children: [
-            _header(notification),
-            SizedBox(
-              height: 10,
+    return Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            color: Colors.white,
+            child: Column(
+              children: [
+                _header(notification),
+                SizedBox(
+                  height: 10,
+                ),
+                //_body(notification)
+              ],
             ),
-            _body(notification)
-          ],
-        ),
-      )
-    ]);
+          )
+        ]);
   }
 
   _header(n.Notification notification) {
@@ -86,8 +90,8 @@ class _AccessListState extends State<AccessList> {
           child: Container(
               margin: EdgeInsets.only(left: 10, top: 10, right: 10),
               decoration: BoxDecoration(
-                //  color: Colors.orange.shade50,
-                //  border: Border.all(width: 0.5, color: Color(0XFFABABAB)),
+                // color: Colors.orange.shade50,
+                // border: Border.all(width: 0.5, color: Color(0XFFABABAB)),
                 shape: BoxShape.rectangle,
                 borderRadius: const BorderRadius.all(
                   Radius.circular(5.0),
