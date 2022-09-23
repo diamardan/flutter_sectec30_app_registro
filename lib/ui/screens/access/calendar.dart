@@ -67,7 +67,6 @@ class _CalendarState extends State<Calendar> {
   _getAccess(String idBio) async {
     try {
       var result = await accesService.getAllById(idBio);
-      print(result);
       fillMap(result);
       setLoading(false);
       _selectedEvents.value = _getAccessForDay(_focusedDay);

@@ -26,8 +26,9 @@ class Event {
       userName: json["NOMBRE"],
       checkInTime:
           json["ENTRADA"] != null ? DateTime.parse(json["ENTRADA"]) : null,
-      departureTime:
-          json["SALIDA"] != null ? DateTime.parse(json["SALIDA"]) : null,
+      departureTime: json["SALIDA"] != null && json["SALIDA"] != ''
+          ? DateTime.parse(json["SALIDA"])
+          : null,
       description: json["DESCRIPCION"],
       type: json["TIPO"],
     );
