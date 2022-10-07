@@ -185,7 +185,7 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
                 width: 65,
                 height: 65,
                 decoration: BoxDecoration(
-                  border: Border.all(color: Colors.lightBlue, width: 1),
+                  border: Border.all(color: Colors.transparent, width: 1),
                 ),
                 child: _networkImageWidget(110, 110, register.qrDrive),
               ),
@@ -247,37 +247,39 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
             border: Border.all(color: Colors.transparent, width: 2),
             borderRadius: BorderRadius.all(Radius.circular(15.0)),
             image: DecorationImage(
-                fit: BoxFit.contain,
+                fit: BoxFit.cover,
                 alignment: Alignment.topCenter,
                 image: AssetImage('assets/img/credencial/anverso2022.png')),
           ),
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   SizedBox(height: 35),
                   _espacioFoto(),
                   _espacioFooter(),
-                  /* _cintillaFoto(),
-                      _cintillaBlanca(),
-                      _cintillaNombre(),
-                      _cintillaEspecialidad(),
-                      _cintillaNumeroControl(), */
                 ],
               ),
-              SizedBox(
-                width: 7,
-              ),
-              RotatedBox(
-                quarterTurns: 1,
-                child: Text(
-                  '${register.career}' ?? '',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      fontSize: 14,
-                      fontFamily: 'montserrat',
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold),
+              Container(
+                height: 210,
+                width: 38,
+                decoration: BoxDecoration(
+                    border: Border.all(color: Colors.transparent, width: 1)),
+                child: RotatedBox(
+                  quarterTurns: 1,
+                  child: Text(
+                    '${register.career}' ?? '',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontSize: 12,
+                        fontFamily: 'montserrat',
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold),
+                  ),
                 ),
               )
             ],
@@ -308,15 +310,17 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  width: 100,
+                  width: 130,
                   margin: EdgeInsets.fromLTRB(0, 3, 0, 0),
-                  child: Text(
-                    '$matricula' ?? '',
-                    textAlign: TextAlign.left,
-                    style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.amber,
-                        fontWeight: FontWeight.normal),
+                  child: FittedBox(
+                    child: Text(
+                      '$matricula' ?? '',
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.amber,
+                          fontWeight: FontWeight.normal),
+                    ),
                   ),
                 ),
                 matricula != null && matricula != ''
@@ -625,14 +629,11 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
             ),
           ),
           Container(
-            height: 20,
-            child: FittedBox(
-              fit: BoxFit.fitWidth,
-              child: Text(register.career != null ? register.career : "-",
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.textoRojoCredencial)),
-            ),
+            height: 25,
+            child: Text(register.career != null ? register.career : "-",
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.textoRojoCredencial)),
           ),
         ],
       ),
