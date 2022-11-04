@@ -1,5 +1,5 @@
-import 'package:cetis2_app_registro/src/constants/constants.dart';
-import 'package:cetis2_app_registro/src/provider/Device.dart';
+import 'package:conalep_izt3_app_registro/src/constants/constants.dart';
+import 'package:conalep_izt3_app_registro/src/provider/Device.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 const school = AppConstants.fsCollectionName;

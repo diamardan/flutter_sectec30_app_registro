@@ -1,8 +1,9 @@
-import 'package:cetis2_app_registro/src/constants/constants.dart';
-import 'package:cetis2_app_registro/src/models/notification_model.dart' as n;
-import 'package:cetis2_app_registro/src/models/user_model.dart';
-import 'package:cetis2_app_registro/src/provider/user_provider.dart';
-import 'package:cetis2_app_registro/src/data/RegistrationService.dart';
+import 'package:conalep_izt3_app_registro/src/constants/constants.dart';
+import 'package:conalep_izt3_app_registro/src/models/notification_model.dart'
+    as n;
+import 'package:conalep_izt3_app_registro/src/models/user_model.dart';
+import 'package:conalep_izt3_app_registro/src/provider/user_provider.dart';
+import 'package:conalep_izt3_app_registro/src/data/RegistrationService.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';

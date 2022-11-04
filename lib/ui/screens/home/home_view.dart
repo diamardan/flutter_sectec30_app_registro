@@ -1,7 +1,7 @@
-import 'package:cetis2_app_registro/ui/res/colors.dart';
-import 'package:cetis2_app_registro/ui/screens/home/popup_menu_widget.dart';
-//import 'package:cetis2_app_registro/src/screens/home/popup_menu_widget.dart';
-import 'package:cetis2_app_registro/ui/widgets/whatsapp_button.dart';
+import 'package:conalep_izt3_app_registro/ui/res/colors.dart';
+import 'package:conalep_izt3_app_registro/ui/screens/home/popup_menu_widget.dart';
+//import 'package:conalep_izt3_app_registro/src/screens/home/popup_menu_widget.dart';
+import 'package:conalep_izt3_app_registro/ui/widgets/whatsapp_button.dart';
 import "package:flutter/material.dart";
 import 'package:google_fonts/google_fonts.dart';
 import '../../widgets/menu_button2.dart';

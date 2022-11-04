@@ -1,7 +1,7 @@
-import 'package:cetis2_app_registro/src/provider/user_provider.dart';
-import 'package:cetis2_app_registro/src/data/AuthenticationService.dart';
-import 'package:cetis2_app_registro/src/utils/enums.dart';
-import 'package:cetis2_app_registro/ui/res/notify_ui.dart';
+import 'package:conalep_izt3_app_registro/src/provider/user_provider.dart';
+import 'package:conalep_izt3_app_registro/src/data/AuthenticationService.dart';
+import 'package:conalep_izt3_app_registro/src/utils/enums.dart';
+import 'package:conalep_izt3_app_registro/ui/res/notify_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
