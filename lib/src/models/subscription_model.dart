@@ -1,5 +1,5 @@
-import 'package:cetis32_app_registro/src/constants/constants.dart';
-import 'package:cetis32_app_registro/src/models/user_model.dart';
+import 'package:cetis2_app_registro/src/constants/constants.dart';
+import 'package:cetis2_app_registro/src/models/user_model.dart';
 
 final school = AppConstants.fsCollectionName;
 
@@ -57,6 +57,7 @@ String _replaceChars(word) {
   word = word.replaceAll("í", "i");
   word = word.replaceAll("ó", "o");
   word = word.replaceAll("ú", "u");
+  word = word.replaceAll("ñ", "n");
 
   return word;
 }

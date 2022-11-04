@@ -1,4 +1,4 @@
-import 'package:cetis32_app_registro/ui/screens/login/login_screen.dart';
+import 'package:cetis2_app_registro/ui/screens/login/login_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../login/login_screen.dart';
@@ -73,7 +73,7 @@ class LastScreen extends StatelessWidget {
       children: <Widget>[
         Container(
           height: size.height * .3,
-          child: Image.asset('assets/img/cetis32logo.png'),
+          child: Image.asset('assets/img/cetis2logo.png'),
         )
       ],
     );

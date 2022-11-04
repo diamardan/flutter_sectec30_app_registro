@@ -1,12 +1,12 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
-import 'package:cetis32_app_registro/src/models/user_model.dart';
-import 'package:cetis32_app_registro/src/provider/user_provider.dart';
-import 'package:cetis32_app_registro/ui/res/colors.dart';
-import 'package:cetis32_app_registro/ui/screens/credential/render_crendetial_screen.dart';
-import 'package:cetis32_app_registro/src/utils/imageUtil.dart';
-import 'package:cetis32_app_registro/src/utils/widget_to_image.dart';
+import 'package:cetis2_app_registro/src/models/user_model.dart';
+import 'package:cetis2_app_registro/src/provider/user_provider.dart';
+import 'package:cetis2_app_registro/ui/res/colors.dart';
+import 'package:cetis2_app_registro/ui/screens/credential/render_crendetial_screen.dart';
+import 'package:cetis2_app_registro/src/utils/imageUtil.dart';
+import 'package:cetis2_app_registro/src/utils/widget_to_image.dart';
 import 'package:ext_storage/ext_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart'; // for date format
@@ -266,7 +266,7 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
               ),
               Container(
                 height: 210,
-                width: 38,
+                width: 30,
                 decoration: BoxDecoration(
                     border: Border.all(color: Colors.transparent, width: 1)),
                 child: RotatedBox(
@@ -275,7 +275,7 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
                     '${register.career}' ?? '',
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                        fontSize: 12,
+                        fontSize: 10,
                         fontFamily: 'montserrat',
                         color: Colors.black,
                         fontWeight: FontWeight.bold),
@@ -290,42 +290,38 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
   }
 
   Widget _espacioFooter() {
-    double screenWidth = MediaQuery.of(context).size.width;
-    double screenHeight = MediaQuery.of(context).size.height;
     String tempMatric = register.registrationCode.toString();
-    String matricula = tempMatric != 'null' ? tempMatric : '';
+    String matricula =
+        tempMatric != 'null' && tempMatric != '' ? tempMatric : '';
     return Row(mainAxisAlignment: MainAxisAlignment.start, children: [
       Container(
         padding: EdgeInsets.fromLTRB(5, 10, 0, 0),
-        width: screenWidth * .8,
-        height: screenHeight * .07,
-        /* decoration:
-            BoxDecoration(border: Border.all(color: Colors.white, width: 3)), */
+        width: 300,
+        height: 50,
+        decoration: BoxDecoration(
+            border: Border.all(color: Colors.transparent, width: 1)),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
-              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  width: 130,
-                  margin: EdgeInsets.fromLTRB(0, 3, 0, 0),
-                  child: FittedBox(
-                    child: Text(
-                      '$matricula' ?? '',
-                      textAlign: TextAlign.left,
-                      style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.amber,
-                          fontWeight: FontWeight.normal),
-                    ),
+                  width: 120,
+                  margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                  child: Text(
+                    '$matricula' ?? '',
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.amber,
+                        fontWeight: FontWeight.normal),
                   ),
                 ),
                 matricula != null && matricula != ''
                     ? Container(
-                        margin: EdgeInsets.fromLTRB(10, 0, 0, 0),
                         color: Colors.white,
                         child: BarcodeWidget(
                           barcode: Barcode.code128(),
@@ -337,16 +333,22 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
                     : Container()
               ],
             ),
-            Container(
-              padding: EdgeInsets.fromLTRB(40, 0, 0, 0),
-              child: Text(
-                '${register.idbio}' ?? '',
-                textAlign: TextAlign.left,
-                style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.amber,
-                    fontWeight: FontWeight.normal),
-              ),
+            Column(
+              children: [
+                SizedBox(
+                  width: 125,
+                ),
+                Container(
+                  child: Text(
+                    '${register.idbio}' ?? '',
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.amber,
+                        fontWeight: FontWeight.normal),
+                  ),
+                ),
+              ],
             ),
           ],
         ),
@@ -355,63 +357,69 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
   }
 
   Widget _espacioFoto() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        SizedBox(
-          height: 2,
-          width: 11,
-        ),
-        _networkImageWidget(124, 98, register.fotoUsuarioDrive),
-        Container(
-          height: 95,
-          width: 180,
-          decoration: BoxDecoration(
-              border: Border.all(color: Colors.transparent, width: 2)),
-          margin: EdgeInsets.fromLTRB(5, 19, 0, 0),
-          padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              FittedBox(
-                child: Text(
-                  '${register.name}' ?? "",
-                  textAlign: TextAlign.left,
-                  style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.amber,
-                      fontWeight: FontWeight.normal),
-                ),
-              ),
-              FittedBox(
-                child: Text(
-                  '${register.surnames}' ?? "",
-                  textAlign: TextAlign.left,
-                  style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.amber,
-                      fontWeight: FontWeight.normal),
-                ),
-              ),
-              SizedBox(
-                height: 14,
-              ),
-              FittedBox(
-                child: Text(
-                  '${register.curp}' ?? "",
-                  textAlign: TextAlign.left,
-                  style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.amber,
-                      fontWeight: FontWeight.normal),
-                ),
-              ),
-            ],
+    return Container(
+      decoration: BoxDecoration(
+          border: Border.all(color: Colors.transparent, width: 1)),
+      child: Row(
+        children: [
+          SizedBox(
+            height: 5,
+            width: 11,
           ),
-        )
-      ],
+          _networkImageWidget(124, 98, register.fotoUsuarioDrive),
+          SizedBox(
+            width: 4,
+          ),
+          Container(
+            height: 96,
+            width: 180,
+            decoration: BoxDecoration(
+                border: Border.all(color: Colors.transparent, width: 2)),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                SizedBox(
+                  height: 20,
+                ),
+                FittedBox(
+                  child: Text(
+                    '${register.name}' ?? "",
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.amber,
+                        fontWeight: FontWeight.normal),
+                  ),
+                ),
+                FittedBox(
+                  child: Text(
+                    '${register.surnames}' ?? "",
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.amber,
+                        fontWeight: FontWeight.normal),
+                  ),
+                ),
+                SizedBox(
+                  height: 14,
+                ),
+                FittedBox(
+                  child: Text(
+                    '${register.curp}' ?? "",
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.amber,
+                        fontWeight: FontWeight.normal),
+                  ),
+                ),
+              ],
+            ),
+          )
+        ],
+      ),
     );
   }
 
@@ -629,11 +637,14 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
             ),
           ),
           Container(
-            height: 25,
-            child: Text(register.career != null ? register.career : "-",
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.textoRojoCredencial)),
+            height: 20,
+            child: FittedBox(
+              fit: BoxFit.fitWidth,
+              child: Text(register.career != null ? register.career : "-",
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.textoRojoCredencial)),
+            ),
           ),
         ],
       ),

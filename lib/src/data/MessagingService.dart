@@ -1,7 +1,7 @@
-import 'package:cetis32_app_registro/src/constants/constants.dart';
-import 'package:cetis32_app_registro/src/models/notification_model.dart';
-import 'package:cetis32_app_registro/src/models/subscription_model.dart';
-import 'package:cetis32_app_registro/src/models/user_model.dart';
+import 'package:cetis2_app_registro/src/constants/constants.dart';
+import 'package:cetis2_app_registro/src/models/notification_model.dart';
+import 'package:cetis2_app_registro/src/models/subscription_model.dart';
+import 'package:cetis2_app_registro/src/models/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
@@ -16,6 +16,15 @@ class MessagingService {
     //print(topicsNames.toString());
 
     /* FCM subscriptions to topics */
+    print(subscription.careerTopic.toString());
+    print(subscription.gradeTopic.toString());
+
+    print(subscription.groupTopic.toString());
+
+    print(subscription.turnTopic.toString());
+
+    print(subscription.schoolTopic.toString());
+
     if (subscription.careerTopic != "none")
       messaging.subscribeToTopic(subscription.careerTopic);
     if (subscription.gradeTopic != "none")

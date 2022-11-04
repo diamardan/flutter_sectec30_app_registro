@@ -1,9 +1,9 @@
-import 'package:cetis32_app_registro/src/controllers/SignIn/SignInEmailController.dart';
-import 'package:cetis32_app_registro/ui/screens/login/recovery_screen.dart';
-import 'package:cetis32_app_registro/ui/screens/login/request_password.dart';
-import 'package:cetis32_app_registro/ui/res/notify_ui.dart';
-import 'package:cetis32_app_registro/src/utils/validator.dart';
-import 'package:cetis32_app_registro/ui/widgets/loading.dart';
+import 'package:cetis2_app_registro/src/controllers/SignIn/SignInEmailController.dart';
+import 'package:cetis2_app_registro/ui/screens/login/recovery_screen.dart';
+import 'package:cetis2_app_registro/ui/screens/login/request_password.dart';
+import 'package:cetis2_app_registro/ui/res/notify_ui.dart';
+import 'package:cetis2_app_registro/src/utils/validator.dart';
+import 'package:cetis2_app_registro/ui/widgets/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../res/colors.dart';
@@ -88,19 +88,6 @@ class _LoginEmailScreenState extends State<LoginEmailScreen> {
               width: 70,
             ),
             SizedBox(height: 10),
-            /*    Text("CETIS 32",
-                textAlign: TextAlign.center,
-                style: GoogleFonts.bungee(
-                  fontSize: 24,
-                  //color: AppColors.primary,
-                )),
-            SizedBox(
-              height: 10,
-            ),*/
-            /*Text(
-              "Sistema Escolar Inteligente",
-              style: TextStyle(fontSize: 12),
-            ),*/
             SizedBox(
               height: 0,
             ),

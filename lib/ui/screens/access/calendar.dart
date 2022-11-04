@@ -1,9 +1,9 @@
 import 'dart:collection';
 
-import 'package:cetis32_app_registro/src/models/acceses_model.dart';
-import 'package:cetis32_app_registro/src/models/user_model.dart';
-import 'package:cetis32_app_registro/src/provider/user_provider.dart';
-import 'package:cetis32_app_registro/src/data/AccessService.dart';
+import 'package:cetis2_app_registro/src/models/acceses_model.dart';
+import 'package:cetis2_app_registro/src/models/user_model.dart';
+import 'package:cetis2_app_registro/src/provider/user_provider.dart';
+import 'package:cetis2_app_registro/src/data/AccessService.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
@@ -83,9 +83,9 @@ class _CalendarState extends State<Calendar> {
   fillMap(List<Event> _events) {
     setState(() {
       _events.forEach((e) {
-        if (e.checkInTime != null)
+        if (e.checkInTime != null && e.checkInTime != "")
           events[e.date] = [Access(time: e.checkInTime, type: "Entrada")];
-        if (e.departureTime != null)
+        if (e.departureTime != null && e.departureTime != "null")
           events[e.date].add(Access(time: e.departureTime, type: "Salida"));
       });
     });

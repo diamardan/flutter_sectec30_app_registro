@@ -1,13 +1,13 @@
 import 'package:barcode_scan2/platform_wrapper.dart';
-import 'package:cetis32_app_registro/src/controllers/SignIn/SignInQRController.dart';
-import 'package:cetis32_app_registro/ui/res/design_constants.dart';
-import 'package:cetis32_app_registro/ui/screens/login/login_email_screen.dart';
-import 'package:cetis32_app_registro/ui/screens/login/recovery_screen.dart';
-import 'package:cetis32_app_registro/ui/screens/login/request_password.dart';
-import 'package:cetis32_app_registro/ui/screens/preregistro/create_form.dart';
-import 'package:cetis32_app_registro/ui/res/notify_ui.dart';
-import 'package:cetis32_app_registro/ui/widgets/loading.dart';
-import 'package:cetis32_app_registro/ui/widgets/whatsapp_button.dart';
+import 'package:cetis2_app_registro/src/controllers/SignIn/SignInQRController.dart';
+import 'package:cetis2_app_registro/ui/res/design_constants.dart';
+import 'package:cetis2_app_registro/ui/screens/login/login_email_screen.dart';
+import 'package:cetis2_app_registro/ui/screens/login/recovery_screen.dart';
+import 'package:cetis2_app_registro/ui/screens/login/request_password.dart';
+import 'package:cetis2_app_registro/ui/screens/preregistro/create_form.dart';
+import 'package:cetis2_app_registro/ui/res/notify_ui.dart';
+import 'package:cetis2_app_registro/ui/widgets/loading.dart';
+import 'package:cetis2_app_registro/ui/widgets/whatsapp_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -190,42 +190,6 @@ class _LoginScreenState extends State<LoginScreen> {
         )));
   }
 
-  /* Widget _header(BuildContext context) {
-    return AppBar(
-      title: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Image.asset(
-              'assets/img/logo-3.png',
-              color: AppColors.white.withOpacity(0.8),
-              width: 100,
-            ),
-            SizedBox(height: 10),
-            /*Text(
-              "CETIS 32",
-              textAlign: TextAlign.center,
-                 style: GoogleFonts.bungee(
-                  fontSize: 20,
-                  //color: AppColors.primary,
-                )),*/
-
-            SizedBox(
-              height: 0,
-            ),
-            /*Text("Sistema Escolar Inteligente",
-                style: GoogleFonts.adamina(fontSize: 14)),*/
-          ]),
-      centerTitle: true,
-      toolbarHeight: 120,
-      /* shape: RoundedRectangleBorder(
-      borderRadius: new BorderRadius.vertical(
-        bottom: new Radius.elliptical(SizeConfig.screenWidth, 56.0),
-      ),
-    ),*/
-    );
-  }*/
-
   // ignore: non_constant_identifier_names
   Widget _login_options(BuildContext context) {
     return Container(
@@ -240,7 +204,6 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               Image.asset(
                 'assets/img/logo-3.png',
-                color: AppColors.primary,
                 width: 120,
               ),
               SizedBox(
