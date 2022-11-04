@@ -1,5 +1,4 @@
-# lumen_app_registro
-
+# CONALEP IZTAPALAPA III
 A new Flutter project.
 
 ## Getting Started
