@@ -68,7 +68,7 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
       floatingActionButton: Visibility(
         visible: visibleButton == true ? true : false,
         child: FloatingActionButton.extended(
-            backgroundColor: AppColors.morenaColor,
+            backgroundColor: AppColors.primary,
             //backgroundColor: canDownload == true ? Colors.blue : Colors.grey,
             label: Text("Descargar"),
             icon: Icon(Icons.download),
@@ -103,7 +103,7 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
                 ),
                 elevation: 10,
                 child: Container(
-                  height: 215,
+                  height: 555,
                   width: 350,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(15.0)),
@@ -115,11 +115,7 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
                   ),
                   child: Column(
                     children: <Widget>[
-                      _cintillaTurno(),
                       _midReverso(),
-                      /*  _espacioQR(),
-                      _firmaAlumno(),
-                      _fotoReverso() */
                     ],
                   ),
                 ),
@@ -135,104 +131,27 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
 
   Widget _midReverso() {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Column(
-                children: [
-                  Container(
-                    height: 25,
-                    width: 25,
-                    margin: EdgeInsets.fromLTRB(92, 15, 0, 0),
-                    decoration: BoxDecoration(
-                        color: Colors.transparent,
-                        border:
-                            Border.all(color: Colors.transparent, width: 1)),
-                    child: Text(
-                      '${register.grade}',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontFamily: 'montserrat',
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  Container(
-                    height: 25,
-                    width: 25,
-                    margin: EdgeInsets.fromLTRB(92, 12, 0, 0),
-                    decoration: BoxDecoration(
-                        color: Colors.transparent,
-                        border:
-                            Border.all(color: Colors.transparent, width: 1)),
-                    child: Text(
-                      '${register.group}',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontFamily: 'montserrat',
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ],
-              ),
-              Container(
-                margin: EdgeInsets.fromLTRB(25, 20, 0, 0),
-                width: 65,
-                height: 65,
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.transparent, width: 1),
-                ),
-                child: _networkImageWidget(110, 110, register.qrDrive),
-              ),
-            ]),
+        SizedBox(height: 120),
         Container(
-            height: 30,
-            width: 125,
+            height: 150,
+            width: 150,
             margin: EdgeInsets.fromLTRB(15, 5, 0, 0),
-            child: _networkImageWidget(110, 110, register.firmaDrive)),
+            child: _networkImageWidget(200, 150, register.qrDrive)),
+        SizedBox(height: 30),
+        Container(
+            height: 50,
+            width: 185,
+            margin: EdgeInsets.fromLTRB(15, 5, 0, 0),
+            child: _networkImageWidget(200, 150, register.firmaDrive)),
       ],
     );
   }
 
-/*   Widget _anversoCredencial2() {
-    return WidgetToImage(builder: (key) {
-      this.key1 = key;
-      return Card(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(25.0),
-        ),
-        elevation: 10,
-        child: Container(
-          height: 490,
-          width: 310,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(15.0)),
-            image: DecorationImage(
-                fit: BoxFit.cover,
-                alignment: Alignment.topCenter,
-                image: AssetImage('assets/img/credencial/anverso.png')),
-          ),
-          child: Column(
-            children: <Widget>[
-              SizedBox(height: 128),
-              _cintillaFoto(),
-              _cintillaBlanca(),
-              _cintillaNombre(),
-              _cintillaEspecialidad(),
-              _cintillaNumeroControl(),
-            ],
-          ),
-        ),
-      );
-    });
-  }
- */
   Widget _anversoCredencial() {
+    String matricula = register.registrationCode.toString();
     return WidgetToImage(builder: (key) {
       this.key1 = key;
       return Card(
@@ -241,7 +160,7 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
         ),
         elevation: 10,
         child: Container(
-          height: 215,
+          height: 555,
           width: 350,
           decoration: BoxDecoration(
             border: Border.all(color: Colors.transparent, width: 2),
@@ -255,33 +174,78 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  SizedBox(height: 35),
-                  _espacioFoto(),
-                  _espacioFooter(),
-                ],
-              ),
               Container(
-                height: 210,
-                width: 30,
+                height: 550,
+                width: 345,
                 decoration: BoxDecoration(
-                    border: Border.all(color: Colors.transparent, width: 1)),
-                child: RotatedBox(
-                  quarterTurns: 1,
-                  child: Text(
-                    '${register.career}' ?? '',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        fontSize: 10,
-                        fontFamily: 'montserrat',
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold),
-                  ),
+                  border: Border.all(color: Colors.transparent, width: 2),
                 ),
-              )
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    SizedBox(
+                      height: 60,
+                    ),
+                    _upperFront(),
+                    SizedBox(
+                      height: 30,
+                    ),
+                    _cintilla(),
+                    SizedBox(
+                      height: 30,
+                    ),
+                    Container(
+                      width: 350,
+                      child: Text(
+                        register.curp,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 18),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 30,
+                    ),
+                    Container(
+                      width: 350,
+                      child: Text(
+                        register.career,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 18),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Container(
+                      padding: EdgeInsets.only(right: 70),
+                      width: 350,
+                      child: Text(
+                        register.registrationCode,
+                        textAlign: TextAlign.right,
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 14),
+                      ),
+                    ),
+                    matricula != null && matricula != ''
+                        ? Container(
+                            padding: EdgeInsets.only(left: 45, right: 45),
+                            width: 350,
+                            height: 40,
+                            color: Colors.white,
+                            child: BarcodeWidget(
+                              barcode: Barcode.code128(),
+                              data: '$matricula',
+                              width: 130,
+                              height: 20,
+                              drawText: false,
+                            ))
+                        : Container()
+                  ],
+                ),
+              ),
             ],
           ),
         ),
@@ -289,175 +253,115 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
     });
   }
 
-  Widget _espacioFooter() {
-    String tempMatric = register.registrationCode.toString();
-    String matricula =
-        tempMatric != 'null' && tempMatric != '' ? tempMatric : '';
-    return Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-      Container(
-        padding: EdgeInsets.fromLTRB(5, 10, 0, 0),
-        width: 300,
-        height: 50,
-        decoration: BoxDecoration(
-            border: Border.all(color: Colors.transparent, width: 1)),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  width: 120,
-                  margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                  child: Text(
-                    '$matricula' ?? '',
-                    textAlign: TextAlign.left,
-                    style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.amber,
-                        fontWeight: FontWeight.normal),
-                  ),
-                ),
-                matricula != null && matricula != ''
-                    ? Container(
-                        color: Colors.white,
-                        child: BarcodeWidget(
-                          barcode: Barcode.code128(),
-                          data: '$matricula',
-                          width: 130,
-                          height: 20,
-                          drawText: false,
-                        ))
-                    : Container()
-              ],
+  Widget _upperFront() {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Container(
+          //left Column
+          color: Colors.transparent,
+          height: 206,
+          width: 93,
+          padding: EdgeInsets.only(
+            top: 40,
+          ),
+          child: Column(children: <Widget>[
+            Text(
+              register.idbio.toString(),
+              textAlign: TextAlign.center,
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
             ),
-            Column(
-              children: [
-                SizedBox(
-                  width: 125,
-                ),
-                Container(
-                  child: Text(
-                    '${register.idbio}' ?? '',
-                    textAlign: TextAlign.left,
-                    style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.amber,
-                        fontWeight: FontWeight.normal),
-                  ),
-                ),
-              ],
+            SizedBox(
+              height: 10,
             ),
-          ],
+            _networkImageWidget(100, 100, register.qrDrive)
+          ]),
         ),
-      ),
-    ]);
-  }
-
-  Widget _espacioFoto() {
-    return Container(
-      decoration: BoxDecoration(
-          border: Border.all(color: Colors.transparent, width: 1)),
-      child: Row(
-        children: [
-          SizedBox(
-            height: 5,
-            width: 11,
+        SizedBox(
+          width: 20,
+        ),
+        Column(
+            //Foto
+            children: <Widget>[
+              SizedBox(
+                height: 15,
+              ),
+              _networkImageWidget(194, 128, register.fotoUsuarioDrive),
+            ]),
+        SizedBox(
+          width: 20,
+        ),
+        Container(
+          //RightColumn
+          color: Colors.transparent,
+          height: 206,
+          width: 80,
+          padding: EdgeInsets.only(
+            top: 40,
           ),
-          _networkImageWidget(124, 98, register.fotoUsuarioDrive),
-          SizedBox(
-            width: 4,
-          ),
-          Container(
-            height: 96,
-            width: 180,
-            decoration: BoxDecoration(
-                border: Border.all(color: Colors.transparent, width: 2)),
-            child: Column(
+          child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                SizedBox(
-                  height: 20,
-                ),
-                FittedBox(
+                Container(
+                  height: 30,
+                  width: 40,
                   child: Text(
-                    '${register.name}' ?? "",
-                    textAlign: TextAlign.left,
-                    style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.amber,
-                        fontWeight: FontWeight.normal),
-                  ),
-                ),
-                FittedBox(
-                  child: Text(
-                    '${register.surnames}' ?? "",
-                    textAlign: TextAlign.left,
-                    style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.amber,
-                        fontWeight: FontWeight.normal),
+                    register.grade.toString(),
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
                   ),
                 ),
                 SizedBox(
-                  height: 14,
+                  height: 60,
                 ),
-                FittedBox(
+                Container(
+                  height: 30,
+                  width: 90,
                   child: Text(
-                    '${register.curp}' ?? "",
-                    textAlign: TextAlign.left,
-                    style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.amber,
-                        fontWeight: FontWeight.normal),
+                    register.turn.toString(),
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
                   ),
                 ),
-              ],
-            ),
-          )
-        ],
-      ),
+              ]),
+        )
+      ],
     );
   }
 
-  Widget _cintillaFoto() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        SizedBox(
-          height: 174,
-          width: 81,
-        ),
-        //_networkImageWidget(174, 148, register.fotoUsuarioDrive),
-        Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            SizedBox(
-              height: 80,
-            ),
-            Container(
-              margin: EdgeInsets.only(top: 30),
-              width: 80,
-              child: Text(
-                register.group ?? "",
+  Widget _cintilla() {
+    return Container(
+      height: 60,
+      width: 350,
+      color: Colors.transparent,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          FittedBox(
+              fit: BoxFit.scaleDown,
+              child: new Text(
+                register.surnames,
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                    fontSize: 40,
                     color: Colors.white,
+                    fontSize: 18,
                     fontWeight: FontWeight.bold),
-              ),
-            ),
-            Text(
-              "GRUPO",
-              style: TextStyle(color: Colors.white),
-            )
-          ],
-        )
-      ],
+              )),
+          FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Text(
+                register.name,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold),
+              ))
+        ],
+      ),
     );
   }
 
@@ -509,286 +413,6 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
             );
           },
         ));
-  }
-
-  Widget _cintillaBlanca() {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: <Widget>[
-        Container(
-          width: 70,
-          //color: Colors.red,
-          child: Column(
-            children: [
-              Text(
-                register.idbio.toString() != null
-                    ? register.idbio.toString()
-                    : "-",
-                style: TextStyle(color: AppColors.textoRojoCredencial),
-              ),
-              Text(
-                "IDBIO",
-                style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.textoRojoCredencial),
-              ),
-            ],
-          ),
-        ),
-        Container(
-          width: 170,
-          //color: Colors.blue,
-          child: Column(
-            children: [
-              Text(
-                register.id ?? '-',
-                style: TextStyle(
-                    color: AppColors.textoRojoCredencial, fontSize: 12),
-              ),
-              SizedBox(
-                height: 5,
-              ),
-              Text(
-                "ALUMNO",
-                style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.textoRojoCredencial),
-              ),
-            ],
-          ),
-        ),
-        Container(
-          width: 70,
-          //color: Colors.green,
-          child: Column(
-            children: [
-              Text(
-                register.grade != null ? register.grade : "-",
-                style: TextStyle(color: AppColors.textoRojoCredencial),
-              ),
-              Text(
-                "SEMESTRE",
-                style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.textoRojoCredencial),
-              ),
-            ],
-          ),
-        )
-      ],
-    );
-  }
-
-  Widget _cintillaNombre() {
-    return Container(
-      height: 60,
-      width: double.infinity,
-      //color: Colors.blueGrey,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          Container(
-            height: 30,
-            child: FittedBox(
-              fit: BoxFit.fitWidth,
-              child: Text(register.name != null ? register.name : "-",
-                  style: TextStyle(
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white)),
-            ),
-          ),
-          Container(
-            height: 30,
-            child: FittedBox(
-              fit: BoxFit.fitWidth,
-              child: Text(register.surnames != null ? register.surnames : "-",
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold, color: Colors.white)),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _cintillaEspecialidad() {
-    return Container(
-      height: 40,
-      width: double.infinity,
-      //color: Colors.amber,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          Container(
-            height: 20,
-            child: FittedBox(
-              fit: BoxFit.fitWidth,
-              child: Text("ESPECIALIDAD",
-                  style: TextStyle(
-                      fontSize: 50,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.textoRojoCredencial)),
-            ),
-          ),
-          Container(
-            height: 20,
-            child: FittedBox(
-              fit: BoxFit.fitWidth,
-              child: Text(register.career != null ? register.career : "-",
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.textoRojoCredencial)),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _cintillaNumeroControl() {
-    return Container(
-      height: 35,
-      child: Column(
-        children: <Widget>[
-          Text(
-            'No. CONTROL   ${register.registrationCode != "" ? register.registrationCode : "NO CAPTURADO"}',
-            style: TextStyle(color: AppColors.textoRojoCredencial),
-          ),
-          Image.asset(
-            'assets/img/credencial/barcode.PNG',
-            fit: BoxFit.fitWidth,
-            width: double.infinity,
-          )
-        ],
-      ),
-    );
-  }
-
-  Widget _cintillaTurno() {
-    DateFormat df = DateFormat('dd-MM-yyyy');
-    int fecha = register.fecha_registro != null
-        ? register.fecha_registro.millisecondsSinceEpoch
-        : DateTime.now().millisecondsSinceEpoch;
-    var fch1 = df.format(new DateTime.fromMillisecondsSinceEpoch(fecha));
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Container(
-          margin: EdgeInsets.only(top: 20),
-          padding: EdgeInsets.fromLTRB(70, 14, 0, 0),
-          //color: Colors.red,
-          height: 30,
-          width: 200,
-          child: Text(
-            register.turn != null ? register.turn : "-",
-            textAlign: TextAlign.left,
-            style: TextStyle(
-                fontSize: 14, fontWeight: FontWeight.bold, color: Colors.black),
-          ),
-        ),
-        Container(
-          margin: EdgeInsets.only(top: 20),
-          padding: EdgeInsets.fromLTRB(0, 4, 0, 0),
-          //color: Colors.red,
-          height: 30,
-          width: 80,
-          child: Text(
-            fch1.toString() != null ? fch1.toString() : '',
-            textAlign: TextAlign.left,
-            style: TextStyle(
-                fontSize: 10, fontWeight: FontWeight.bold, color: Colors.red),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _espacioQR() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-        Container(
-          width: 150,
-          height: 150,
-          //color: Colors.amber,
-        ),
-        Container(
-          width: 150,
-          height: 150,
-          //color: Colors.redAccent,
-          child: Column(
-            children: [
-              SizedBox(
-                height: 35,
-              ),
-              //_networkImageWidget(110, 110, register.qrDrive)
-              /* Image.network(
-                'https://drive.google.com/uc?export=view&id=${register.qrDrive}',
-                height: 110,
-              ), */
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _firmaAlumno() {
-    DateFormat df = DateFormat('dd-MM-yyyy');
-    int fecha = register.fecha_registro != null
-        ? register.fecha_registro.millisecondsSinceEpoch
-        : DateTime.now().millisecondsSinceEpoch;
-    var fch1 = df.format(new DateTime.fromMillisecondsSinceEpoch(fecha));
-    //var fecha_emision = fecha.split(" ")[0];
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-        Container(
-          width: 100,
-          height: 100,
-          //color: Colors.amber,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Text(
-                fch1.toString() != null ? fch1.toString() : '',
-                style: TextStyle(
-                    color: AppColors.morenaColor, fontWeight: FontWeight.bold),
-              ),
-            ],
-          ),
-        ),
-        //_networkImageWidget(50, 200, register.firmaDrive, false, true, 15.0)
-        /* Container(
-          width: 200,
-          height: 60,
-          margin: EdgeInsets.fromLTRB(0, 15, 0, 0),
-          //color: Colors.redAccent,
-          child: Image.network(
-            'https://drive.google.com/uc?export=view&id=${register.firmaDrive}',
-            height: 50,
-            //fit: BoxFit.fitHeight,
-          ),
-        ), */
-      ],
-    );
-  }
-
-  Widget _fotoReverso() {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container()
-        //_networkImageWidget(90, 80, register.fotoUsuarioDrive, true)
-      ],
-    );
   }
 
   Widget buildImage(Uint8List bytes) =>

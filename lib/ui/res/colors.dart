@@ -19,9 +19,9 @@ class AppColors {
 // refactoring in process
   //static const primary = Color(0XFF9D2449);
   //static const primary = Color(0XFF6a1b31);
-  static const darkPrimary = Color(0XFF6a1b31);
-  static const lightPrimary = Color(0XFF85334b);
-  static const primary = Color(0XFF621152);
+  static const darkPrimary = Color.fromARGB(255, 39, 93, 16);
+  static const lightPrimary = Color.fromARGB(255, 106, 153, 77);
+  static const primary = Color.fromARGB(255, 5, 119, 28);
   static const secondary = Color(0XFFBAAC5F);
   static const background = Color(0XFAF5F5F5);
   static const greyButton = Color(0xAA9E9E9E);

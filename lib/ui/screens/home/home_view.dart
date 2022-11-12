@@ -94,7 +94,7 @@ class HomeView extends StatelessWidget {
                     width: 10,
                   ),
                   Text(
-                    "CETIS 2",
+                    "CONALEP IZTAPALAPA III",
                     textAlign: TextAlign.center,
                     style: headerFont,
                     maxLines: 2,

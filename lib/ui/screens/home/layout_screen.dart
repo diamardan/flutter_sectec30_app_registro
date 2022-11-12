@@ -152,9 +152,9 @@ class _homeScreenState extends State<LayoutScreen> {
 
   _bottomNavBar() {
     double iconSize = 35;
-    const primary = Color(0XFF621152);
-    const primary2 = Color(0XFF520142);
-    const primary3 = Color(0XFF420032);
+    const primary = AppColors.primary;
+    const primary2 = AppColors.primary;
+    const primary3 = AppColors.primary;
 
     return Container(
       height: 60,
@@ -162,9 +162,15 @@ class _homeScreenState extends State<LayoutScreen> {
       color: Colors.green,
       child: Row(children: [
         Expanded(child: _buildIcon(Icons.home, "Inicio", 0, primary)),
+        VerticalDivider(
+          width: 1,
+        ),
         Expanded(
             child: _buildIcon(
                 Icons.notifications_rounded, "Notificaciones", 1, primary2)),
+        VerticalDivider(
+          width: 1,
+        ),
         Expanded(
             child: _buildIcon(Icons.newspaper_rounded, "Noticias", 2, primary3))
       ]),
