@@ -31,7 +31,7 @@ class _RenderCredentialScreenState extends State<RenderCredentialScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: AppColors.morenaColor,
+        backgroundColor: AppColors.primary,
         title: Text(this.widget.pdfName),
         actions: <Widget>[
           IconButton(

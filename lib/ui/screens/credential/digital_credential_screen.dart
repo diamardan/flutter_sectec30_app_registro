@@ -319,10 +319,14 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
                 Container(
                   height: 30,
                   width: 90,
-                  child: Text(
-                    register.turn.toString(),
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Text(
+                      register.turn.toString(),
+                      textAlign: TextAlign.center,
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
+                    ),
                   ),
                 ),
               ]),
@@ -433,7 +437,7 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
     }
     pdf.addPage(
       pw.Page(
-        build: (pw.Context context) => pw.Column(
+        build: (pw.Context context) => pw.Row(
             mainAxisAlignment: pw.MainAxisAlignment.start,
             children: <pw.Widget>[
               pw.Image(
