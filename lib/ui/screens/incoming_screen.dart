@@ -1,4 +1,4 @@
-import 'package:conalep_izt3_app_registro/src/utils/routes_arguments.dart';
+import 'package:sectec30_app_registro/src/utils/routes_arguments.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

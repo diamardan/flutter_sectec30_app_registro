@@ -1,9 +1,9 @@
-import 'package:conalep_izt3_app_registro/src/controllers/SignIn/SignInEmailController.dart';
-import 'package:conalep_izt3_app_registro/ui/screens/login/recovery_screen.dart';
-import 'package:conalep_izt3_app_registro/ui/screens/login/request_password.dart';
-import 'package:conalep_izt3_app_registro/ui/res/notify_ui.dart';
-import 'package:conalep_izt3_app_registro/src/utils/validator.dart';
-import 'package:conalep_izt3_app_registro/ui/widgets/loading.dart';
+import 'package:sectec30_app_registro/src/controllers/SignIn/SignInEmailController.dart';
+import 'package:sectec30_app_registro/ui/screens/login/recovery_screen.dart';
+import 'package:sectec30_app_registro/ui/screens/login/request_password.dart';
+import 'package:sectec30_app_registro/ui/res/notify_ui.dart';
+import 'package:sectec30_app_registro/src/utils/validator.dart';
+import 'package:sectec30_app_registro/ui/widgets/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../res/colors.dart';

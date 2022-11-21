@@ -1,19 +1,17 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
-import 'package:conalep_izt3_app_registro/src/models/user_model.dart';
-import 'package:conalep_izt3_app_registro/src/provider/user_provider.dart';
-import 'package:conalep_izt3_app_registro/ui/res/colors.dart';
-import 'package:conalep_izt3_app_registro/ui/screens/credential/render_crendetial_screen.dart';
-import 'package:conalep_izt3_app_registro/src/utils/imageUtil.dart';
-import 'package:conalep_izt3_app_registro/src/utils/widget_to_image.dart';
+import 'package:sectec30_app_registro/src/models/user_model.dart';
+import 'package:sectec30_app_registro/src/provider/user_provider.dart';
+import 'package:sectec30_app_registro/ui/res/colors.dart';
+import 'package:sectec30_app_registro/ui/screens/credential/render_crendetial_screen.dart';
+import 'package:sectec30_app_registro/src/utils/imageUtil.dart';
+import 'package:sectec30_app_registro/src/utils/widget_to_image.dart';
 import 'package:ext_storage/ext_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart'; // for date format
 import 'package:pdf/widgets.dart' as pw;
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
-import 'package:barcode_widget/barcode_widget.dart';
 
 class DigitalCredentialScreen extends StatefulWidget {
   @override
@@ -103,19 +101,18 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
                 ),
                 elevation: 10,
                 child: Container(
-                  height: 555,
-                  width: 350,
+                  height: 220,
+                  width: 360,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                    borderRadius: BorderRadius.all(Radius.circular(1.0)),
                     image: DecorationImage(
                         fit: BoxFit.cover,
                         alignment: Alignment.topCenter,
-                        image: AssetImage(
-                            'assets/img/credencial/reverso2022.png')),
+                        image: AssetImage('assets/img/credencial/reverso.png')),
                   ),
                   child: Column(
                     children: <Widget>[
-                      _midReverso(),
+                      _reverso(),
                     ],
                   ),
                 ),
@@ -129,29 +126,96 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
     );
   }
 
-  Widget _midReverso() {
+  Widget _reverso() {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SizedBox(height: 120),
+        SizedBox(height: 8),
+        Row(
+          children: [
+            SizedBox(
+              width: 80,
+            ),
+            Container(
+                color: Colors.transparent,
+                width: 240,
+                child: Text(
+                  "25 OCTUBRE 2022",
+                  textAlign: TextAlign.left,
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 10),
+                )),
+          ],
+        ),
+        SizedBox(
+          height: 80,
+        ),
         Container(
-            height: 150,
-            width: 150,
-            margin: EdgeInsets.fromLTRB(15, 5, 0, 0),
-            child: _networkImageWidget(200, 150, register.qrDrive)),
-        SizedBox(height: 30),
-        Container(
-            height: 50,
-            width: 185,
-            margin: EdgeInsets.fromLTRB(15, 5, 0, 0),
-            child: _networkImageWidget(200, 150, register.firmaDrive)),
+          decoration: BoxDecoration(color: Colors.transparent),
+          height: 95,
+          width: 330,
+          margin: EdgeInsets.fromLTRB(15, 5, 0, 0),
+          child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Container(
+                  color: Colors.transparent,
+                  width: 90,
+                  height: 90,
+                  child: Column(children: <Widget>[
+                    SizedBox(
+                      height: 5,
+                    ),
+                    FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Text(
+                          register.turn,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 10),
+                        )),
+                    SizedBox(
+                      height: 2,
+                    ),
+                    FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Text(
+                          register.grade,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 20),
+                        )),
+                    FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Text(
+                          register.group,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 20),
+                        ))
+                  ]),
+                ),
+                SizedBox(
+                  width: 60,
+                ),
+                Container(
+                  color: Colors.transparent,
+                  width: 100,
+                  height: 100,
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 4,
+                      ),
+                      _networkImageWidget(90, 90, register.qrDrive),
+                    ],
+                  ),
+                )
+              ]),
+        ),
       ],
     );
   }
 
   Widget _anversoCredencial() {
-    String matricula = register.registrationCode.toString();
     return WidgetToImage(builder: (key) {
       this.key1 = key;
       return Card(
@@ -160,213 +224,87 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
         ),
         elevation: 10,
         child: Container(
-          height: 555,
-          width: 350,
+          height: 220,
+          width: 360,
           decoration: BoxDecoration(
             border: Border.all(color: Colors.transparent, width: 2),
-            borderRadius: BorderRadius.all(Radius.circular(15.0)),
+            borderRadius: BorderRadius.all(Radius.circular(1.0)),
             image: DecorationImage(
                 fit: BoxFit.cover,
                 alignment: Alignment.topCenter,
-                image: AssetImage('assets/img/credencial/anverso2022.png')),
+                image: AssetImage('assets/img/credencial/anverso.png')),
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
+            children: <Widget>[
               Container(
-                height: 550,
-                width: 345,
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.transparent, width: 2),
-                ),
+                color: Colors.transparent,
+                height: 220,
+                width: 100,
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    SizedBox(
-                      height: 60,
-                    ),
-                    _upperFront(),
-                    SizedBox(
-                      height: 30,
-                    ),
-                    _cintilla(),
-                    SizedBox(
-                      height: 30,
-                    ),
-                    Container(
-                      width: 350,
-                      child: Text(
-                        register.curp,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 18),
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      SizedBox(
+                        height: 45,
                       ),
-                    ),
-                    SizedBox(
-                      height: 30,
-                    ),
-                    Container(
-                      width: 350,
-                      child: Text(
-                        register.career,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 18),
+                      _networkImageWidget(90, 70, register.fotoUsuarioDrive),
+                      Container(
+                        width: 60,
+                        child: Text(
+                          register.idbio.toString(),
+                          textAlign: TextAlign.right,
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
                       ),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Container(
-                      padding: EdgeInsets.only(right: 70),
-                      width: 350,
-                      child: Text(
-                        register.registrationCode,
-                        textAlign: TextAlign.right,
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 14),
+                      _networkImageWidget(30, 30, register.qrDrive),
+                      SizedBox(
+                        height: 5,
                       ),
-                    ),
-                    matricula != null && matricula != ''
-                        ? Container(
-                            padding: EdgeInsets.only(left: 45, right: 45),
-                            width: 350,
-                            height: 40,
-                            color: Colors.white,
-                            child: BarcodeWidget(
-                              barcode: Barcode.code128(),
-                              data: '$matricula',
-                              width: 130,
-                              height: 20,
-                              drawText: false,
-                            ))
-                        : Container()
-                  ],
-                ),
+                      Container(
+                        padding: EdgeInsets.only(left: 5),
+                        width: 100,
+                        child: FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: Text(
+                            register.curp,
+                            textAlign: TextAlign.right,
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 12),
+                          ),
+                        ),
+                      ),
+                    ]),
+              ),
+              SizedBox(
+                width: 12,
+              ),
+              Container(
+                color: Colors.transparent,
+                height: 220,
+                width: 220,
+                child: Column(children: <Widget>[
+                  SizedBox(
+                    height: 135,
+                  ),
+                  FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Text(
+                        '${register.name} ${register.surnames}',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      )),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  _networkImageWidget(30, 50, register.firmaDrive)
+                ]),
               ),
             ],
           ),
         ),
       );
     });
-  }
-
-  Widget _upperFront() {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        Container(
-          //left Column
-          color: Colors.transparent,
-          height: 206,
-          width: 93,
-          padding: EdgeInsets.only(
-            top: 40,
-          ),
-          child: Column(children: <Widget>[
-            Text(
-              register.idbio.toString(),
-              textAlign: TextAlign.center,
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            _networkImageWidget(100, 100, register.qrDrive)
-          ]),
-        ),
-        SizedBox(
-          width: 20,
-        ),
-        Column(
-            //Foto
-            children: <Widget>[
-              SizedBox(
-                height: 15,
-              ),
-              _networkImageWidget(194, 128, register.fotoUsuarioDrive),
-            ]),
-        SizedBox(
-          width: 20,
-        ),
-        Container(
-          //RightColumn
-          color: Colors.transparent,
-          height: 206,
-          width: 80,
-          padding: EdgeInsets.only(
-            top: 40,
-          ),
-          child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                Container(
-                  height: 30,
-                  width: 40,
-                  child: Text(
-                    register.grade.toString(),
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
-                  ),
-                ),
-                SizedBox(
-                  height: 60,
-                ),
-                Container(
-                  height: 30,
-                  width: 90,
-                  child: FittedBox(
-                    fit: BoxFit.scaleDown,
-                    child: Text(
-                      register.turn.toString(),
-                      textAlign: TextAlign.center,
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
-                    ),
-                  ),
-                ),
-              ]),
-        )
-      ],
-    );
-  }
-
-  Widget _cintilla() {
-    return Container(
-      height: 60,
-      width: 350,
-      color: Colors.transparent,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          FittedBox(
-              fit: BoxFit.scaleDown,
-              child: new Text(
-                register.surnames,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold),
-              )),
-          FittedBox(
-              fit: BoxFit.scaleDown,
-              child: Text(
-                register.name,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold),
-              ))
-        ],
-      ),
-    );
   }
 
   Widget _networkImageWidget(double height, double width, String image,

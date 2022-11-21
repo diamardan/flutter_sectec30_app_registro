@@ -1,5 +1,5 @@
-import 'package:conalep_izt3_app_registro/ui/res/colors.dart';
-import 'package:conalep_izt3_app_registro/ui/screens/access/calendar.dart';
+import 'package:sectec30_app_registro/ui/res/colors.dart';
+import 'package:sectec30_app_registro/ui/screens/access/calendar.dart';
 import 'package:flutter/material.dart';
 
 class AccessesScreen extends StatefulWidget {

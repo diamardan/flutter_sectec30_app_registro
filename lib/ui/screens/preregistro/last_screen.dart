@@ -1,4 +1,4 @@
-import 'package:conalep_izt3_app_registro/ui/screens/login/login_screen.dart';
+import 'package:sectec30_app_registro/ui/screens/login/login_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../login/login_screen.dart';
