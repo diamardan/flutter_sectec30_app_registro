@@ -20,7 +20,7 @@ Future<bool> showLogoutDialog(BuildContext context, String launcher) {
                 Image.asset(
                   'assets/img/logo-3.png',
                   width: 80,
-                  color: AppColors.primary,
+                  
                 ),
                 SizedBox(height: 20),
               ],

@@ -86,8 +86,7 @@ class HomeView extends StatelessWidget {
                   ),
                   Image.asset(
                     'assets/img/logo-3.png',
-                    color:
-                        Colors.white.withOpacity(0.8), //AppColors.morenaColor,
+                    //AppColors.morenaColor,
                     width: 40,
                   ),
                   SizedBox(
@@ -109,53 +108,19 @@ class HomeView extends StatelessWidget {
                 style: TextStyle(color: Colors.white70),
               )
             ])));
-
-    /* 
-        
-
-        //overflow: TextOverflow.ellipsis)
-      ]),
-      centerTitle: true,
-      //titleSpacing: 0,
-      /*  bottom: PreferredSize(
-          child: Padding(
-              padding: EdgeInsets.only(bottom: 5),
-              child: ),
-          preferredSize: Size.fromHeight(50)),*/
-      actions: 
-    );*/
   }
 
   Widget _body(BuildContext ctx) {
     return SingleChildScrollView(
       child: Container(
-          //   height: 500,
-          //color: Colors.red,
-          //padding: EdgeInsets.symmetric(horizontal: 25),
           child: Column(
         mainAxisSize: MainAxisSize.max,
         children: [
-          SizedBox(
-              // height: 30,
-              ),
           MenuButton2(
             title: "Accesos",
             icon: Icons.account_box_outlined,
             route: "access",
           ),
-          SizedBox(
-              // height: 12,
-              ),
-          /*MenuButton2(
-            title: "Asistencia",
-            //subtitle: "Tus horas de entrada y salida a clase. ",
-            icon: Icons.account_box_outlined,
-            route: "access",
-            incoming: true,
-          ),
-          SizedBox(
-              //  height: 12,
-              ),*/
           MenuButton2(
               title: "Credencial Inteligente",
               // subtitle: "Descarga tu credencial escolar.",

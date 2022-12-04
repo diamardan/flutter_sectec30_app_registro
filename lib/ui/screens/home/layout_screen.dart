@@ -152,14 +152,14 @@ class _homeScreenState extends State<LayoutScreen> {
 
   _bottomNavBar() {
     double iconSize = 35;
-    const primary = AppColors.primary;
-    const primary2 = AppColors.primary;
-    const primary3 = AppColors.primary;
+    const primary = AppColors.darkPrimary;
+    const primary2 = AppColors.darkPrimary;
+    const primary3 = AppColors.darkPrimary;
 
     return Container(
       height: 60,
       padding: EdgeInsets.all(0),
-      color: Colors.green,
+      color: Colors.brown,
       child: Row(children: [
         Expanded(child: _buildIcon(Icons.home, "Inicio", 0, primary)),
         VerticalDivider(

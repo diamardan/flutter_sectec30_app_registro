@@ -8,7 +8,6 @@ class AppColors {
   static const primaryText = const Color.fromRGBO(255, 255, 255, 1);
   static const morenaColor = Color.fromRGBO(94, 33, 41, 1); //#6a1b31
   static const morenaLightColor = const Color.fromRGBO(158, 91, 100, 1);
-  //static const secondary = const Color.fromRGBO(166, 123, 96, 1);
   static const secondaryColor = const Color.fromRGBO(166, 123, 96, 1);
   static const blackTransparent = const Color(0x88000000);
   static const yellow = const Color(0XFFFFDD00);
@@ -16,12 +15,9 @@ class AppColors {
   static const textoRojoCredencial = const Color(0XFF93243a);
   static const textFieldLabel = Color.fromRGBO(10, 10, 10, 1);
 
-// refactoring in process
-  //static const primary = Color(0XFF9D2449);
-  //static const primary = Color(0XFF6a1b31);
-  static const darkPrimary = Color.fromARGB(255, 39, 93, 16);
-  static const lightPrimary = Color.fromARGB(255, 106, 153, 77);
-  static const primary = Color.fromARGB(255, 5, 119, 28);
+  static const darkPrimary = Color.fromARGB(255, 94, 65, 54);
+  static const lightPrimary = Color.fromARGB(255, 155, 115, 101);
+  static const primary = Color.fromARGB(255, 121, 85, 72);
   static const secondary = Color(0XFFBAAC5F);
   static const background = Color(0XFAF5F5F5);
   static const greyButton = Color(0xAA9E9E9E);
@@ -30,16 +26,4 @@ class AppColors {
 
   static const text = Color.fromRGBO(0, 0, 0, 1);
   static const text2 = Color.fromRGBO(21, 21, 21, 1);
-
-  /*  static const paymentDecoration = BoxDecoration(
-                         borderRadius: 12,
-                         boxShadow: [
-                           BoxShadow(
-                            color: Colors.black26,
-                            blurRadius: 2.0,
-                            spreadRadius: 0.0,
-                            offset: Offset(2.0,4.0)
-                         )],
-                         color: Colors.white,);
- */
 }

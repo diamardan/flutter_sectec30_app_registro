@@ -375,7 +375,7 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
     }
     pdf.addPage(
       pw.Page(
-        build: (pw.Context context) => pw.Row(
+        build: (pw.Context context) => pw.Column(
             mainAxisAlignment: pw.MainAxisAlignment.start,
             children: <pw.Widget>[
               pw.Image(
