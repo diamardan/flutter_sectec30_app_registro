@@ -14,13 +14,13 @@ import Firebase
     ) -> Bool {
         
             // This is required to make any communication available in the action isolate.
-        /*FlutterLocalNotificationsPlugin.setPluginRegistrantCallback { (registry) in
+        
+        FlutterLocalNotificationsPlugin.setPluginRegistrantCallback { (registry) in
             GeneratedPluginRegistrant.register(with: registry)
         }
-
         if #available(iOS 10.0, *) {
         UNUserNotificationCenter.current().delegate = self as UNUserNotificationCenterDelegate
-        }*/
+        }
         
         // Runs the default Dart entrypoint with a default Flutter route.
         flutterEngine.run()
@@ -28,7 +28,7 @@ import Firebase
         // Used to connect plugins (only if you have plugins with iOS platform code).
         FirebaseApp.configure()
         
-        GeneratedPluginRegistrant.register(with: self)//.flutterEngine)
+        //GeneratedPluginRegistrant.register(with: self.flutterEngine)
         return super.application(application, didFinishLaunchingWithOptions: launchOptions)
     }
 }
