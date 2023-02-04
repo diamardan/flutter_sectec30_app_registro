@@ -29,7 +29,7 @@
         <!--SplashViewController-->
         <scene sceneID="90c-Ry-W40">
             <objects>
-                <viewController title="SplashViewController" id="1JR-Br-eiX" sceneMemberID="viewController">
+                <viewController title="SplashViewController" id="1JR-Br-eiX" customClass="SplashViewController" customModule="Runner" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="BrY-xM-A5e"/>
                         <viewControllerLayoutGuide type="bottom" id="wAd-AC-ZvZ"/>

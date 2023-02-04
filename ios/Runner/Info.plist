@@ -48,20 +48,20 @@
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSBonjourServices</key>
+	<array>
+		<string>_dartobservatory._tcp</string>
+	</array>
 	<key>NSCalendarsUsageDescription</key>
 	<string>Deseas permitir el acceso a tu calendario</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Necesito acceso a la cámara para poder capturar la foto del voucher de pago, y la foto del alumno que aparecerá en tu credencial digital y física</string>
 	<key>NSContactsUsageDescription</key>
 	<string>Deseas permitir el acceso a tus contactos</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Permitir el acceso a tu ubicación</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>Permitir el acceso a tu ubicación</string>
-	<key>NSBonjourServices</key>
-	<array>
-		<string>_dartobservatory._tcp</string>
-	</array>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Permitir el acceso a tu ubicación</string>
 	<key>NSMicrophoneUsageDescription </key>
 	<string>Necesito acceso al micrófono</string>
 	<key>NSMotionUsageDescription</key>
@@ -70,6 +70,11 @@
 	<string>Necesito acceso a la galería</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
 	<string>Permitir el acceso al reconocimiento de voz</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>fetch</string>
+		<string>remote-notification</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
