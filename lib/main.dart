@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:sectec30_app_registro/app.dart';
 import 'package:sectec30_app_registro/fcm/fcm_service.dart';
 import 'package:sectec30_app_registro/geo_access/GeoAccessService.dart';
@@ -38,6 +40,9 @@ void main() async {
   await LocalNotificationsService().init();
   await GeoAccessService.StartListening();
   await Firebase.initializeApp();
+  if (Platform.isIOS) {
+    FirebaseMessaging.instance.requestPermission();
+  }
 
   FirebaseMessaging.onBackgroundMessage(_messageHandler);
 

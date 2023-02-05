@@ -1,3 +1,5 @@
+import 'package:sectec30_app_registro/src/controllers/SignIn/SignInController.dart';
+import 'package:sectec30_app_registro/src/data/AuthenticationService.dart';
 import 'package:sectec30_app_registro/src/provider/user_provider.dart';
 import 'package:sectec30_app_registro/ui/screens/home/layout_screen.dart';
 import 'package:sectec30_app_registro/ui/screens/login/login_navigator.dart';
@@ -10,7 +12,8 @@ class Wrapper extends StatelessWidget {
   Widget build(BuildContext context) {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     final firebaseUser = Provider.of<User>(context);
-
+    /* SignInController().cleanAuthenticationData(context);
+    AuthenticationService().signOut(); */
     if (firebaseUser != null) {
       if (!userProvider.isLoggingIn) userProvider.initUSer();
       return LayoutScreen();
