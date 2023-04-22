@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             routes: getApplicationRoutes(context),
             theme: ThemeData(
-              primaryColor: AppColors.primary,
+              backgroundColor: AppColors.primary,
               fontFamily: "montserrat",
               textTheme: TextTheme(
                   headline2: TextStyle(
