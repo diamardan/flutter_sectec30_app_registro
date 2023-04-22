@@ -4,6 +4,7 @@ import 'package:sectec30_app_registro/ui/res/local_motifications.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../src/provider/supscritions_provider.dart';
 import 'package:sectec30_app_registro/src/models/notification_model.dart'
     as app;
@@ -40,16 +41,23 @@ class FCMService {
   }
 
   // shows local notification when app receives a fcm
-  starOnMessagetListener() {
+
+  starOnMessagetListener() async {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
       RemoteNotification notification = message.notification;
       AndroidNotification android = message.notification?.android;
+      if (userId == "" || userId == null) {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        userId = prefs.getString("registration_id");
+      }
 
       if (notification != null && android != null) {
+        app.Notification appNotification = _getNotificationObject(message);
+        /* _messagingService.addNotification(userId, appNotification); */
         LocalNotificationsService().showNotification(
             notification.hashCode, notification.title, notification.body);
-        app.Notification appNotification = _getNotificationObject(message);
-        _messagingService.addNotification(userId, appNotification);
+        /*  app.Notification appNotification = _getNotificationObject(message);
+        _messagingService.addNotification(userId, appNotification); */
       }
     }).addToState(context);
   }
@@ -57,7 +65,7 @@ class FCMService {
   // when user open app from notification
   startOnMessageOpenedAppListener() {
     FirebaseMessaging.onMessageOpenedApp.listen((message) {
-      Navigator.pushNamed(context, "notification");
+      Navigator.pushNamed(context, "notifications");
     }).addToState(context);
   }
 

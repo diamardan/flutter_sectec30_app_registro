@@ -1,13 +1,13 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:downloads_path_provider_28/downloads_path_provider_28.dart';
 import 'package:sectec30_app_registro/src/models/user_model.dart';
 import 'package:sectec30_app_registro/src/provider/user_provider.dart';
 import 'package:sectec30_app_registro/ui/res/colors.dart';
 import 'package:sectec30_app_registro/ui/screens/credential/render_crendetial_screen.dart';
 import 'package:sectec30_app_registro/src/utils/imageUtil.dart';
 import 'package:sectec30_app_registro/src/utils/widget_to_image.dart';
-import 'package:ext_storage/ext_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:permission_handler/permission_handler.dart';
@@ -402,32 +402,41 @@ class _DigitalCredentialScreenState extends State<DigitalCredentialScreen> {
 // the downloads folder path
     //Directory output = await getDownloadsDirectory();
     // String tempPath = '/storage/emulated/0/Download';
-    String tempPath = await ExtStorage.getExternalStoragePublicDirectory(
-        ExtStorage.DIRECTORY_DOWNLOADS);
+    /* String tempPath = await ExtStorage.getExternalStoragePublicDirectory(
+        ExtStorage.DIRECTORY_DOWNLOADS); */
     String apellidos =
         register.surnames != null ? register.surnames : "SIN APELLIDOS";
     String nombre = register.name != null ? register.name : "SIN NOMBRE";
-    //output.path;
-    var pdfName = apellidos + " " + nombre + ".pdf";
-    var filePath = tempPath + '/${pdfName.replaceAll(" ", "_")}';
-    final file = File(filePath);
-    //
-    /* final output = await getExternalStorageDirectory();
+    Directory downloadsDir = await DownloadsPathProvider.downloadsDirectory;
+    if (downloadsDir != null) {
+      String downloadfolder = downloadsDir.path;
+
+      print(downloadfolder); //output: /storage/emulated/0/Download
+
+      //output.path;
+      var pdfName = apellidos + " " + nombre + ".pdf";
+      var filePath = downloadfolder + '/${pdfName.replaceAll(" ", "_")}';
+      final file = File(filePath);
+      //
+      /* final output = await getExternalStorageDirectory();
     final path = "${output.path}/credencial.pdf";
     final file = File(path); */
-    print(filePath);
-    /* final file = File('example.pdf');*/
-    await file.writeAsBytes(await pdf.save());
-    print("hola");
-    _showSnackbar("El PDF está en su carpeta de Descargas");
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => RenderCredentialScreen(
-                  pdfPath: filePath,
-                  pdfName: pdfName,
-                )));
-    //launch(filePath);
+      print(filePath);
+      /* final file = File('example.pdf');*/
+      await file.writeAsBytes(await pdf.save());
+      print("hola");
+      _showSnackbar("El PDF está en su carpeta de Descargas");
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => RenderCredentialScreen(
+                    pdfPath: filePath,
+                    pdfName: pdfName,
+                  )));
+      //launch(filePath);
+    } else {
+      print("No download folder found.");
+    }
   }
 }
 

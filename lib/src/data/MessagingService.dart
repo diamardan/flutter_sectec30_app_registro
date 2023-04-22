@@ -81,16 +81,17 @@ class MessagingService {
         .update({"fcm_topics": []});
   }
 
-  addNotification(String docId, Notification notification) {
-    firestore
+  /* Future<void> addNotification(String docId, Notification notification) async {
+    await firestore
         .collection("schools")
         .doc(school)
         .collection("registros")
         .doc(docId)
         .collection("notifications")
         .doc(notification.messageId)
-        .set(notification.toJson());
-  }
+        .set(notification.toJson())
+        .then((value) => {print('mi docId en addNotification es:  $docId')});
+  } */
 
   Future<Map<String, dynamic>> getMessage(String messageId) async {
     try {

@@ -33,13 +33,18 @@ class Notification {
       title: json["title"],
       message: json["message"],
       receivedDate: json["received_date"].toDate(),
-      sentDate: json["sent_date"].toDate(),
+      sentDate: json["sent_date"] != null
+          ? json["sent_date"].toDate()
+          : json["received_date"].toDate(),
       inputMode: json["input_mode"],
       read: json["read"],
       origin: json["origin"],
       senderName: json["sender_name"],
       messageId: json["message_id"],
-      haveAttachments: json["have_attachments"],
+      haveAttachments:
+          json["have_attachments"] != false && json["have_attachments"] != "no"
+              ? true
+              : false,
     );
   }
 

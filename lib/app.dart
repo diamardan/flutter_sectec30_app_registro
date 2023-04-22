@@ -9,7 +9,6 @@ import 'package:sectec30_app_registro/src/data/AuthenticationService.dart';
 import 'package:google_fonts/google_fonts.dart';
 //import 'package:sectec30_app_registro/src/bloc/deep_link_bloc.dart';
 import 'package:provider/provider.dart';
-
 import 'ui/res/design_constants.dart';
 
 class MyApp extends StatelessWidget {

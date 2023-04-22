@@ -1,4 +1,5 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class LocalNotificationsService {
   static final LocalNotificationsService _notificationService =
@@ -20,7 +21,16 @@ class LocalNotificationsService {
     importance: Importance.high,
   );
 
+  Future<void> requestPermission() async {
+    await Permission.notification.isDenied.then((value) {
+      if (value) {
+        Permission.notification.request();
+      }
+    });
+  }
+
   Future<void> init() async {
+    await requestPermission();
     // channel for heads up notifications
     await _flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<
@@ -48,8 +58,7 @@ class LocalNotificationsService {
             macOS: null);
 
     // initialize plugin
-    await _flutterLocalNotificationsPlugin.initialize(initializationSettings,
-        onSelectNotification: null);
+    await _flutterLocalNotificationsPlugin.initialize(initializationSettings);
   }
 
   void showNotification(

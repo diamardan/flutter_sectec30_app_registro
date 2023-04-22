@@ -39,15 +39,14 @@ class _DownloadAttchmentsState extends State<DownloadAttchments> {
     messageId = widget.messageId;
     fileName = "$school-adjunto-$messageId.zip";
     fileUrl =
-        "https://api.escuelas.infon.mx/public/uploads/$school/attachments/zips/$fileName";
+        "${AppConstants.backendPublicUrl}/uploads/$school/attachments/zips/$fileName";
 
     flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-    final android = AndroidInitializationSettings('@mipmap/launch');
+    final android = AndroidInitializationSettings('@mipmap/ic_launcher');
     final iOS = IOSInitializationSettings();
     final initSettings = InitializationSettings(android: android, iOS: iOS);
 
-    flutterLocalNotificationsPlugin.initialize(initSettings,
-        onSelectNotification: _onSelectNotification);
+    flutterLocalNotificationsPlugin.initialize(initSettings);
 
     _download();
   }

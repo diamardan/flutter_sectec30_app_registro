@@ -82,8 +82,12 @@ class _AccessListState extends State<AccessList> {
   }
 
   _header(n.Notification notification) {
-    var dateTime =
-        DateFormat("dd-MM-y HH:mm").format(notification.receivedDate);
+    List<String> splittedDate = notification.message.split(':');
+    DateTime attendanceTime = DateTime.parse(
+      splittedDate[1].trim() + splittedDate[2],
+    );
+    print(attendanceTime);
+    var dateTime = DateFormat("dd-MM-y HH:mm").format(attendanceTime);
 
     return Row(children: [
       Expanded(
