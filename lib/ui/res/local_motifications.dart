@@ -44,9 +44,9 @@ class LocalNotificationsService {
     // setting for ios
     final IOSInitializationSettings initializationSettingsIOS =
         IOSInitializationSettings(
-      requestSoundPermission: false,
-      requestBadgePermission: false,
-      requestAlertPermission: false,
+      requestSoundPermission: true,
+      requestBadgePermission: true,
+      requestAlertPermission: true,
       //  onDidReceiveLocalNotification: onDidReceiveLocalNotification,
     );
 
@@ -58,7 +58,8 @@ class LocalNotificationsService {
             macOS: null);
 
     // initialize plugin
-    await _flutterLocalNotificationsPlugin.initialize(initializationSettings);
+    await _flutterLocalNotificationsPlugin.initialize(initializationSettings,
+        onSelectNotification: null);
   }
 
   void showNotification(
@@ -73,7 +74,7 @@ class LocalNotificationsService {
       NotificationDetails(
           android: AndroidNotificationDetails(_channel.id, _channel.name,
               /* _channel.description, */
-              icon: "@mipmap/ic_launcher"
+              icon: "@mipmap/launch"
               // other properties...
               )), /* payload: "go-to-notification"*/
     );

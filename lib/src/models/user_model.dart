@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:sectec30_app_registro/src/constants/constants.dart';
 
 class Registration {
   String id;
@@ -66,7 +67,8 @@ class Registration {
         firmaDrive: json["firma_drive"],
         fecha_registro: json["fecha_registro"],
         devices: json["devices"] ?? [],
-        maxDevicesAllowed: json["max_devices_allowed"] ?? 3,
+        maxDevicesAllowed:
+            json["max_devices_allowed"] ?? AppConstants.max_devices_allowed,
       );
 
   @override

@@ -1,8 +1,11 @@
 import 'package:sectec30_app_registro/ui/res/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'dart:io';
 import 'package:share_plus/share_plus.dart';
+import 'package:cross_file/cross_file.dart';
 /* 
 class RenderCredentialScreen extends StatelessWidget {
   final String pdfPath;
@@ -25,6 +28,17 @@ class RenderCredentialScreen extends StatefulWidget {
   _RenderCredentialScreenState createState() => _RenderCredentialScreenState();
 }
 
+Future<void> sharePDFFile(String pdfPath) async {
+  print('mi y pdfpath es $pdfPath');
+
+  /* final ByteData bytes = await rootBundle.load(pdfPath);
+  final String path = (await getTemporaryDirectory()).path;
+  final String fileName = 'my_file.pdf'; */
+  final File file = File('$pdfPath');
+  //await file.writeAsBytes(bytes.buffer.asUint8List(), flush: true);
+  await Share.shareFiles(['$pdfPath'], mimeTypes: ['application/pdf']);
+}
+
 class _RenderCredentialScreenState extends State<RenderCredentialScreen> {
   final GlobalKey<SfPdfViewerState> _pdfViewerKey = GlobalKey();
   @override
@@ -40,8 +54,7 @@ class _RenderCredentialScreenState extends State<RenderCredentialScreen> {
               color: Colors.white,
             ),
             onPressed: () {
-              Share.shareFiles(['${this.widget.pdfPath}'],
-                  text: "Ésta es mi credencial digital");
+              sharePDFFile(this.widget.pdfPath);
             },
           ),
         ],
